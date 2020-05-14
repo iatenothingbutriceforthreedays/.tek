@@ -7,12 +7,21 @@ import ora from "ora";
 import FormData from "form-data";
 import path from "path";
 
-if (!existsSync(".ret.credentials")) {
-  console.log("Not logged in, so cannot deploy. To log in, run npm run login.");
-  process.exit(0);
+
+let credFileJSON;
+
+try {
+    credFileJSON = JSON.parse(readFileSync(".ret.credentials"));
+} catch (_err) {
+    credFileJSON = {};
 }
 
-const { host, token } = JSON.parse(readFileSync(".ret.credentials"));
+const {
+    host = process.env.HUBS_HOST || 'dr33mphaz3r.com',
+    token = process.env.HUBS_TOKEN,
+} = credFileJSON;
+
+
 console.log(`Deploying to ${host}.`);
 const step = ora({ indent: 2 }).start();
 
