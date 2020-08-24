@@ -40,6 +40,20 @@ import getRoomMetadata from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
+import mainMenuBack from "../../assets/images/main-menu/menu-back.png";
+import aboutHover from "../../assets/images/main-menu/about-hover.png";
+import aboutNormal from "../../assets/images/main-menu/about-normal.png";
+import creditHover from "../../assets/images/main-menu/credits-hover.png";
+import creditNormal from "../../assets/images/main-menu/credits-normal.png";
+import loginHover from "../../assets/images/main-menu/login-normal.png";
+import loginNormal from "../../assets/images/main-menu/login-hover.png";
+
+import bcHover from "../../assets/images/main-menu/bc-hover.png";
+import bcNormal from "../../assets/images/main-menu/bc-normal.png";
+import fbHover from "../../assets/images/main-menu/fb-hover.png";
+import fbNormal from "../../assets/images/main-menu/fb-normal.png";
+import scHover from "../../assets/images/main-menu/sc-hover.png";
+import scNormal from "../../assets/images/main-menu/sc-normal.png";
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
 
@@ -66,6 +80,37 @@ const logoutButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/logo
 addLocaleData([...en]);
 
 const showLogin = qsTruthy("login");
+
+
+const SvgHoverButton =  ({ normalProps, hoverProps, style, ...otherProps }) => {
+  const [isShown, setIsShown] = useState(false);
+
+  return (
+    <image
+      onMouseEnter={() => setIsShown(true)}
+      onMouseLeave={() => setIsShown(false)}
+      style={{
+        ...style,
+        cursor: "pointer"
+      }}
+      {...isShown ? hoverProps : normalProps}
+      {...otherProps}
+      />
+  )
+    };
+
+const MenuComponent = () => {
+  return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
+   <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={mainMenuBack} />
+   <SvgHoverButton id="About_Button" normalProps={{ x: "2466", y: "1353", width:"472", height:"781", xlinkHref: aboutNormal}} hoverProps={{ x: "2466", y:"1353", width:"472", height:"781", xlinkHref: aboutHover}} />
+   <SvgHoverButton id="Credits_Button" hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover}} normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal }} />
+   <SvgHoverButton id="LogIn_Button" hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover }}  normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal }} />
+   <SvgHoverButton id="BC_Button" normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal }} hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover }}/>
+   <SvgHoverButton id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }}  normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }} />
+   <SvgHoverButton id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }} />
+ </svg>);
+ 
+ }
 
 const LogoutButton = ({ onLinkClicked }) => {
   const [isShown, setIsShown] = useState(false);
@@ -278,7 +323,8 @@ export function HomePage() {
             position: "relative"
           }}
         >
-          <picture>
+          <MenuComponent/>
+          {/* <picture>
             <source srcSet={logoImageWebp} type="image/webp" />
             <img
               src={logoImage}
@@ -290,7 +336,7 @@ export function HomePage() {
                 mixBlendMode: "normal"
               }}
             />
-          </picture>
+          </picture> */}
           {/* <div style={{
             position: "absolute",
             bottom: "-180px",
