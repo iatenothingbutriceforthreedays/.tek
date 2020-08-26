@@ -249,11 +249,14 @@ module.exports = async (env, argv) => {
       scene: path.join(__dirname, "src", "scene.js"),
       avatar: path.join(__dirname, "src", "avatar.js"),
       link: path.join(__dirname, "src", "link.js"),
-      discord: path.join(__dirname, "src", "discord.js"),
+      // discord: path.join(__dirname, "src", "discord.js"),
+      credits: path.join(__dirname, "src", "credits.js"),
       cloud: path.join(__dirname, "src", "cloud.js"),
       signin: path.join(__dirname, "src", "signin.js"),
+      about: path.join(__dirname, "src", "about.js"),
+
       verify: path.join(__dirname, "src", "verify.js"),
-      "whats-new": path.join(__dirname, "src", "whats-new.js")
+      // "whats-new": path.join(__dirname, "src", "whats-new.js")
     },
     output: {
       filename: "assets/js/[name]-[chunkhash].js",
@@ -273,10 +276,13 @@ module.exports = async (env, argv) => {
       historyApiFallback: {
         rewrites: [
           { from: /^\/signin/, to: "/signin.html" },
-          { from: /^\/discord/, to: "/discord.html" },
+          { from: /^\/about/, to: "/about.html" },
+          { from: /^\/credits/, to: "/credits.html" },
+
+          // { from: /^\/discord/, to: "/discord.html" },
           { from: /^\/cloud/, to: "/cloud.html" },
           { from: /^\/verify/, to: "/verify.html" },
-          { from: /^\/whats-new/, to: "/whats-new.html" }
+          // { from: /^\/whats-new/, to: "/whats-new.html" }
         ]
       },
       before: function(app) {
@@ -514,23 +520,23 @@ module.exports = async (env, argv) => {
           removeComments: false
         }
       }),
-      new HTMLWebpackPlugin({
-        filename: "discord.html",
-        template: path.join(__dirname, "src", "discord.html"),
-        chunks: ["discord"],
-        minify: {
-          removeComments: false
-        }
-      }),
-      new HTMLWebpackPlugin({
-        filename: "whats-new.html",
-        template: path.join(__dirname, "src", "whats-new.html"),
-        chunks: ["whats-new"],
-        inject: "head",
-        minify: {
-          removeComments: false
-        }
-      }),
+      // new HTMLWebpackPlugin({
+      //   filename: "discord.html",
+      //   template: path.join(__dirname, "src", "discord.html"),
+      //   chunks: ["discord"],
+      //   minify: {
+      //     removeComments: false
+      //   }
+      // }),
+      // new HTMLWebpackPlugin({
+      //   filename: "whats-new.html",
+      //   template: path.join(__dirname, "src", "whats-new.html"),
+      //   chunks: ["whats-new"],
+      //   inject: "head",
+      //   minify: {
+      //     removeComments: false
+      //   }
+      // }),
       new HTMLWebpackPlugin({
         filename: "cloud.html",
         template: path.join(__dirname, "src", "cloud.html"),
@@ -544,6 +550,22 @@ module.exports = async (env, argv) => {
         filename: "signin.html",
         template: path.join(__dirname, "src", "signin.html"),
         chunks: ["signin"],
+        minify: {
+          removeComments: false
+        }
+      }),
+      new HTMLWebpackPlugin({
+        filename: "credits.html",
+        template: path.join(__dirname, "src", "credits.html"),
+        chunks: ["credits"],
+        minify: {
+          removeComments: false
+        }
+      }),
+      new HTMLWebpackPlugin({
+        filename: "about.html",
+        template: path.join(__dirname, "src", "about.html"),
+        chunks: ["about"],
         minify: {
           removeComments: false
         }
