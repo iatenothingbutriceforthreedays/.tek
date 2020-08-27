@@ -93,6 +93,14 @@ function registerNetworkSchemas() {
         selector: ".qwopArms",
         component: "visible"
       },
+      // {
+      //   selector: ".doofStick",
+      //   component: "visible"
+      // },
+      // {
+      //   selector: ".nametag",
+      //   component: "visible"
+      // },
     ]
   });
 

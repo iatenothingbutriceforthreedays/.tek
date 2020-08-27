@@ -117,6 +117,7 @@ import "./components/inspect-button";
 import "./components/set-max-resolution";
 import "./components/avatar-audio-source";
 import "./components/arms-comp";
+import "./components/doofstick-comp";
 import { sets as userinputSets } from "./systems/userinput/sets";
 
 import ReactDOM from "react-dom";
@@ -1348,12 +1349,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                   !isSelf &&
                   currentMeta.presence !== meta.presence &&
                   meta.presence === "room" &&
-                  meta.profile.displayName
+                  meta.profile.displayName &&
+                  meta.profile.doofStick
                 ) {
                   addToPresenceLog({
                     type: "entered",
                     presence: meta.presence,
-                    name: meta.profile.displayName
+                    name: meta.profile.displayName,
+                    doofstick: meta.profile.doofStick
                   });
                 }
 
@@ -1367,6 +1370,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                     oldName: currentMeta.profile.displayName,
                     newName: meta.profile.displayName
                   });
+                } else if (
+                  currentMeta.profile &&
+                  meta.profile &&
+                  currentMeta.profile.displayName !== meta.profile.displayName
+                ) {
+                  addToPresenceLog({
+                    type: "doofstick_changed",
+                    oldName: currentMeta.profile.doofStick,
+                    newName: meta.profile.doofStick
+                  });
                 }
               } else if (info.metas.length === 1) {
                 // New presence
@@ -1376,7 +1389,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                   addToPresenceLog({
                     type: "join",
                     presence: meta.presence,
-                    name: meta.profile.displayName
+                    name: meta.profile.displayName,
+                    doofstick: meta.profile.displayName
                   });
                 }
               }

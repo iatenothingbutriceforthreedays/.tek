@@ -41,6 +41,7 @@ AFRAME.registerComponent("player-info", {
   init() {
     this.displayName = null;
     this.identityName = null;
+    this.doofStick = null;
     this.isOwner = false;
     this.isRecording = false;
     this.applyProperties = this.applyProperties.bind(this);
@@ -115,6 +116,7 @@ AFRAME.registerComponent("player-info", {
   updateDisplayNameFromPresenceMeta(presenceMeta) {
     this.displayName = presenceMeta.profile.displayName;
     this.identityName = presenceMeta.profile.identityName;
+    this.doofStick = presenceMeta.profile.doofStick;
     this.isRecording = !!(presenceMeta.streaming || presenceMeta.recording);
     this.isOwner = !!(presenceMeta.roles && presenceMeta.roles.owner);
     this.applyDisplayName();
@@ -130,6 +132,7 @@ AFRAME.registerComponent("player-info", {
       nametagEl.setAttribute("text", { value: this.displayName });
       nametagEl.object3D.visible = !infoShouldBeHidden;
     }
+
     const identityNameEl = this.el.querySelector(".identityName");
     if (identityNameEl) {
       if (this.identityName) {
@@ -137,6 +140,13 @@ AFRAME.registerComponent("player-info", {
         identityNameEl.object3D.visible = this.el.sceneEl.is("frozen");
       }
     }
+
+    const doofStickEl = this.el.querySelector(".doofStick");
+    if (this.displayName && nametagEl) {
+      doofStickEl.setAttribute("text", { value: this.doofStick });
+      doofStickEl.object3D.visible = !infoShouldBeHidden;
+    }
+
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
     if (recordingBadgeEl) {
       recordingBadgeEl.object3D.visible = this.isRecording && !infoShouldBeHidden;
