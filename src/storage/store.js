@@ -21,6 +21,7 @@ export const SCHEMA = {
       additionalProperties: false,
       properties: {
         displayName: { type: "string", pattern: "^[A-Za-z0-9 -]{3,32}$" },
+        doofStick: { type: "string", pattern: "^[A-Za-z0-9 -]{0,140}$" },
         avatarId: { type: "string" },
         // personalAvatarId is obsolete, but we need it here for backwards compatibility.
         personalAvatarId: { type: "string" }
@@ -237,6 +238,7 @@ export default class Store extends EventTarget {
     // Regenerate name to encourage users to change it.
     if (!this.state.activity.hasChangedName) {
       this.update({ profile: { displayName: generateRandomName() } });
+      this.update({ profile: { doofStick: generateRandomName() } });
     }
   };
 
