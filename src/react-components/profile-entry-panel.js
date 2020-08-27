@@ -33,6 +33,7 @@ class ProfileEntryPanel extends Component {
   state = {
     avatarId: null,
     displayName: null,
+    doofStick: null,
     avatar: null
   };
 
@@ -47,8 +48,8 @@ class ProfileEntryPanel extends Component {
   }
 
   getStateFromProfile = () => {
-    const { displayName, avatarId } = this.props.store.state.profile;
-    return { displayName, avatarId };
+    const { displayName, avatarId, doofStick } = this.props.store.state.profile;
+    return { displayName, avatarId, doofStick };
   };
 
   storeUpdated = () => this.setState(this.getStateFromProfile());
@@ -56,10 +57,10 @@ class ProfileEntryPanel extends Component {
   saveStateAndFinish = e => {
     e && e.preventDefault();
 
-    const { displayName } = this.props.store.state.profile;
+    const { displayName, doofStick } = this.props.store.state.profile;
     const { hasChangedName } = this.props.store.state.activity;
 
-    const hasChangedNowOrPreviously = hasChangedName || this.state.displayName !== displayName;
+    const hasChangedNowOrPreviously = hasChangedName || this.state.displayName !== displayName || this.state.doofStick !== doofStick;
     this.props.store.update({
       activity: {
         hasChangedName: hasChangedNowOrPreviously,
@@ -67,6 +68,7 @@ class ProfileEntryPanel extends Component {
       },
       profile: {
         displayName: this.state.displayName,
+        doofStick: this.state.doofStick,
         avatarId: this.state.avatarId
       }
     });
