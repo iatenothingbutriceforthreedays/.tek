@@ -78,7 +78,21 @@ function registerNetworkSchemas() {
       {
         selector: ".right-controller",
         component: "visible"
-      }
+      },
+      {
+        selector: ".qwopArms",
+        component: "position",
+        requiresNetworkUpdate: vectorRequiresUpdate(0.001)
+      },
+      {
+        selector: ".qwopArms",
+        component: "rotation",
+        requiresNetworkUpdate: vectorRequiresUpdate(0.5)
+      },
+      {
+        selector: ".qwopArms",
+        component: "visible"
+      },
     ]
   });
 
