@@ -135,7 +135,7 @@ const RoomAudioPlayer = React.forwardRef(({ volume, playing, room, initialOffset
 
   if (track === null) return null;
 
-  console.info(`track: ${JSON.stringify(track)}`)
+  // console.info(`track: ${JSON.stringify(track)}`)
 
   const nextTrack = track => playlist[(playlist.indexOf(track) + 1) % playlist.length];
 
@@ -218,7 +218,9 @@ export default class UIRoot extends Component {
     onPreloadLoadClicked: PropTypes.func,
     embed: PropTypes.bool,
     embedToken: PropTypes.string,
-    onLoaded: PropTypes.func
+    onLoaded: PropTypes.func,
+
+    spectating: PropTypes.bool,
   };
 
   state = {
