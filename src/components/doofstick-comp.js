@@ -21,9 +21,9 @@ AFRAME.registerComponent("doofstick-comp", {
         // console.log(decode(window.APP.store.state.credentials.token));
         // console.log(this.el)
 
-        setInterval( () => {
-            window.APP.store.update({ profile: { doofStick: "akjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfjahsdfakjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfja" } })
-        }, 10000);
+        // setInterval( () => {
+        //     window.APP.store.update({ profile: { doofStick: "akjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfjahsdfakjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfja" } })
+        // }, 10000);
 
         // console.log(findAncestorWithComponent(this.el, "player-info").components["player-info"].doofStick)
         // console.log(findAncestorWithComponent(this.el, "player-info").components["player-info"].displayName)
