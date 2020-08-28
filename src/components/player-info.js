@@ -41,25 +41,26 @@ const postDoofStick = async (doofStick, token) => {
       body: JSON.stringify({message: doofStick})
     }
   );
+  // const myJson = await response.json();
+  console.log(response)
+}
+
+const getDoofStick = async (token) => {
+  const response = await fetch(
+    'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+    { 
+      method: 'GET', 
+      headers: new Headers(
+        {
+          'Authorization': 'Bearer ' + token, 
+          'Content-Type': 'application/json',
+        }
+      )
+    }
+  );
   const myJson = await response.json();
   console.log(myJson)
 }
-
-// const getDoofStick = async (token) => {
-//   const response = await fetch(
-//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/search', 
-//     { 
-//       method: 'get', 
-//       headers: new Headers(
-//         {
-//           'Authorization': 'Bearer ' + window.APP.store.state.credentials.token, 
-//           'Content-Type': 'application/json',
-//         }
-//       ),
-//       body: JSON.stringify({message: doofStick})
-//     }
-//   );
-// }
 
 /**
  * Sets player info state, including avatar choice and display name.
@@ -182,7 +183,8 @@ AFRAME.registerComponent("player-info", {
 
       //send da bish 
       // console.log(window.APP.store.state.credentials.token)
-      // postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
+      postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
+      getDoofStick(window.APP.store.state.credentials.token)
     }
 
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
