@@ -47,8 +47,9 @@ class ProfileEntryPanel extends Component {
   }
 
   getStateFromProfile = () => {
-    const { displayName, avatarId } = this.props.store.state.profile;
-    return { displayName, avatarId };
+    const { displayName, avatarId, identityName } = this.props.store.state.profile;
+    console.info(`stateFromProfile: ${JSON.stringify(this.props.store.state.profile)}`);
+    return { displayName, avatarId, identityName };
   };
 
   storeUpdated = () => this.setState(this.getStateFromProfile());
@@ -56,16 +57,17 @@ class ProfileEntryPanel extends Component {
   saveStateAndFinish = e => {
     e && e.preventDefault();
 
-    const { displayName } = this.props.store.state.profile;
+    const { displayName, identityName } = this.props.store.state.profile;
     const { hasChangedName } = this.props.store.state.activity;
 
-    const hasChangedNowOrPreviously = hasChangedName || this.state.displayName !== displayName;
+    const hasChangedNowOrPreviously = hasChangedName || this.state.displayName !== displayName || this.state.identityName !== identityName;
     this.props.store.update({
       activity: {
         hasChangedName: hasChangedNowOrPreviously,
         hasAcceptedProfile: true
       },
       profile: {
+        identityName: this.state.identityName,
         displayName: this.state.displayName,
         avatarId: this.state.avatarId
       }
@@ -148,13 +150,13 @@ class ProfileEntryPanel extends Component {
               <input
                 id="profile-entry-display-name"
                 className={styles.formFieldText}
-                value={this.state.displayName}
+                value={this.state.identityName}
                 onFocus={e => handleTextFieldFocus(e.target)}
                 onBlur={() => handleTextFieldBlur()}
-                onChange={e => this.setState({ displayName: e.target.value })}
+                onChange={e => this.setState({ identityName: e.target.value })}
                 required
                 spellCheck="false"
-                pattern={SCHEMA.definitions.profile.properties.displayName.pattern}
+                pattern={SCHEMA.definitions.profile.properties.identityName.pattern}
                 title={formatMessage({ id: "profile.display_name.validation_warning" })}
                 ref={inp => (this.nameInput = inp)}
               />

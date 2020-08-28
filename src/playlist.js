@@ -212,6 +212,8 @@ const parseTrackDurations = ({ tracks, ...meta }) => {
 
 const lineup = mapValues(jsyaml.load(stream_config), parseTrackDurations);
 
+console.info({lineup: JSON.stringify(lineup)})
+
 export const roomPlaylist = (room = currentRoomKey()) => lineup[room].tracks;
 
 // Who is currently playing

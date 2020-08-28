@@ -1280,8 +1280,10 @@ export default class UIRoot extends Component {
               </button>
             </div>
           )}
-        {this.props.entryDisallowed &&
+        {(this.props.entryDisallowed || this.props.spectating) &&
           !this.state.waitingOnMic && (
+            // TODO: Mount UI here, add callback to toggle spectating above in the 
+            // TODO: Set shader for view
             <div className={entryStyles.buttonContainer}>
               <a
                 onClick={e => {
@@ -1654,17 +1656,15 @@ export default class UIRoot extends Component {
     else if (!this.state.showHubsUI) {
 
       const navigateToRoom = room => (window.location.href = getRoomURL(room));
+      console.log({profile: JSON.stringify(this.props.store.state.profile.identityName)})
 
       uiRootHtml = (
         <div className={classNames([menuStyles, styles.gameMenu])}>
           {this.state.showReport &&
             this.renderDialog(FeedbackDialog, { onClose: () => this.setState({ showReport: false }) })}
           <Menu
-            style={{
-              transform: `scale(${0.2})`,
-              "transform-origin": "72% 0%",
-              position: "absolute"
-            }}
+            name={this.props.store.state.profile.identityName}
+            onNameChange={(updatedName) => console.info({updatedName})}
             volume={this.state.volume}
             onVolumeChange={v => this.setState({ volume: v })}
             hidden={this.state.hide}
