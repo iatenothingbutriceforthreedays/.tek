@@ -50,8 +50,8 @@ AFRAME.registerComponent("setlist", {
       width: 2.0, // seems to fit the box, don't really understand why
       font: "perpetua",
       negate: false,
-      color: "#E3FFD9",
-      opacity: 0.9,
+      color: "#F3FFE9",
+      opacity: 0.99,
       lineHeight: 50,
     }
     this.leftColumn.setAttribute('text', {
