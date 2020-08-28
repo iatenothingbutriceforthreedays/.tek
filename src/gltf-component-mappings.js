@@ -119,6 +119,8 @@ AFRAME.GLTFModelPlus.registerComponent("portal", "portal", (el, componentName, c
   el.setAttribute("portal", componentData);
 });
 
+AFRAME.GLTFModelPlus.registerComponent("setlist", "setlist");
+
 AFRAME.GLTFModelPlus.registerComponent("duck", "duck", el => {
   el.setAttribute("duck", "");
   el.setAttribute("quack", { quackPercentage: 0.1 });
@@ -314,7 +316,7 @@ async function mediaInflator(el, componentName, componentData, components) {
     mediaOptions.volume = componentData.volume;
     mediaOptions.loop = componentData.loop;
     mediaOptions.audioType = componentData.audioType;
-    mediaOptions.hidePlaybackControls = !isControlled;
+    mediaOptions.hidePlaybackControls = true; // !isControlled;
 
     if (componentData.audioType === "pannernode") {
       mediaOptions.distanceModel = componentData.distanceModel;
