@@ -1,4 +1,5 @@
 import { getRoomMetadata } from "../room-metadata";
+import { deburr } from 'lodash'
 import { getSetTimes } from "../playlist";
 import { format } from "date-fns";
 import wrap from "word-wrapper";
@@ -15,7 +16,7 @@ AFRAME.registerComponent("setlist", {
 
     const maxLines = 15;
 
-    const totalWrapCount = 20; // Increasing this decreases the size of the text
+    const totalWrapCount = 25; // Increasing this decreases the size of the text
     const artistWrapCount = 15; // To stop the artist column overlapping with the time column
 
     // get set times based on playlist info
@@ -29,7 +30,7 @@ AFRAME.registerComponent("setlist", {
       if (artist == "~~~dr33m~~~dr33m~~~dr33m~~~") {
         continue;
       }
-      const artistStrRaw = artist.toUpperCase();
+      const artistStrRaw = deburr(artist.toUpperCase());
       const artistStrLines = wrap.lines(artistStrRaw, {width: artistWrapCount});
 
       if (lineCount + artistStrLines.length < maxLines) {

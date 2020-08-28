@@ -1,53 +1,66 @@
 import getHubId from "./utils/hub-id";
 
+export const LOBBY_SCENE_ID = window.LOBBY_SID || "bWGEEsK";
+export const ENABLE_LOAD_BALANCING = !!window.ENABLE_LOAD_BALANCING;
+export const lobbyIDs = window.LOBBY_IDS || ["3maDzA9", "Ek5qYcd", "zNYKYnv", "ApXo7Y3", "QETdxTw", "oQLA4Sx"];
+export const inLobby = (id = getHubId()) => lobbyIDs.includes(id);
+
 const roomMapping = window.ROOM_MAPPING || {
-  "room1": "/EJY4miE/t3kn0-sw4mp",
-  "room2": "/XRfKSWB/psyb3r-dung30n",
-  "room3": "/fcWA7EE/c3r3br4l-v0rt3x",
-  "lobby": "/3maDzA9/dr33m-pl4z4",
+  room1: "/EJY4miE/t3kn0-sw4mp",
+  room2: "/XRfKSWB/psyb3r-dung30n",
+  room3: "/fcWA7EE/c3r3br4l-v0rt3x",
+  lobby: "/3maDzA9/dr33m-pl4z4"
 };
 
-var roomMetadata = {
+const roomMetadata = {
   room1: {
     // Tianyi's room
-    streamUrl: "https://str33m.dr33mphaz3r.com/room1"
+    requireLogin: true,
   },
   room2: {
     // Kynan's room
-    streamUrl: "https://str33m.dr33mphaz3r.com/room2"
+    requireLogin: true,
   },
   room3: {
     // Henry's room
+    requireLogin: true,
     baseSpeed: 19,
     flyMode: true,
-    freeRotation: true,
-    streamUrl: "https://str33m.dr33mphaz3r.com/room3",
+    freeRotation: true
   },
   lobby: {
-    streamVolume: 0.6,
-    streamUrl: "https://str33m.dr33mphaz3r.com/lobby",
+    streamVolume: 0.5,
     requireLogin: false,
     enableMicrophone: true
   }
 };
 
-for (var key in roomMapping) {
+for (const key in roomMapping) {
   roomMetadata[key].url = roomMapping[key];
 }
 
-export const currentRoomKey = (id = getHubId()) => hubIdToRoomKey[id];
+const hubIdToRoomKey = {};
 
-var hubIdToRoomKey = {};
-
-for (var key in roomMapping) {
-  var url = roomMapping[key];
-  var hubId = url.split("/")[1];
+for (const key in roomMapping) {
+  const url = roomMapping[key];
+  const hubId = url.split("/")[1];
   hubIdToRoomKey[hubId] = key;
 }
 
+lobbyIDs.forEach(lobbyID => (hubIdToRoomKey[lobbyID] = "lobby"));
+
+export const currentRoomKey = (id = getHubId()) => hubIdToRoomKey[id];
+
 export function getRoomMetadata(roomKey) {
-  if (!roomKey) {
-    roomKey = currentRoomKey();
-  }
+  if (!roomKey) roomKey = currentRoomKey();
   return roomMetadata[roomKey] || {};
 }
+
+export const bestLobby = () => {
+  return `/${lobbyIDs[0]}/hypnik_crypt333`;
+};
+
+export const getRoomURL = roomKey => {
+  if (!roomKey) roomKey = currentRoomKey();
+  return roomKey == "lobby" ? bestLobby() : getRoomMetadata(roomKey).url;
+};
