@@ -260,12 +260,7 @@ export default class Store extends EventTarget {
     if (!this.state.activity.hasChangedName) {
       this.update({ profile: { displayName: generateRandomName() } });
     }
-<<<<<<< HEAD
-
-
-=======
     */
->>>>>>> caspian/ui
   };
 
   resetToRandomDefaultAvatar = async () => {
