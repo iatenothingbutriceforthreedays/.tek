@@ -29,7 +29,7 @@ function registerNetworkSchemas() {
     components: [
       {
         component: "position",
-        requiresNetworkUpdate: vectorRequiresUpdate(0.001)
+        requiresNetworkUpdate: vectorRequiresUpdate(0.005)
       },
       {
         component: "rotation",
@@ -37,7 +37,7 @@ function registerNetworkSchemas() {
       },
       {
         component: "scale",
-        requiresNetworkUpdate: vectorRequiresUpdate(0.001)
+        requiresNetworkUpdate: vectorRequiresUpdate(0.003)
       },
       "player-info",
       "networked-avatar",
@@ -54,7 +54,7 @@ function registerNetworkSchemas() {
       {
         selector: ".left-controller",
         component: "position",
-        requiresNetworkUpdate: vectorRequiresUpdate(0.001)
+        requiresNetworkUpdate: vectorRequiresUpdate(0.003)
       },
       {
         selector: ".left-controller",
@@ -68,7 +68,7 @@ function registerNetworkSchemas() {
       {
         selector: ".right-controller",
         component: "position",
-        requiresNetworkUpdate: vectorRequiresUpdate(0.001)
+        requiresNetworkUpdate: vectorRequiresUpdate(0.003)
       },
       {
         selector: ".right-controller",
