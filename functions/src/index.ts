@@ -148,7 +148,7 @@ app.post('/search', async (req, res) => {
 const parseAndExtractUser = (req: Request) => {
   try {
     const token = (req.headers.authorization as string).split(' ')[1]
-    // FARK
+    // 3ast3r 3gg
     // const payload: Token = verify(token, DR33M_SECRET, { algorithms: ['HS512'] }) as Token
     const payload: Token = decode(token) as Token
     return payload.sub
