@@ -31,7 +31,7 @@ import { getCurrentStreamer } from "../utils/component-utils";
 
 import { lang, messages } from "../utils/i18n";
 import Loader from "./loader";
-// import AutoExitWarning from "./auto-exit-warning";
+import AutoExitWarning from "./auto-exit-warning";
 import { TwoDEntryButton, GenericEntryButton, DaydreamEntryButton } from "./entry-buttons.js";
 import ProfileEntryPanel from "./profile-entry-panel";
 import MediaBrowser from "./media-browser";
@@ -73,7 +73,7 @@ import TwoDHUD from "./2d-hud";
 import { SpectatingLabel } from "./spectating-label";
 import { showFullScreenIfAvailable, showFullScreenIfWasFullScreen } from "../utils/fullscreen";
 import { exit2DInterstitialAndEnterVR, isIn2DInterstitial } from "../utils/vr-interstitial";
-import { getRoomMetadata, currentRoomKey } from "../room-metadata";
+import { getRoomMetadata, currentRoomKey, getRoomURL } from "../room-metadata";
 import { currentlyPlaying, roomPlaylist } from "../playlist";
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
@@ -86,11 +86,11 @@ import qsTruthy, { qsGet } from "../utils/qs_truthy";
 import { redirectIfNotAuthorized } from "../access-control";
 import { CAMERA_MODE_INSPECT } from "../systems/camera-system";
 
-import ReactHowler from 'react-howler'
+import { Menu } from "../menu/menu";
 
+import ReactHowler from "react-howler";
 
 const avatarEditorDebug = qsTruthy("avatarEditorDebug");
-
 
 addLocaleData([...en]);
 
@@ -121,48 +121,78 @@ const isMobileVR = AFRAME.utils.device.isMobileVR();
 const isMobilePhoneOrVR = isMobile || isMobileVR;
 const isFirefoxReality = isMobileVR && navigator.userAgent.match(/Firefox/);
 
-const AUTO_EXIT_TIMER_SECONDS = 10;
+const AUTO_EXIT_TIMER_SECONDS = 60 * 3;
 
-const RoomAudioPlayer = React.forwardRef(({ volume, playing, room, initialOffset, playlist, token, onMusicCanPlay}, ref) => {
-  // const [currentTrack, setCurrentTrack] = useState({ track: playlist[0], offset: initialOffset });
-  const [currentTrack, setCurrentTrack] = useState({ track: null, offset: null });
+const setPointerLock = lock => {
+  console.info(`lock: ${lock}`);
+  const event = new CustomEvent("action_pointerlock", { detail: { lock: lock } });
+  document.dispatchEvent(event);
+};
 
-  useEffect(() => {
-    setCurrentTrack({ track: playlist[0], offset: initialOffset, initialized: false });
-  }, []);
-
-  const { offset, track, initialized } = currentTrack;
-
-  if (track === null) return null;
-
-  // console.info(`track: ${JSON.stringify(track)}`)
-
-  const nextTrack = track => playlist[(playlist.indexOf(track) + 1) % playlist.length];
-
-  const ASSET_BASE = "https://str33m.dr33mphaz3r.net";
-  const tokenArg = token ? `?token=${token}` : "";
-  const srcPath = ext => `${ASSET_BASE}/${room}/${track.title}.${ext}${tokenArg}#t=${offset / 1e3}`;
-
-  return (
-    <ReactHowler
-      ref={ref}
-      html5={true}
-      preload={true}
-      playing={playing}
-      src={["ogg","mp3"].map(srcPath)}
-      onLoad={() => {
-        ref.current.seek(offset / 1e3)
-        if(initialized) onMusicCanPlay()
-      }}
-      onEnd={() => {
-        const next = nextTrack(track)
-        console.info(`starting next track: ${ JSON.stringify(next) }`)
-        setCurrentTrack({ track: next, offset: 0 })
-      }}
-      volume={volume}
-    />
+const Playing = ({ artist, hidden, ...otherProps }) =>
+  !hidden &&
+  artist &&
+  !artist.includes("dr33m") && (
+    <marquee direction={"right"} className={"glow"} {...otherProps}>
+      {(artist + '  ~  ')*10}
+    </marquee>
   );
-});
+
+const RoomAudioPlayer = React.forwardRef(
+  ({ volume, hidden, playing, room, initialOffset, playlist, token, onMusicCanPlay, onTrackChange }, ref) => {
+
+    const [currentTrack, setCurrentTrack] = useState({ track: null, offset: null });
+
+    useEffect(() => {
+      setCurrentTrack({ track: playlist[0], offset: initialOffset, initialized: false });
+    }, []);
+
+    const { offset, track, initialized } = currentTrack;
+
+    if (track === null) return null;
+
+    console.info(`track: ${JSON.stringify(track)}`);
+
+    const nextTrack = track => playlist[(playlist.indexOf(track) + 1) % playlist.length];
+
+    const ASSET_BASE = "https://str33m.dr33mphaz3r.net";
+    const tokenArg = token ? `?token=${token}` : "";
+    const srcPath = ext => `${ASSET_BASE}/${room}/${track.title}.${ext}${tokenArg}#t=${offset / 1e3}`;
+
+
+    return (
+      <>
+        <Playing
+          artist={track.artist}
+          hidden={hidden}
+          style={{
+            position: "fixed",
+            bottom: 0,
+            font: "stasmic",
+            width: "100%",
+          }}
+        />
+        <ReactHowler
+          ref={ref}
+          html5={true}
+          preload={true}
+          playing={playing}
+          src={["ogg", "mp3"].map(srcPath)}
+          onLoad={() => {
+            ref.current.seek(offset / 1e3);
+            if (initialized) onMusicCanPlay();
+          }}
+          onEnd={() => {
+            const next = nextTrack(track);
+            console.info(`starting next track: ${JSON.stringify(next)}`);
+            setCurrentTrack({ track: next, offset: 0 });
+          }}
+          volume={volume}
+        />
+      </>
+    );
+  }
+);
 
 export default class UIRoot extends Component {
   willCompileAndUploadMaterials = false;
@@ -214,6 +244,7 @@ export default class UIRoot extends Component {
     onInterstitialPromptClicked: PropTypes.func,
     performConditionalSignIn: PropTypes.func,
     hide: PropTypes.bool,
+    showHubsUI: PropTypes.bool,
     showPreload: PropTypes.bool,
     onPreloadLoadClicked: PropTypes.func,
     embed: PropTypes.bool,
@@ -238,6 +269,7 @@ export default class UIRoot extends Component {
     noMoreLoadingUpdates: false,
     hideLoader: false,
     showPrefs: false,
+
     watching: false,
     isStreaming: false,
     showStreamingTip: false,
@@ -256,13 +288,19 @@ export default class UIRoot extends Component {
     autoExitMessage: null,
     secondsRemainingBeforeAutoExit: Infinity,
 
-    muted: false,
+    muted: true,
     frozen: false,
 
     playing: false,
     volume: parseFloat(qsGet("stream_volume")) || getRoomMetadata().streamVolume || .95,
 
+    showReport: false,
+
     exited: false,
+
+    hide: true,
+
+    showHubsUI: configs.isAdmin && qsTruthy("show_ui"),
 
     signedIn: false,
     videoShareMediaSource: null,
@@ -348,6 +386,11 @@ export default class UIRoot extends Component {
     }
   };
 
+  setMenuFocus = (toggle) => {
+    setPointerLock(!toggle);
+    this.setState({ hide: !toggle});
+  }
+
   componentDidMount() {
     window.addEventListener("concurrentload", this.onConcurrentLoad);
     window.addEventListener("idle_detected", this.onIdleDetected);
@@ -379,7 +422,15 @@ export default class UIRoot extends Component {
         this.setState({ watching: false });
       }
     });
-    this.props.scene.addEventListener("action_toggle_ui", () => this.setState({ hide: !this.state.hide }));
+
+    document.addEventListener("action_hide_ui", () => {
+      this.setState({ hide: true });
+    });
+
+    this.props.scene.addEventListener("action_toggle_ui", () => {
+      console.info({hide: this.state.hide})
+      this.setMenuFocus(this.state.hide)
+    });
 
     const scene = this.props.scene;
 
@@ -410,15 +461,12 @@ export default class UIRoot extends Component {
       audioContext: {
         playSound: sound => {
           scene.emit(sound);
-        },
-        onMouseLeave: () => {
-          //          scene.emit("play_sound-hud_mouse_leave");
         }
       }
     });
 
     // If not logged in, redirect to homescreen
-    redirectIfNotAuthorized()
+    redirectIfNotAuthorized();
 
     // HACK
     // Skip the entry dialog and jump straight in
@@ -436,7 +484,6 @@ export default class UIRoot extends Component {
     }
 
     this.playerRig = scene.querySelector("#avatar-rig");
-
     this.dontWaitForMusic = true
   }
 
@@ -506,6 +553,7 @@ export default class UIRoot extends Component {
     );
   };
 
+
   isFavorited = () => {
     return this.state.isFavorited !== undefined ? this.state.isFavorited : this.props.initialIsFavorited;
   };
@@ -513,17 +561,13 @@ export default class UIRoot extends Component {
   onLoadingFinished = () => {
     this.setState({ sceneIsLoaded: true });
     // scene is finished loading, if music is also ready then we are ready to go
-    if (this.dontWaitForMusic || this.state.musicIsReady) {
-      this.setLoaded();
-    }
+    if (this.dontWaitForMusic || this.state.musicIsReady) this.setLoaded();
   };
 
   onMusicCanPlay = async () => {
     this.setState({ musicIsReady: true });
     // music loaded, if scene is also ready, let's go
-    if (this.state.sceneIsLoaded) {
-      this.setLoaded();
-    }
+    if (this.state.sceneIsLoaded) this.setLoaded();
   };
 
   setLoaded = () => {
@@ -531,6 +575,7 @@ export default class UIRoot extends Component {
     this.props.scene.emit("loading_finished");
     this.props.scene.addState("loaded");
 
+    setPointerLock(true);
     if (this.props.onLoaded) {
       this.props.onLoaded();
     }
@@ -856,11 +901,6 @@ export default class UIRoot extends Component {
     return this.micDeviceIdForMicLabel(this.selectedMicLabel());
   };
 
-  shouldShowUI = () => {
-    // TODO: Use this to toggle between the eye menu and the settings pane
-    return qsTruthy("show_ui");
-  };
-
   shouldShowFullScreen = () => {
     // Disable full screen on iOS, since Safari's fullscreen mode does not let you prevent native pinch-to-zoom gestures.
     return (
@@ -884,11 +924,12 @@ export default class UIRoot extends Component {
 
     this.setState({ entered: true, entering: false, showShareDialog: false });
 
+    // Grab pointer once music is playing
+    setPointerLock(true);
+
     // music should be ready by this point, start playing
     if (this.musicPlayerRef.current) {
-      this.setState({playing: true})
-    } else {
-      console.error("no ref :*(")
+      this.setState({ playing: true });
     }
 
     const mediaStream = this.state.mediaStream;
@@ -1209,8 +1250,7 @@ export default class UIRoot extends Component {
           />
         </div>
 
-        {!this.state.waitingOnMic &&
-          !this.props.entryDisallowed && (
+        {!this.state.waitingOnMic && !this.props.entryDisallowed && (
             <div className={entryStyles.buttonContainer}>
               {!isMobileVR && (
                 <button
@@ -1263,8 +1303,12 @@ export default class UIRoot extends Component {
               </button>
             </div>
           )}
-        {this.props.entryDisallowed &&
+        {(this.props.entryDisallowed || this.props.spectating) &&
           !this.state.waitingOnMic && (
+            // TODO: Mount UI here
+            // - add callback to toggle spectating state and allow entry
+            // - if we're exiting, reload the page
+            // TODO: Set shader for view
             <div className={entryStyles.buttonContainer}>
               <a
                 onClick={e => {
@@ -1282,6 +1326,9 @@ export default class UIRoot extends Component {
           )}
         {this.state.waitingOnMic && (
           <div>
+            <div className={entryStyles.name}>
+              Waiting for <a style={{color: "white"}} href="https://jasmineguffond.bandcamp.com/album/microphone-permission">microphone permission</a>
+            </div>
             <div className="loader-wrap loader-mid">
               <div className="loader">
                 <div className="loader-center" />
@@ -1529,40 +1576,16 @@ export default class UIRoot extends Component {
     );
   };
 
-  renderVolumeSlider = () => {
-    return (
-      <div className={classNames({
-        [styles.ui]: true,
-        "ui-root": true,
-        "in-modal-or-overlay": true,
-        })}>
-          <label>
-            Volume:
-            <span className='slider-container'>
-              <input
-                type='range'
-                min='0'
-                max='1'
-                step='.05'
-                value={this.state.volume}
-                onChange={e => this.setState({ volume: parseFloat(e.target.value) })}
-                style={{ verticalAlign: 'bottom' }}
-              />
-            </span>
-            {this.state.volume.toFixed(2)}
-          </label>
-      </div>
-    )
-  }
-
   renderAudioPlayer = () => {
     const streamVolume = this.state.volume;
     const playingNow = currentlyPlaying();
+
     if (!playingNow) {
       console.warn('Could not fetch current track from server for this room')
       return null;
     }
-    const { title: initialTitle, offset: initialOffset } = playingNow;
+
+    const { title: initialTitle, offset: initialOffset, artist } = playingNow;
 
     // Rotate array to start with currently playing track
     const startWith = (arr, predicate) => {
@@ -1572,27 +1595,33 @@ export default class UIRoot extends Component {
 
     const playlist = startWith(roomPlaylist(), ({ title }) => title == initialTitle);
 
-    return <RoomAudioPlayer
-      ref={this.musicPlayerRef}
-      token={this.props.store.state.credentials.token}
-      volume={this.state.volume}
-      playing={this.state.playing}
-      initialOffset={initialOffset}
-      playlist={playlist}
-      room={currentRoomKey()}
-      onMusicCanPlay={this.onMusicCanPlay}
-    />
+    return (
+      <RoomAudioPlayer
+        ref={this.musicPlayerRef}
+        hidden={this.state.hidden}
+        token={this.props.store.state.credentials.token}
+        volume={this.state.volume}
+        playing={this.state.playing}
+        initialOffset={initialOffset}
+        playlist={playlist}
+        room={currentRoomKey()}
+        onMusicCanPlay={this.onMusicCanPlay}
+      />
+    );
   }
 
   render() {
-    const rootStyles = {
-      [styles.ui]: true,
+    const menuStyles = {
       "ui-root": true,
       "in-modal-or-overlay": this.isInModalOrOverlay(),
       isGhost: configs.feature("enable_lobby_ghosts") && (this.state.watching || this.state.hide || this.props.hide),
-      hide: this.state.hide || this.props.hide
+    }
+
+    const rootStyles = {
+      hide: !this.state.showHubsUI || this.state.hide,
+      [styles.ui]: true,
+      ...menuStyles
     };
-    if (this.props.hide || this.state.hide) return <div className={classNames(rootStyles)} />;
 
     const isExited = this.state.exited || this.props.roomUnavailableReason;
     const preload = this.props.showPreload;
@@ -1602,9 +1631,9 @@ export default class UIRoot extends Component {
 
     const hasPush = navigator.serviceWorker && "PushManager" in window;
 
-    var uiRootHtml;
+    let uiRootHtml;
 
-    if (this.props.showOAuthDialog && !this.props.showInterstitialPrompt)
+    if (this.props.showOAuthDialog && !this.props.showInterstitialPrompt) {
       uiRootHtml = (
         <IntlProvider locale={lang} messages={messages}>
           <div className={classNames(rootStyles)}>
@@ -1612,6 +1641,7 @@ export default class UIRoot extends Component {
           </div>
         </IntlProvider>
       );
+    }
     else if (isExited) {
       uiRootHtml = this.renderExitedPane();
     }
@@ -1652,6 +1682,41 @@ export default class UIRoot extends Component {
     }
     else if (this.props.isBotMode) {
       uiRootHtml = this.renderBotMode();
+    }
+    else if (!this.state.showHubsUI) {
+      const navigateToRoom = room => (window.location.href = getRoomURL(room));
+
+      uiRootHtml = (
+        <div className={classNames([menuStyles, styles.gameMenu])}>
+          {this.state.showReport &&
+            this.renderDialog(FeedbackDialog, { onClose: () => this.setState({ showReport: false }) })}
+          <Menu
+            muted={this.state.muted}
+            onMuteToggle={this.toggleMute}
+            volume={this.state.volume}
+            onVolumeChange={v => this.setState({ volume: v })}
+            hidden={this.state.hide}
+            onMenuToggle={toggle => this.setMenuFocus(toggle)}
+            watching={this.state.watching}
+            onWatchToggle={toggle => {
+              console.info({ toggle });
+              this.setState({ watching: toggle, entered: !toggle });
+              // if(toggle) this.exit("watch")
+              if (toggle && this.props.exitScene) {
+                this.props.exitScene("spectate");
+              } else if (!toggle && !this.state.entered) {
+                this.handleForceEntry();
+              }
+            }}
+            onHome={() => (window.location.href = "/")}
+            onReport={() => this.setState({ showReport: true })}
+            onLobby={() => navigateToRoom("lobby")}
+            onRoom1={() => navigateToRoom("room1")}
+            onRoom2={() => navigateToRoom("room2")}
+            onRoom3={() => navigateToRoom("room3")}
+          />
+        </div>
+      );
     }
     else {
       const embed = this.props.embed;
@@ -1792,7 +1857,6 @@ export default class UIRoot extends Component {
 
       uiRootHtml = (
         <ReactAudioContext.Provider value={this.state.audioContext}>
-          {this.shouldShowUI() && (
           <IntlProvider locale={lang} messages={messages}>
             <div className={classNames(rootStyles)}>
               {this.state.dialog}
@@ -2315,7 +2379,7 @@ export default class UIRoot extends Component {
                 </div>
               )}
             </div>
-          </IntlProvider>)}
+          </IntlProvider>
         </ReactAudioContext.Provider>
       );
     }
@@ -2324,7 +2388,6 @@ export default class UIRoot extends Component {
       <Fragment>
         {uiRootHtml}
         {this.renderAudioPlayer()}
-        {/*this.renderVolumeSlider()*/}
       </Fragment>
     );
   }

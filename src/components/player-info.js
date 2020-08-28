@@ -147,6 +147,7 @@ AFRAME.registerComponent("player-info", {
 
     this.updateDisplayNameFromPresenceMeta(e.detail);
   },
+
   updateDisplayNameFromPresenceMeta(presenceMeta) {
     this.displayName = presenceMeta.profile.displayName;
     this.identityName = presenceMeta.profile.identityName;
@@ -155,6 +156,7 @@ AFRAME.registerComponent("player-info", {
     this.isOwner = !!(presenceMeta.roles && presenceMeta.roles.owner);
     this.applyDisplayName();
   },
+
   applyDisplayName() {
     const store = window.APP.store;
 
@@ -162,12 +164,15 @@ AFRAME.registerComponent("player-info", {
       this.isLocalPlayerInfo || (store.state.preferences.onlyShowNametagsInFreeze && !this.el.sceneEl.is("frozen"));
 
     const nametagEl = this.el.querySelector(".nametag");
+
     if (this.displayName && nametagEl) {
       nametagEl.setAttribute("text", { value: this.displayName });
       nametagEl.object3D.visible = !infoShouldBeHidden;
     }
 
+    // [caspian]: this is where we can add the d00fstick
     const identityNameEl = this.el.querySelector(".identityName");
+
     if (identityNameEl) {
       if (this.identityName) {
         identityNameEl.setAttribute("text", { value: this.identityName });
