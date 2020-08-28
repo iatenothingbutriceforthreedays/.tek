@@ -123,34 +123,19 @@ AFRAME.registerComponent("player-info", {
 
   applyDisplayName() {
     const store = window.APP.store;
+    console.log(JSON.stringify(store))
 
-    const infoShouldBeHidden =
-      this.isLocalPlayerInfo || (store.state.preferences.onlyShowNametagsInFreeze && !this.el.sceneEl.is("frozen"));
 
-    const nametagEl = this.el.querySelector(".nametag");
-
-    if (this.displayName && nametagEl) {
-      nametagEl.setAttribute("text", { value: this.displayName });
-      nametagEl.object3D.visible = !infoShouldBeHidden;
-    }
-
-    // [caspian]: this is where we can add the d00fstick
     const identityNameEl = this.el.querySelector(".identityName");
 
-    if (identityNameEl) {
-      if (this.identityName) {
-        identityNameEl.setAttribute("text", { value: this.identityName });
-        identityNameEl.object3D.visible = this.el.sceneEl.is("frozen");
-      }
-    }
-    const recordingBadgeEl = this.el.querySelector(".recordingBadge");
-    if (recordingBadgeEl) {
-      recordingBadgeEl.object3D.visible = this.isRecording && !infoShouldBeHidden;
+    if (identityNameEl && this.identityName) {
+      identityNameEl.setAttribute("text", { value: this.identityName });
+      identityNameEl.object3D.visible = true;
     }
 
     const modBadgeEl = this.el.querySelector(".modBadge");
     if (modBadgeEl) {
-      modBadgeEl.object3D.visible = !this.isRecording && this.isOwner && !infoShouldBeHidden;
+      modBadgeEl.object3D.visible = this.isOwner;
     }
   },
   applyProperties(e) {
