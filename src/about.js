@@ -4,13 +4,14 @@ import { IntlProvider } from "react-intl";
 import registerTelemetry from "./telemetry";
 import Store from "./storage/store";
 import "./utils/theme";
-import { HomePage } from "./react-components/home/HomePage";
 import { lang, messages } from "./utils/i18n";
-import "./assets/stylesheets/globals.scss";
 import { AuthContextProvider } from "./react-components/auth/AuthContext";
-import {StripeProvider} from 'react-stripe-elements';
+import { About } from "./react-components/about/About";
+import { CoC } from "./react-components/coc/CoC";
 
-registerTelemetry("/home", "Hubs Home Page");
+import "./assets/stylesheets/globals.scss";
+
+registerTelemetry("/about", "Hubs About Page");
 
 const store = new Store();
 window.APP = { store };
@@ -19,14 +20,11 @@ function Root() {
   return (
     <IntlProvider locale={lang} messages={messages}>
       <AuthContextProvider store={store}>
-      <StripeProvider apiKey="pk_test_51HLGL7JMgaoUJ8iech97jzWJaQpwIHPNw6IGlrorZOrjzib1os48wgJyDBWPPwBWITWZ47I0Ty6TLsC71U4gD8WR00K4VahS5U">
-
-        <HomePage />
-    </StripeProvider>
+        <About />
+        {/* <CoC /> */}
       </AuthContextProvider>
     </IntlProvider>
   );
 }
 
-
-ReactDOM.render(<Root />, document.getElementById("home-root"));
+ReactDOM.render(<Root />, document.getElementById("ui-root"));
