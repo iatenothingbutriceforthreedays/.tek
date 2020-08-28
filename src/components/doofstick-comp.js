@@ -9,10 +9,10 @@ AFRAME.registerComponent("doofstick-comp", {
         // var playerSessionId = findAncestorWithComponent(this.el, "player-info").components["player-info"].playerSessionId;
           
 
-        window.addEventListener('action_doof_changed',(e) => {
-            const {name} = e.detail
-            window.APP.store.update({ profile: { doofStick: "akjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfjahsdfakjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfja" } })
-        }, false);
+        // window.addEventListener('action_doof_changed',(e) => {
+        //     const {name} = e.detail
+        //     window.APP.store.update({ profile: { doofStick: "akjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfjahsdfakjshdfkjhasjhjkashfljhakljshfkjhasdkjhfkjshadkfjhkajshdfkhaskjdhfja" } })
+        // }, false);
 
 
         // console.log(window.APP.store)
