@@ -182,7 +182,7 @@ AFRAME.registerComponent("player-info", {
 
       //send da bish 
       // console.log(window.APP.store.state.credentials.token)
-      postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
+      // postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
     }
 
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
