@@ -236,11 +236,31 @@ export default class Store extends EventTarget {
       });
     }
 
+    const response = await fetch(
+      'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+      { 
+        method: 'GET', 
+        headers: new Headers(
+          {
+            'Authorization': 'Bearer ' + this.state.credentials.token, 
+            'Content-Type': 'application/json',
+          }
+        )
+      }
+    );
+
+    const doofStickStored = await response.json();
+
+    if (doofStickStored.message) {
+      this.update({ profile: { doofStick: doofStickStored.message } });
+    }
+
     // Regenerate name to encourage users to change it.
     if (!this.state.activity.hasChangedName) {
       this.update({ profile: { displayName: generateRandomName() } });
-      this.update({ profile: { doofStick: generateRandomName() } });
     }
+
+
   };
 
   resetToRandomDefaultAvatar = async () => {
