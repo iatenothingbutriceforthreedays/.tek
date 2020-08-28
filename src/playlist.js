@@ -1,5 +1,5 @@
 import * as jsyaml from "js-yaml";
-import { addDays, addHours, addMilliseconds, subMilliseconds, getUnixTime } from "date-fns";
+import { addDays, addMilliseconds, subMilliseconds, getUnixTime } from "date-fns";
 import { mapValues } from "lodash";
 import { duration } from "moment";
 // import getHubId from "./utils/hub-id";
@@ -114,7 +114,7 @@ room2:
       title: "dr33m-2"
       length: "00:00:10"
 
-    - artist: "DBR"
+    - artist: "DBR [hybrid]"
       title: "DBR"
       length: "01:31:41"
 
