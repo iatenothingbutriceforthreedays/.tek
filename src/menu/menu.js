@@ -45,6 +45,11 @@ const doofstickHeight = 550;
 const paneWidth = 1865;
 const paneHeight = 4689;
 
+// var event = new CustomEvent("doof-stick-send", {'detail': {
+//   doofstick: null,
+// }});
+
+
 export const Menu = ({
   watching,
   hidden,
@@ -112,6 +117,8 @@ export const Menu = ({
       )
     );
   };
+
+ 
 
   const textStyle = {
     background: "white",
