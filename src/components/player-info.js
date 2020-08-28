@@ -42,7 +42,6 @@ const postDoofStick = async (doofStick, token) => {
     }
   );
   // const myJson = await response.json();
-  console.log(response)
 }
 
 const getDoofStick = async (token) => {
@@ -59,7 +58,7 @@ const getDoofStick = async (token) => {
     }
   );
   const myJson = await response.json();
-  console.log(myJson)
+  return myJson
 }
 
 /**
@@ -177,14 +176,10 @@ AFRAME.registerComponent("player-info", {
     }
 
     const doofStickEl = this.el.querySelector(".doofStick");
-    if (this.doofStick && nametagEl) {
+    if (this.doofStick && doofStickEl) {
       doofStickEl.setAttribute("text", { value: this.doofStick });
       doofStickEl.object3D.visible = !infoShouldBeHidden;
-
-      //send da bish 
-      // console.log(window.APP.store.state.credentials.token)
       postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
-      getDoofStick(window.APP.store.state.credentials.token)
     }
 
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
