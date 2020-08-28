@@ -149,7 +149,7 @@ export default class PresenceList extends Component {
           >
             {sessionId === this.props.sessionId ? (
               <StateLink className={styles.self} stateKey="overlay" stateValue="profile" history={this.props.history}>
-                {profile && profile.displayName}
+                {profile && profile.identityName}
                 {badge}
                 <i>
                   <FontAwesomeIcon icon={faPencilAlt} />
@@ -159,10 +159,10 @@ export default class PresenceList extends Component {
               <div>
                 {!isBot ? (
                   <button className={styles.clientLink} onClick={() => this.navigateToClientInfo(sessionId)}>
-                    {profile && profile.displayName}
+                    {profile && profile.identityName}
                   </button>
                 ) : (
-                  <span>{profile && profile.displayName}</span>
+                  <span>{profile && profile.identityName}</span>
                 )}
                 {badge}
               </div>

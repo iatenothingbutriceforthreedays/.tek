@@ -1344,39 +1344,40 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const isSelf = sessionId === socket.params().session_id;
                 const currentMeta = current.metas[0];
 
+
                 if (
                   !isSelf &&
                   currentMeta.presence !== meta.presence &&
                   meta.presence === "room" &&
-                  meta.profile.displayName
+                  meta.profile.identityName
                 ) {
                   addToPresenceLog({
                     type: "entered",
                     presence: meta.presence,
-                    name: meta.profile.displayName
+                    name: meta.profile.identityName
                   });
                 }
 
                 if (
                   currentMeta.profile &&
                   meta.profile &&
-                  currentMeta.profile.displayName !== meta.profile.displayName
+                  currentMeta.profile.identityName !== meta.profile.identityName
                 ) {
                   addToPresenceLog({
                     type: "display_name_changed",
-                    oldName: currentMeta.profile.displayName,
-                    newName: meta.profile.displayName
+                    oldName: currentMeta.profile.identityName,
+                    newName: meta.profile.identityName
                   });
                 }
               } else if (info.metas.length === 1) {
                 // New presence
                 const meta = info.metas[0];
 
-                if (meta.presence && meta.profile.displayName) {
+                if (meta.presence && meta.profile.identityName) {
                   addToPresenceLog({
                     type: "join",
                     presence: meta.presence,
-                    name: meta.profile.displayName
+                    name: meta.profile.identityName
                   });
                 }
               }
@@ -1402,10 +1403,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const meta = info.metas[0];
 
-            if (meta.profile.displayName) {
+            if (meta.profile.identityName) {
               addToPresenceLog({
                 type: "leave",
-                name: meta.profile.displayName
+                name: meta.profile.identityName
               });
             }
           });
@@ -1529,7 +1530,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (from) {
         return from;
       } else if (userInfo) {
-        return userInfo.metas[0].profile.displayName;
+        return userInfo.metas[0].profile.identityName;
       } else {
         return "Mystery user";
       }
@@ -1563,7 +1564,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       addToPresenceLog({
         type: "scene_changed",
-        name: userInfo.metas[0].profile.displayName,
+        name: userInfo.metas[0].profile.identityName,
         sceneName: hub.scene ? hub.scene.name : "a custom URL"
       });
     }
@@ -1587,7 +1588,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       addToPresenceLog({
         type: "hub_name_changed",
-        name: userInfo.metas[0].profile.displayName,
+        name: userInfo.metas[0].profile.identityName,
         hubName: hub.name
       });
     }
