@@ -228,7 +228,7 @@ export const Menu = ({
           <TextForm
             id={"menu-name-input"}
             value={name}
-            onValueChange={onNameChange}
+            onValueChange={ function (name) { window.APP.store.update({ profile: { displayName: name } }) } }
             minLength={1}
             maxLength={64}
             spellCheck="false"

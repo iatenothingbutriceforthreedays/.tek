@@ -185,7 +185,39 @@ AFRAME.registerComponent("player-info", {
     if (this.doofStick && doofStickEl) {
       doofStickEl.setAttribute("text", { value: this.doofStick });
       doofStickEl.object3D.visible = !infoShouldBeHidden;
-      postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
+      // postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
+      if (window.APP.store.state.credentials.token) {
+        const response = fetch(
+          'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+          { 
+            method: 'POST', 
+            headers: new Headers(
+              {
+                'Authorization': 'Bearer ' + window.APP.store.state.credentials.token, 
+                'Content-Type': 'application/json',
+              }
+            ),
+            body: JSON.stringify({message: this.doofStick})
+          }
+        ).then( 
+          (response) => 
+          {
+            if (!response.ok) {
+              // this.update({ profile: { doofStick: 'Hello!' } });
+              throw new Error("Not 2xx response")
+            } else {
+              console.log( response.json() )
+              // this.update({ profile: { doofStick: resJSON.message } });
+            }
+          }
+        ).catch( 
+          (err) => 
+          {
+            console.log(err)
+          }
+        );
+      }
+      
     }
 
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
