@@ -124,7 +124,7 @@ const isFirefoxReality = isMobileVR && navigator.userAgent.match(/Firefox/);
 const AUTO_EXIT_TIMER_SECONDS = 60 * 3;
 
 const setPointerLock = lock => {
-  console.info(`lock: ${lock}`);
+  //console.info(`lock: ${lock}`);
   const event = new CustomEvent("action_pointerlock", { detail: { lock: lock } });
   document.dispatchEvent(event);
 };
@@ -151,7 +151,7 @@ const RoomAudioPlayer = React.forwardRef(
 
     if (track === null) return null;
 
-    console.info(`track: ${JSON.stringify(track)}`);
+    // console.info(`track: ${JSON.stringify(track)}`);
 
     const nextTrack = track => playlist[(playlist.indexOf(track) + 1) % playlist.length];
 
@@ -184,7 +184,7 @@ const RoomAudioPlayer = React.forwardRef(
           }}
           onEnd={() => {
             const next = nextTrack(track);
-            console.info(`starting next track: ${JSON.stringify(next)}`);
+            // console.info(`starting next track: ${JSON.stringify(next)}`);
             setCurrentTrack({ track: next, offset: 0 });
           }}
           volume={volume}
