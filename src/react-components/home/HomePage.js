@@ -140,7 +140,7 @@ const MenuComponent = ({ setIsModalOpen }) => {
     <SvgHoverButton 
       onClick={e => {
         e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
+        const targetUrl = await getRoomURL("lobby");
         if (targetUrl) {
           location.href = targetUrl;
         } else {
