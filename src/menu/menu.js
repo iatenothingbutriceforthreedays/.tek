@@ -107,9 +107,10 @@ export const Menu = ({
 
   return (
     <>
-      <div id="svg-container" style={{ position: "fixed", top: 0, right: 0, height: "100%" }}>
+      <div id="svg-container" style={{ pointerEvents:"none", position: "fixed", top: 0, right: 0, height: "100%" }}>
         <svg
           width={SVG_WIDTH}
+          style={{ pointerEvents: inModal ? "auto" : "none" }}
           height={4689}
           draggable={"false"}
           style={{
@@ -131,7 +132,7 @@ export const Menu = ({
           {!hidden && (
             <>
               <image
-                style={{ pointerEvents: "none" }}
+                // style={{ pointerEvents: "none" }}
                 draggable={false}
                 x={218}
                 y={486}
