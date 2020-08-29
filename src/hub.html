@@ -59,9 +59,12 @@
             <img id="presence-count" crossorigin="anonymous" src="./assets/hud/presence-count.png">
             <img id="action-button" crossorigin="anonymous" src="./assets/hud/action_button.9.png">
             <img id="button" crossorigin="anonymous" src="./assets/hud/button.9.png">
+            <img id="doofplate" crossorigin="anonymous" src="./assets/images/DoofStick000.png">
 
             <a-asset-item id="drawing-pen" response-type="arraybuffer" src="./assets/models/DrawingPen.glb"></a-asset-item>
             <a-asset-item id="spawn-point" response-type="arraybuffer" src="./assets/models/spawn-point.glb"></a-asset-item>
+
+            <a-asset-item id="eyearms" response-type="arraybuffer" src="./assets/models/avatar__eyeball(arm).glb"></a-asset-item>
 
             <template id="template-waypoint-avatar">
                 <a-entity waypoint></a-entity>
@@ -109,39 +112,44 @@
                         </template>
 
                         <template data-name="Neck">
-                            <a-entity>
-                                <a-entity
-                                    billboard
-                                    class="nametag"
-                                    text="side: double; align: center; color: #ddd"
-                                    position="0 1 0"
-                                    scale="6 6 6"
-                                ></a-entity>
-                                <a-entity
-                                    billboard
-                                    class="identityName"
-                                    text="side: double; align: center; color: #ddd"
-                                    visibility-while-frozen="withinDistance: 100; requireHoverOnNonMobile: false;"
-                                    position="0 0.8 0"
-                                    scale="3 3 3"
-                                ></a-entity>
-                                <a-entity
-                                    billboard
-                                    is-not-remote-hover-target
-                                    class="recordingBadge"
-                                    sprite="name: recording-badge.png"
-                                    scale="0.10 0.10 0.10"
-                                    position="0 1.2 -0.02"
-                                ></a-entity>
-                                <a-entity
-                                    billboard
-                                    is-not-remote-hover-target
-                                    class="modBadge"
-                                    sprite="name: mod-badge.png"
-                                    scale="0.10 0.10 0.10"
-                                    position="0 1.2 -0.02"
-                                ></a-entity>
-                            </a-entity>
+                                <a-entity>
+                                    <a-image billboard is-not-remote-hover-target class="doofcontainer" src="#doofplate" width="3" height="1" position="0 1.5 0">
+                                        <a-entity
+                                            class="nametag"
+                                            text="side: double; align: center; color: #ddd"
+                                            position="0 0.2 0.01"
+                                            scale="4 4 4"
+                                        ></a-entity>
+                                        <a-entity
+                                            class="identityName"
+                                            text="side: double; align: center; color: #ddd"
+                                            visibility-while-frozen="withinDistance: 100; requireHoverOnNonMobile: false;"
+                                            position="0 0.1 0.01"
+                                            scale="2 2 2"
+                                        ></a-entity>
+                                        <a-entity
+                                            doofstick-comp
+                                            class="doofStick"
+                                            text="side: double; align: center; color: #ddd"
+                                            position="0 -0.1 0.01"
+                                            scale="2 2 2"
+                                        ></a-entity>
+                                        <a-entity
+                                            is-not-remote-hover-target
+                                            class="recordingBadge"
+                                            sprite="name: recording-badge.png"
+                                            scale="0.10 0.10 0.10"
+                                            position="0 0.5 0.01"
+                                        ></a-entity>
+                                        <a-entity
+                                            is-not-remote-hover-target
+                                            class="modBadge"
+                                            sprite="name: mod-badge.png"
+                                            scale="0.10 0.10 0.10"
+                                            position="0 0.5 0.01"
+                                        ></a-entity>
+                                    </a-image>
+                                </a-entity>
                         </template>
 
                         <template data-name="Spine">
@@ -195,7 +203,9 @@
                                 bone-visibility
                                 body-helper="type: kinematic; collisionFilterGroup: 4; collisionFilterMask: 1;"
                                 shape-helper="type: cylinder; fit: manual; halfExtents: 0.11 0.10 0.11; offset: 0 0.06 0.04;"
-                            ></a-entity>
+                            >
+                                <a-entity class="qwop-arms" matrix-auto-update arms-comp scale="1 1 1" rotation="0 0 0" gltf-model-plus="inflate: true; src: #eyearms;"></a-entity>
+                            </a-entity>
                         </template>
 
                         <template data-name="LeftHand">
@@ -813,10 +823,10 @@
                         class="video-snap-button"
                     ></a-entity>
                     <a-entity visible="false" mixin="rounded-twitter-text-action-button ui" tags="singleActionButton: true; isHoverMenuChild: true;" tweet-media-button visibility-on-content-types="contentTypes: video/mp4; contentSubtype: video-camera; visible: true;" position="0 0.285 0.001">
-                        <a-entity text="value:tweet; width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="value:tweet; width:1.5; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
-                    <a-entity visible="false" class="video-time-label" text="value: 0; anchor: center; align: center; color: #aaa;" text-raycast-hack position="0 -0.24 0" scale="0.75 0.75 0.75"></a-entity>
-                    <a-entity visible="false"  class="video-volume-label" text="value: 0%; anchor: center; align: center; color: #ccc; letterSpacing: 4;" text-raycast-hack position="0.0 0.14 0.0015" scale="1.25 1.25 1.25"></a-entity>
+                    <a-entity visible="false" class="video-time-label" text="value: 0; anchor: center; align: center; color: #aaa; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 -0.24 0" scale="0.75 0.75 0.75"></a-entity>
+                    <a-entity visible="false"  class="video-volume-label" text="value: 0%; anchor: center; align: center; color: #ccc; letterSpacing: 4; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0.0 0.14 0.0015" scale="1.25 1.25 1.25"></a-entity>
                     <a-entity
                         visible="false"
                         tags="singleActionButton: true; isHoverMenuChild: true;"
@@ -871,7 +881,7 @@
             <template id="hubs-destination-hover-menu">
                 <a-entity class="ui interactable-ui hover-container" visible="false">
                     <a-entity mixin="rounded-text-action-button ui" is-remote-hover-target tags="singleActionButton: true; isHoverMenuChild: true;" open-media-button position="0 -0.125 0.001">
-                        <a-entity text="value:value; width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="value:value; width:1.5; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
                 </a-entity>
             </template>
@@ -879,10 +889,10 @@
             <template id="avatar-link-hover-menu">
                 <a-entity class="ui interactable-ui hover-container" visible="false">
                     <a-entity mixin="rounded-text-action-button ui" is-remote-hover-target tags="singleActionButton: true; isHoverMenuChild: true;" open-media-button position="0 -0.125 0.001">
-                        <a-entity text="width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="width:1.5; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
                     <a-entity mixin="rounded-text-action-button ui" is-remote-hover-target tags="singleActionButton: true; isHoverMenuChild: true;" remix-avatar-button position="0 -0.35 0.001" visible="false">
-                        <a-entity text="width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="width:1.5; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
                 </a-entity>
             </template>
@@ -892,10 +902,10 @@
                     <a-entity mixin="rounded-text-button ui"
                     is-remote-hover-target tags="singleActionButton: true;
                     isHoverMenuChild: true;" scale="0.8 0.8 0.8" refresh-media-button position="0 0.125 0.001">
-                        <a-entity text="value:refresh; width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="value:refresh; width:1.5; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
                     <a-entity mixin="rounded-text-action-button ui" is-remote-hover-target tags="singleActionButton: true; isHoverMenuChild: true;" open-media-button position="0 -0.125 0.001">
-                        <a-entity text="value:open link; width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="value:open link; width:1.5; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
                 </a-entity>
             </template>
@@ -903,7 +913,7 @@
             <template id="photo-hover-menu">
                 <a-entity class="ui interactable-ui hover-container" visible="false">
                     <a-entity mixin="rounded-twitter-text-action-button ui" is-remote-hover-target tags="singleActionButton: true; isHoverMenuChild: true;" tweet-media-button position="0 0.285 0.001">
-                        <a-entity text="value:tweet; width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="value:tweet; width:1.5; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
                 </a-entity>
             </template>
@@ -915,7 +925,7 @@
                     visibility-while-frozen="visible: false; withinDistance: 100; requireHoverOnNonMobile: false;"
                 >
                     <a-entity is-remote-hover-target tags="singleActionButton:true;" mixin="rounded-text-button" slice9="width: 0.4" unmute-video-button position="0 -0.5 0.001">
-                        <a-entity text="value:unmute; width:2; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                        <a-entity text="value:unmute; width:2; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.02"></a-entity>
                     </a-entity>
                 </a-entity>
             </template>
@@ -1068,7 +1078,7 @@
                 <a-entity visibility-while-frozen="requireHoverOnNonMobile: false;" rotation="30 0 0">
                     <a-entity class="leave-btn" position="0 0 0" scale="0.7 0.7 0.7" leave-room-button is-remote-hover-target tags="singleActionButton: true;">
                         <a-entity mixin="rounded-text-action-button" slice9="width: 0.8" scale="0.8 0.8 1.0">
-                            <a-entity text=" value:leave room; width:2; align:center;" text-raycast-hack position="0 0 0.001"></a-entity>
+                            <a-entity text=" value:leave room; width:2; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.001"></a-entity>
                         </a-entity>
                     </a-entity>
                 </a-entity>
@@ -1078,11 +1088,11 @@
                     <a-entity id="hud-presence-count" text="value: ; width:1.1; align:center;" position="-0.30 -0.005 0" matrix-auto-update="target: text;"></a-entity>
                     <a-entity class="invite-btn" position="0 0.18 0" scale="0.7 0.7 0.7" is-remote-hover-target tags="singleActionButton: true;">
                         <a-entity mixin="rounded-text-action-button" slice9="width: 0.7" scale="0.8 0.8 1.0">
-                            <a-entity text=" value:invite; width:2; align:center;" text-raycast-hack position="0 0 0.001"></a-entity>
+                            <a-entity text=" value:invite; width:2; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" text-raycast-hack position="0 0 0.001"></a-entity>
                         </a-entity>
                     </a-entity>
                     <a-rounded visible="false" vr-mode-toggle-visibility id="hud-tooltip" height="0.08" width="0.4" color="#000000" position="-0.2 -0.2 0" rotation="-20 0 0" radius="0.025" opacity="0.35" class="hud bg">
-                        <a-entity text="value: ; align:center;" position="0.2 0.04 0.001" matrix-auto-update="target: text"></a-entity>
+                        <a-entity text="value: ; align:center; fontImage: ./assets/fonts/PerpetuaTitlingMTLight2.png" position="0.2 0.04 0.001" matrix-auto-update="target: text"></a-entity>
                     </a-rounded>
                     <a-entity
                         is-remote-hover-target
@@ -1204,7 +1214,11 @@
 
                 <template data-name="Neck">
                     <a-entity>
-                        <a-entity class="nametag" visible="false" text ></a-entity>
+                        <a-entity class="doofcontainer">
+                            <a-entity class="nametag" visible="false" text >
+                                <a-entity class="doofStick" visible="false" text ></a-entity>
+                            </a-entity>
+                        </a-entity>
                     </a-entity>
                 </template>
                 <template data-name="Spine">
@@ -1213,7 +1227,10 @@
                     </a-entity>
                 </template>
                 <template data-name="Head">
-                    <a-entity id="avatar-head" visible="false" bone-visibility="updateWhileInvisible: true;"></a-entity>
+                    <a-entity id="avatar-head" visible="false" bone-visibility="updateWhileInvisible: true;">
+                        <a-entity class="qwop-arms" matrix-auto-update></a-entity>
+                        <!-- <a-gltf-model class="qwop-arms" matrix-auto-update arms-comp scale="0.2 0.2 0.2" rotation="0 90 0" src="https://unsw-immersive-solutions-data.s3-ap-southeast-2.amazonaws.com/Sarri/FPS+arms.blend.gltf"></a-gltf-model> -->
+                    </a-entity>
                 </template>
 
                 <template data-name="LeftHand">

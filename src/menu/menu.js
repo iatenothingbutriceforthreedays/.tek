@@ -36,6 +36,21 @@ import MicrophoneOffHover from "../assets/menu/MicrophoneOff_Hover.png";
 import MicrophoneOn from "../assets/menu/MicrophoneOn.png";
 import MicrophoneOnHover from "../assets/menu/MicrophoneOn.png";
 
+const nameX = 500;
+const nameY = 1110;
+const nameWidth = 915;
+const nameHeight = 153;
+
+const doofstickX = 269;
+const doofstickY = 975;
+const doofstickWidth = 915;
+const doofstickHeight = 550;
+
+const paneWidth = 1865;
+const paneHeight = 4689;
+
+
+
 export const Menu = ({
   watching,
   hidden,
@@ -46,7 +61,7 @@ export const Menu = ({
   onMenuToggle,
   onMuteToggle,
   onNameChange,
-  onDoofstickChange,
+  onDoofStickChange,
   onWatchToggle,
   onVolumeChange,
   onReport,
@@ -104,6 +119,14 @@ export const Menu = ({
       )
     );
   };
+ 
+
+  const textStyle = {
+    background: "white",
+    color: "black",
+    width: "100%",
+    height: "100%",
+  }
 
   return (
     <>
@@ -201,7 +224,13 @@ export const Menu = ({
           <TextForm
             id={"menu-name-input"}
             value={name}
-            onValueChange={onNameChange}
+            onValueChange=
+            { 
+              function (name) { 
+                  var trimmedString = name.substring(0, 32);
+                  window.APP.store.update({ profile: { displayName: trimmedString } }) 
+              } 
+            }
             minLength={1}
             maxLength={64}
             spellCheck="false"
@@ -213,11 +242,17 @@ export const Menu = ({
           <TextForm
             id={"menu-doofstick-input"}
             value={doofstick}
-            onValueChange={onDoofstickChange}
+            onValueChange=
+            { 
+              function (doofstick) { 
+                var trimmedString = doofstick.substring(0, 120);
+                window.APP.store.update({ profile: { doofStick: trimmedString } }) 
+              } 
+            }
             minLength={0}
             maxLength={120}
             spellCheck="false"
-            pattern={"^[A-Za-z0-9 -]{0,120}$"}
+            pattern={SCHEMA.definitions.profile.properties.doofStick.pattern}
             onFocus={e => handleTextFieldFocus(e.target)}
             onBlur={() => handleTextFieldBlur()}
           />
