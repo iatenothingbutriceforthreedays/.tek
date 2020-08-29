@@ -169,7 +169,7 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
       textAlign: "center",
       color: "#FFE6C1",
       // textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)"
-    }} type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+    }} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
     <br />
     <br />
     <img src={logInButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px", cursor: "pointer" }} />
