@@ -11,6 +11,8 @@ import initialBatchImage from "./assets/images/warning_icon.png";
 //import loadingEnvironment from "./assets/models/LoadingEnvironment.glb";
 import loadingEnvironment from "./assets/models/PortalRoom.glb";
 
+import { redirectIfNotAuthorized } from "./access-control"
+
 
 import "aframe";
 import "./utils/logging";
@@ -278,8 +280,7 @@ const qsVREntryType = qs.get("vr_entry_type");
 
 function mountUI(props = {}) {
   const scene = document.querySelector("a-scene");
-  const disableAutoExitOnIdle =
-    qsTruthy("allow_idle") || (process.env.NODE_ENV === "development" && !qs.get("idle_timeout"));
+  const disableAutoExitOnIdle = true // qsTruthy("allow_idle") || (process.env.NODE_ENV === "development" && !qs.get("idle_timeout"));
   const isCursorHoldingPen =
     scene &&
     (scene.systems.userinput.activeSets.includes(userinputSets.rightCursorHoldingPen) ||
@@ -697,11 +698,9 @@ async function runBotMode(scene, entryManager) {
 
 function checkForAccountRequired() {
   // If the app requires an account to join a room, redirect to the sign in page.
-  if (!configs.feature("require_account_for_join")) return;
+  // if (!configs.feature("require_account_for_join")) return;
   if (store.state.credentials && store.state.credentials.token) return;
-  document.location = `/?sign_in&sign_in_destination=hub&sign_in_destination_url=${encodeURIComponent(
-    document.location.toString()
-  )}`;
+  redirectIfNotAuthorized()
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -788,6 +787,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const authChannel = new AuthChannel(store);
   const hubChannel = new HubChannel(store, hubId);
   const entryManager = new SceneEntryManager(hubChannel, authChannel, history);
+
+  window.APP.hubChannel = hubChannel;
+  window.dispatchEvent(new CustomEvent("hub_channel_ready"));
+
   const performConditionalSignIn = async (predicate, action, messageId, onFailure) => {
     if (predicate()) return action();
 
@@ -896,8 +899,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const linkChannel = new LinkChannel(store);
 
   window.APP.scene = scene;
-  window.APP.hubChannel = hubChannel;
-  window.dispatchEvent(new CustomEvent("hub_channel_ready"));
 
   const handleEarlyVRMode = () => {
     // If VR headset is activated, refreshing page will fire vrdisplayactivate
@@ -1019,6 +1020,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (e.detail !== "camera") return;
     remountUI({});
   };
+
   scene.addEventListener("stateadded", updateCameraUI);
   scene.addEventListener("stateremoved", updateCameraUI);
 

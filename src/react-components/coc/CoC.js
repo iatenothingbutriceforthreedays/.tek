@@ -7,11 +7,12 @@ import { AuthContext } from "../auth/AuthContext";
 import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
 
-import getRoomMetadata from "../../room-metadata";
+import { getRoomMetadata } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
-import cocBack from "../../assets/images/coc/coc-back.png";
+const cocBack = "https://str33m.dr33mphaz3r.net/static-assets/coc/coc-back.png";
+const cocBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/coc/coc-back.webp";
 
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
@@ -21,10 +22,6 @@ const loginButton = "https://str33m.dr33mphaz3r.net/static-assets/login-button.p
 const loginButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-button.webp";
 const loginButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/login-button-hover.png";
 const loginButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-button-hover.webp";
-
-
-const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/enter-button.gif";
-const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/enter-button-hover.gif";
 
 const logoutButton = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.png";
 const logoutButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.webp";
@@ -54,7 +51,7 @@ const SvgHoverButton = ({ normalProps, hoverProps, style, ...otherProps }) => {
   )
 };
 
-const MenuComponent = () => {
+export const MenuComponent = () => {
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3601 3737">
   <image id="CodeofConduct" x="78" y="95" width="3425" height="3579" xlinkHref={cocBack}/>
   <image id="Enter_Hover" x="1479" y="2760" width="612" height="623" xlinkHref={null}/>
@@ -153,40 +150,6 @@ const LoginButton = ({ onLinkClicked }) => {
   );
 };
 
-const EnterButton = props => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={e => {
-        e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }}
-    >
-      <img
-        style={{
-          maxWidth: "120px",
-          mixBlendMode: "lighten"
-        }}
-        src={isShown ? enterButtonHover : enterButton}
-      />
-    </button>
-  );
-};
 
 export function CoC() {
   const auth = useContext(AuthContext);
@@ -255,47 +218,6 @@ export function CoC() {
           }}
         >
           <MenuComponent />
-        </div>
-        {auth.isSignedIn && (
-          <div
-            style={{
-              marginLeft: "225px", // half of maxWidth above
-              mixBlendMode: "lighten"
-            }}
-          >
-            <EnterButton />
-          </div>
-        )}
-      </div>
-      <div className={styles.ctaButtons}>
-        <div
-          style={{
-            position: "absolute",
-            top: "32px",
-            right: "16px",
-            display: "flex",
-            alignItems: "flex-end",
-            flexDirection: "column"
-          }}
-        >
-          {!auth.isSignedIn && showLogin && <LoginButton onLinkClicked={auth.showSignInDialog} />}
-          {auth.isSignedIn && <LogoutButton onLinkClicked={auth.signOut} />}
-          {auth.isSignedIn && (
-            <div
-              style={{
-                color: "#667000",
-                textTransform: "lowercase",
-                maxWidth: "240px",
-                textAlign: "right",
-                marginTop: "24px",
-                marginRight: "20px"
-              }}
-            >
-              <span>
-                <FormattedMessage id="sign-in.as" /> {auth.email}
-              </span>{" "}
-            </div>
-          )}
         </div>
       </div>
     </Page>

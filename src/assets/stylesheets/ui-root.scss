@@ -167,7 +167,6 @@ body.vr-mode {
   right: 16px;
 }
 
-
 %button-with-count {
   @extend %unselectable;
   pointer-events: auto;
@@ -250,6 +249,27 @@ body.vr-mode {
   padding: 10px 12px;
   pointer-events: auto;
   cursor: pointer;
+  border: none;
+}
+
+:local(.game-menu) {
+  @extend %unselectable;
+  @extend %undraggable;
+  text-align: right;
+  top: 0;
+  left: 0;
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  top: 0;
+  right: 1em;
+  margin: 1em 0;
+  display: flex;
+  align-items: right;
+  justify-content: center;
+  font-weight: bold;
+  padding: 10px 12px;
+  pointer-events: auto;
   border: none;
 }
 

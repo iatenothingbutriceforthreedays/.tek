@@ -8,6 +8,7 @@ import { HomePage } from "./react-components/home/HomePageOld";
 import { lang, messages } from "./utils/i18n";
 import "./assets/stylesheets/globals.scss";
 import { AuthContextProvider } from "./react-components/auth/AuthContext";
+import { StripeProvider } from "react-stripe-elements";
 
 registerTelemetry("/home", "Hubs Home Page");
 
@@ -18,10 +19,14 @@ function Root() {
   return (
     <IntlProvider locale={lang} messages={messages}>
       <AuthContextProvider store={store}>
-        <HomePage />
+        <StripeProvider apiKey="pk_live_51Gyz7NBvCtr0PkoP4zj8iAO4XStn8hW2EK1OtZvE7VPWSeg8yszmXcmvSGz1sL58BECkTI1ORq78aW7yHpGPGw4900OvDxhZ3Z">
+          <HomePage />
+        </StripeProvider>
       </AuthContextProvider>
     </IntlProvider>
   );
 }
 
+setTimeout(() => {
 ReactDOM.render(<Root />, document.getElementById("home-root"));
+}, 50);

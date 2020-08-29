@@ -6,14 +6,15 @@ import configs from "../../utils/configs";
 import IfFeature from "../if-feature";
 import { FormattedMessage } from "react-intl";
 import { AuthContext } from "../auth/AuthContext";
+import { BackgroundVideo } from "../home/HomePage";
 
-const SignInStep = {
+export const SignInStep = {
   submit: "submit",
   waitForVerification: "waitForVerification",
   complete: "complete"
 };
 
-const SignInAction = {
+export const SignInAction = {
   submitEmail: "submitEmail",
   verificationReceived: "verificationReceived",
   cancel: "cancel"
@@ -35,7 +36,7 @@ function loginReducer(state, action) {
   }
 }
 
-function useSignIn() {
+export function useSignIn() {
   const auth = useContext(AuthContext);
   const [state, dispatch] = useReducer(loginReducer, initialSignInState);
 
@@ -128,14 +129,6 @@ function WaitForVerification({ email, onCancel }) {
       <p>
         <FormattedMessage id="sign-in.auth-started" values={{ email }} />
       </p>
-      <IfFeature name="show_newsletter_signup">
-        <p>
-          Want Hubs news sent to your inbox?{"\n"}
-          <a href="https://eepurl.com/gX_fH9" target="_blank" rel="noopener noreferrer">
-            Subscribe for updates
-          </a>.
-        </p>
-      </IfFeature>
       <button onClick={onCancel}>cancel</button>
     </div>
   );
@@ -161,7 +154,8 @@ export function SignInPage() {
   );
 
   return (
-    <Page style={{ backgroundImage: configs.image("home_background", true), backgroundSize: "cover" }}>
+    <Page>
+      <BackgroundVideo/>
       {step === SignInStep.submit ? (
         <SubmitEmail onSubmitEmail={submitEmail} initialEmail={email} signInReason={qs.get("sign_in_reason")} />
       ) : (

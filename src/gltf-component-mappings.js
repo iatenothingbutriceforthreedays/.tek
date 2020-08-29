@@ -21,11 +21,14 @@ import { Flame } from './shaders/Flame.js'
 import { Jelly } from './shaders/ShaderFrog/Jelly.js'
 import { Neurons } from './shaders/ShaderFrog/Neurons.js'
 import { Liquifier } from './shaders/ShaderFrog/Liquifier.js'
+import { Room3Shader } from './shaders/Room3Shader.js'
 
 import room1Preview from "./assets/textures/room1_1.png";
 import room2Preview from "./assets/textures/room2_1.png";
 import room3Preview from "./assets/textures/room3_1.png";
-import lobbyPreview from "./assets/textures/lobby_1.png";
+import lobbyPreview from "./assets/textures/lobby_1_grey.png"; // muted colours
+
+export { Glassy, ShinyShader, Flame, Jelly, Neurons, Liquifier, Room3Shader }
 
 const roomPreviews = {
   'room1': room1Preview,
@@ -35,6 +38,7 @@ const roomPreviews = {
 }
 
 const imageLoader = new THREE.TextureLoader();
+
 //allow cross origin loading
 imageLoader.crossOrigin = '';
 
@@ -46,7 +50,7 @@ const setUniforms = (material, uniforms) => {
   }
 }
 
-const registerShaderFrogShader = (srcShader, uniforms) => {
+export const registerShaderFrogShader = (srcShader, uniforms) => {
   const sceneEl = AFRAME.scenes[0];
   const effectsSystem = sceneEl && sceneEl.systems["hubs-systems"].effectsSystem;
   if (effectsSystem) {
@@ -58,7 +62,7 @@ const registerShaderFrogShader = (srcShader, uniforms) => {
   }
 };
 
-const registerRegularShader = (srcShader, uniforms) => {
+export const registerRegularShader = (srcShader, uniforms) => {
   const sceneEl = AFRAME.scenes[0];
   const effectsSystem = sceneEl && sceneEl.systems["hubs-systems"].effectsSystem;
   if (effectsSystem) {
@@ -111,8 +115,11 @@ AFRAME.GLTFModelPlus.registerComponent("portal", "portal", (el, componentName, c
       "tex": imageLoader.load(roomPreviews[componentData.targetRoom])
     });
   }
+  componentData['padding'] = -0.15 // not sure why i set these all to -1.5 in the glb lol
   el.setAttribute("portal", componentData);
 });
+
+AFRAME.GLTFModelPlus.registerComponent("setlist", "setlist");
 
 AFRAME.GLTFModelPlus.registerComponent("duck", "duck", el => {
   el.setAttribute("duck", "");
@@ -309,7 +316,7 @@ async function mediaInflator(el, componentName, componentData, components) {
     mediaOptions.volume = componentData.volume;
     mediaOptions.loop = componentData.loop;
     mediaOptions.audioType = componentData.audioType;
-    mediaOptions.hidePlaybackControls = !isControlled;
+    mediaOptions.hidePlaybackControls = true; // !isControlled;
 
     if (componentData.audioType === "pannernode") {
       mediaOptions.distanceModel = componentData.distanceModel;

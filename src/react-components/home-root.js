@@ -41,7 +41,7 @@ import logoImageWebp from "../assets/images/logo.webp";
 import AuthDialog from "./auth-dialog.js";
 import SignInDialog from "./sign-in-dialog.js";
 
-import getRoomMetadata from "../room-metadata";
+import { getRoomMetadata } from "../room-metadata";
 
 addLocaleData([...en]);
 
@@ -235,8 +235,8 @@ class HomeRoot extends Component {
                 transform: "scale(1.2, 1.2)"
               }}
             >
-              <source src={splashMp4} type="video/mp4" />
               <source src={splashWebm} type="video/webm" />
+              <source src={splashMp4} type="video/mp4" />
             </video>
           </div>
           <div className={mainContentClassNames}>

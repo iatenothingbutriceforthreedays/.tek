@@ -7,62 +7,113 @@ import { AuthContext } from "../auth/AuthContext";
 import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
 
-import getRoomMetadata from "../../room-metadata";
+import { getRoomMetadata } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
-import creditsBack from '../../assets/images/credits/credits-back.png';
+const creditsBack = "https://str33m.dr33mphaz3r.net/static-assets/credits/credits-back.png";
+const creditsBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/credits-back.webp";
 
-import mozilla from '../../assets/images/credits/mozilla.png';
-import mozillaHover from '../../assets/images/credits/mozillaHover.png';
-import altjira from '../../assets/images/credits/altjira.png';
-import altjiraHover from '../../assets/images/credits/altjiraHover.png';
-import DBR_hybrid from '../../assets/images/credits/DBR_hybrid.png';
-import DBR_hybridHover from '../../assets/images/credits/DBR_hybridHover.png';
-import factorXIII from '../../assets/images/credits/factorXIII.png';
-import factorXIIIHover from '../../assets/images/credits/factorXIIIHover.png';
-import hamLaosethakul from '../../assets/images/credits/hamLaosethakul.png';
-import hamLaosethakulHover from '../../assets/images/credits/hamLaosethakulHover.png';
-import harold from '../../assets/images/credits/harold.png';
-import haroldHover from '../../assets/images/credits/haroldHover.png';
-import kia from '../../assets/images/credits/kia.png';
-import kiaHover from '../../assets/images/credits/kiaHover.png';
-import woody92 from '../../assets/images/credits/woody92.png';
-import woody92Hover from '../../assets/images/credits/woody92Hover.png';
-import _LuulI_ from '../../assets/images/credits/_LuulI_.png';
-import _LuulI_Hover from '../../assets/images/credits/_LuulI_Hover.png';
-import Bartolomé from '../../assets/images/credits/Bartolomé.png';
-import BartoloméHover from '../../assets/images/credits/BartoloméHover.png';
-import DGrade_x_Durin_s_Bane from '../../assets/images/credits/DGrade_x_Durin_s_Bane.png';
-import DGrade_x_Durin_s_BaneHover from '../../assets/images/credits/DGrade_x_Durin_s_BaneHover.png';
-import Meuko___Meuko__live from '../../assets/images/credits/Meuko___Meuko__live.png';
-import Meuko___Meuko__liveHover from '../../assets/images/credits/Meuko___Meuko__liveHover.png';
-import Nicha_N_Hooch from '../../assets/images/credits/Nicha_N_Hooch.png';
-import Nicha_N_HoochHover from '../../assets/images/credits/Nicha_N_HoochHover.png';
-import s1m0nc3ll0 from '../../assets/images/credits/s1m0nc3ll0.png';
-import s1m0nc3ll0Hover from '../../assets/images/credits/s1m0nc3ll0Hover.png';
-import Synergetix_live from '../../assets/images/credits/Synergetix_live.png';
-import Synergetix_liveHover from '../../assets/images/credits/Synergetix_liveHover.png';
-import Thick_Owens_pres_The_Coretaker from '../../assets/images/credits/Thick_Owens_pres_The_Coretaker.png';
-import Thick_Owens_pres_The_CoretakerHover from '../../assets/images/credits/Thick_Owens_pres_The_CoretakerHover.png';
-import ExitButton from '../../assets/images/credits/ExitButton.png';
-import ExitButtonHover from '../../assets/images/credits/ExitButtonHover.png';
-import _Artemis from '../../assets/images/credits/_Artemis.png';
-import _ArtemisHover from '../../assets/images/credits/_ArtemisHover.png';
-import DJ_Marcelle from '../../assets/images/credits/DJ_Marcelle.png';
-import DJ_MarcelleHover from '../../assets/images/credits/DJ_MarcelleHover.png';
-import KL_Mai from '../../assets/images/credits/KL_Mai.png';
-import KL_MaiHover from '../../assets/images/credits/KL_MaiHover.png';
-import Mija_Healey from '../../assets/images/credits/Mija_Healey.png';
-import Mija_HealeyHover from '../../assets/images/credits/Mija_HealeyHover.png';
-import Nar from '../../assets/images/credits/Nar.png';
-import NarHover from '../../assets/images/credits/NarHover.png';
-import Pyruvic_Acid from '../../assets/images/credits/Pyruvic_Acid.png';
-import Pyruvic_AcidHover from '../../assets/images/credits/Pyruvic_AcidHover.png';
-import Spekki_Webu from '../../assets/images/credits/Spekki_Webu.png';
-import Spekki_WebuHover from '../../assets/images/credits/Spekki_WebuHover.png';
-import Vox_supreme from '../../assets/images/credits/Vox_supreme.png';
-import Vox_supremeHover from '../../assets/images/credits/Vox_supremeHover.png';
+const mozilla = "https://str33m.dr33mphaz3r.net/static-assets/credits/mozilla.png";
+const mozillaWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/mozilla.webp";
+const mozillaHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/mozillaHover.png";
+const mozillaHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/mozillaHover.webp";
+const altjira = "https://str33m.dr33mphaz3r.net/static-assets/credits/altjira.png";
+const altjiraWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/altjira.webp";
+const altjiraHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/altjiraHover.png";
+const altjiraHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/altjiraHover.webp";
+const DBR_hybrid = "https://str33m.dr33mphaz3r.net/static-assets/credits/DBR_hybrid.png";
+const DBR_hybridWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/DBR_hybrid.webp";
+const DBR_hybridHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/DBR_hybridHover.png";
+const DBR_hybridHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/DBR_hybridHover.webp";
+const factorXIII = "https://str33m.dr33mphaz3r.net/static-assets/credits/factorXIII.png";
+const factorXIIIWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/factorXIII.webp";
+const factorXIIIHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/factorXIIIHover.png";
+const factorXIIIHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/factorXIIIHover.webp";
+const hamLaosethakul = "https://str33m.dr33mphaz3r.net/static-assets/credits/hamLaosethakul.png";
+const hamLaosethakulWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/hamLaosethakul.webp";
+const hamLaosethakulHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/hamLaosethakulHover.png";
+const hamLaosethakulHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/hamLaosethakulHover.webp";
+const harold = "https://str33m.dr33mphaz3r.net/static-assets/credits/harold.png";
+const haroldWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/harold.webp";
+const haroldHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/haroldHover.png";
+const haroldHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/haroldHover.webp";
+const kia = "https://str33m.dr33mphaz3r.net/static-assets/credits/kia.png";
+const kiaWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/kia.webp";
+const kiaHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/kiaHover.png";
+const kiaHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/kiaHover.webp";
+const woody92 = "https://str33m.dr33mphaz3r.net/static-assets/credits/woody92.png";
+const woody92Webp = "https://str33m.dr33mphaz3r.net/static-assets/credits/woody92.webp";
+const woody92Hover = "https://str33m.dr33mphaz3r.net/static-assets/credits/woody92Hover.png";
+const woody92HoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/woody92Hover.webp";
+const _LuulI_ = "https://str33m.dr33mphaz3r.net/static-assets/credits/_LuulI_.png";
+const _LuulI_Webp = "https://str33m.dr33mphaz3r.net/static-assets/credits/_LuulI_.webp";
+const _LuulI_Hover = "https://str33m.dr33mphaz3r.net/static-assets/credits/_LuulI_Hover.png";
+const _LuulI_HoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/_LuulI_Hover.webp";
+const Bartolomé = "https://str33m.dr33mphaz3r.net/static-assets/credits/Bartolomé.png";
+const BartoloméWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Bartolomé.webp";
+const BartoloméHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/BartoloméHover.png";
+const BartoloméHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/BartoloméHover.webp";
+const DGrade_x_Durin_s_Bane = "https://str33m.dr33mphaz3r.net/static-assets/credits/DGrade_x_Durin_s_Bane.png";
+const DGrade_x_Durin_s_BaneWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/DGrade_x_Durin_s_Bane.webp";
+const DGrade_x_Durin_s_BaneHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/DGrade_x_Durin_s_BaneHover.png";
+const DGrade_x_Durin_s_BaneHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/DGrade_x_Durin_s_BaneHover.webp";
+const Meuko___Meuko__live = "https://str33m.dr33mphaz3r.net/static-assets/credits/Meuko___Meuko__live.png";
+const Meuko___Meuko__liveWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Meuko___Meuko__live.webp";
+const Meuko___Meuko__liveHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Meuko___Meuko__liveHover.png";
+const Meuko___Meuko__liveHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Meuko___Meuko__liveHover.webp";
+const Nicha_N_Hooch = "https://str33m.dr33mphaz3r.net/static-assets/credits/Nicha_N_Hooch.png";
+const Nicha_N_HoochWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Nicha_N_Hooch.webp";
+const Nicha_N_HoochHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Nicha_N_HoochHover.png";
+const Nicha_N_HoochHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Nicha_N_HoochHover.webp";
+const s1m0nc3ll0 = "https://str33m.dr33mphaz3r.net/static-assets/credits/s1m0nc3ll0.png";
+const s1m0nc3ll0Webp = "https://str33m.dr33mphaz3r.net/static-assets/credits/s1m0nc3ll0.webp";
+const s1m0nc3ll0Hover = "https://str33m.dr33mphaz3r.net/static-assets/credits/s1m0nc3ll0Hover.png";
+const s1m0nc3ll0HoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/s1m0nc3ll0Hover.webp";
+const Synergetix_live = "https://str33m.dr33mphaz3r.net/static-assets/credits/Synergetix_live.png";
+const Synergetix_liveWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Synergetix_live.webp";
+const Synergetix_liveHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Synergetix_liveHover.png";
+const Synergetix_liveHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Synergetix_liveHover.webp";
+const Thick_Owens_pres_The_Coretaker = "https://str33m.dr33mphaz3r.net/static-assets/credits/Thick_Owens_pres_The_Coretaker.png";
+const Thick_Owens_pres_The_CoretakerWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Thick_Owens_pres_The_Coretaker.webp";
+const Thick_Owens_pres_The_CoretakerHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Thick_Owens_pres_The_CoretakerHover.png";
+const Thick_Owens_pres_The_CoretakerHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Thick_Owens_pres_The_CoretakerHover.webp";
+const ExitButton = "https://str33m.dr33mphaz3r.net/static-assets/credits/ExitButton.png";
+const ExitButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/ExitButton.webp";
+const ExitButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/ExitButtonHover.png";
+const ExitButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/ExitButtonHover.webp";
+const _Artemis = "https://str33m.dr33mphaz3r.net/static-assets/credits/_Artemis.png";
+const _ArtemisWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/_Artemis.webp";
+const _ArtemisHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/_ArtemisHover.png";
+const _ArtemisHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/_ArtemisHover.webp";
+const DJ_Marcelle = "https://str33m.dr33mphaz3r.net/static-assets/credits/DJ_Marcelle.png";
+const DJ_MarcelleWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/DJ_Marcelle.webp";
+const DJ_MarcelleHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/DJ_MarcelleHover.png";
+const DJ_MarcelleHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/DJ_MarcelleHover.webp";
+const KL_Mai = "https://str33m.dr33mphaz3r.net/static-assets/credits/KL_Mai.png";
+const KL_MaiWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/KL_Mai.webp";
+const KL_MaiHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/KL_MaiHover.png";
+const KL_MaiHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/KL_MaiHover.webp";
+const Mija_Healey = "https://str33m.dr33mphaz3r.net/static-assets/credits/Mija_Healey.png";
+const Mija_HealeyWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Mija_Healey.webp";
+const Mija_HealeyHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Mija_HealeyHover.png";
+const Mija_HealeyHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Mija_HealeyHover.webp";
+const Nar = "https://str33m.dr33mphaz3r.net/static-assets/credits/Nar.png";
+const NarWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Nar.webp";
+const NarHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/NarHover.png";
+const NarHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/NarHover.webp";
+const Pyruvic_Acid = "https://str33m.dr33mphaz3r.net/static-assets/credits/Pyruvic_Acid.png";
+const Pyruvic_AcidWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Pyruvic_Acid.webp";
+const Pyruvic_AcidHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Pyruvic_AcidHover.png";
+const Pyruvic_AcidHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Pyruvic_AcidHover.webp";
+const Spekki_Webu = "https://str33m.dr33mphaz3r.net/static-assets/credits/Spekki_Webu.png";
+const Spekki_WebuWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Spekki_Webu.webp";
+const Spekki_WebuHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Spekki_WebuHover.png";
+const Spekki_WebuHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Spekki_WebuHover.webp";
+const Vox_supreme = "https://str33m.dr33mphaz3r.net/static-assets/credits/Vox_supreme.png";
+const Vox_supremeWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Vox_supreme.webp";
+const Vox_supremeHover = "https://str33m.dr33mphaz3r.net/static-assets/credits/Vox_supremeHover.png";
+const Vox_supremeHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/Vox_supremeHover.webp";
 
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
@@ -242,40 +293,6 @@ const LoginButton = ({ onLinkClicked }) => {
   );
 };
 
-const EnterButton = props => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={e => {
-        e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }}
-    >
-      <img
-        style={{
-          maxWidth: "120px",
-          mixBlendMode: "lighten"
-        }}
-        src={isShown ? enterButtonHover : enterButton}
-      />
-    </button>
-  );
-};
 
 export function Credits() {
   const auth = useContext(AuthContext);
@@ -342,47 +359,6 @@ export function Credits() {
           }}
         >
           <MenuComponent />
-        </div>
-        {auth.isSignedIn && (
-          <div
-            style={{
-              marginLeft: "225px", // half of maxWidth above
-              mixBlendMode: "lighten"
-            }}
-          >
-            <EnterButton />
-          </div>
-        )}
-      </div>
-      <div className={styles.ctaButtons}>
-        <div
-          style={{
-            position: "absolute",
-            top: "32px",
-            right: "16px",
-            display: "flex",
-            alignItems: "flex-end",
-            flexDirection: "column"
-          }}
-        >
-          {!auth.isSignedIn && showLogin && <LoginButton onLinkClicked={auth.showSignInDialog} />}
-          {auth.isSignedIn && <LogoutButton onLinkClicked={auth.signOut} />}
-          {auth.isSignedIn && (
-            <div
-              style={{
-                color: "#667000",
-                textTransform: "lowercase",
-                maxWidth: "240px",
-                textAlign: "right",
-                marginTop: "24px",
-                marginRight: "20px"
-              }}
-            >
-              <span>
-                <FormattedMessage id="sign-in.as" /> {auth.email}
-              </span>{" "}
-            </div>
-          )}
         </div>
       </div>
     </Page>
