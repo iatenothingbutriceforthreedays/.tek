@@ -26,7 +26,7 @@ import { Room3Shader } from './shaders/Room3Shader.js'
 import room1Preview from "./assets/textures/room1_1.png";
 import room2Preview from "./assets/textures/room2_1.png";
 import room3Preview from "./assets/textures/room3_1.png";
-import lobbyPreview from "./assets/textures/lobby_1.png";
+import lobbyPreview from "./assets/textures/lobby_1_grey.png"; // muted colours
 
 export { Glassy, ShinyShader, Flame, Jelly, Neurons, Liquifier, Room3Shader }
 
