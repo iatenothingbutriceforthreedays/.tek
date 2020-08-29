@@ -119,12 +119,6 @@ export const Menu = ({
       )
     );
   };
-
-  // const onDoofStickChange = (doofstick) => {
-  //   window.APP.store.update({ profile: { doofStick: doofstick } })
-  // }
-  
-
  
 
   const textStyle = {
@@ -228,7 +222,13 @@ export const Menu = ({
           <TextForm
             id={"menu-name-input"}
             value={name}
-            onValueChange={ function (name) { window.APP.store.update({ profile: { displayName: name } }) } }
+            onValueChange=
+            { 
+              function (name) { 
+                  var trimmedString = name.substring(0, 32);
+                  window.APP.store.update({ profile: { displayName: trimmedString } }) 
+              } 
+            }
             minLength={1}
             maxLength={64}
             spellCheck="false"
@@ -240,11 +240,17 @@ export const Menu = ({
           <TextForm
             id={"menu-doofstick-input"}
             value={doofstick}
-            onValueChange={ function (doofstick) { window.APP.store.update({ profile: { doofStick: doofstick } }) } }
+            onValueChange=
+            { 
+              function (doofstick) { 
+                var trimmedString = doofstick.substring(0, 120);
+                window.APP.store.update({ profile: { doofStick: trimmedString } }) 
+              } 
+            }
             minLength={0}
             maxLength={120}
             spellCheck="false"
-            pattern={"^[A-Za-z0-9 -]{0,120}$"}
+            pattern={SCHEMA.definitions.profile.properties.doofStick.pattern}
             onFocus={e => handleTextFieldFocus(e.target)}
             onBlur={() => handleTextFieldBlur()}
           />

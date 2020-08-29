@@ -21,8 +21,7 @@ export const SCHEMA = {
       additionalProperties: false,
       properties: {
         displayName: { type: "string", pattern: "^[A-Za-z0-9 -]{3,32}$" },
-        // doofStick: { type: "string", pattern: "^[A-Za-z0-9 -]{0,140}$" },
-        doofStick: { type: "string" },
+        doofStick: { type: "string", pattern: "^[A-Za-z0-9 -]{0,120}$" },
         identityName: { type: "string", pattern: "^[A-Za-z0-9 -]{1,64}$" },
         avatarId: { type: "string" },
         // personalAvatarId is obsolete, but we need it here for backwards compatibility.
@@ -238,7 +237,7 @@ export default class Store extends EventTarget {
       });
     }
 
-    if (this.state.credentials.token) {
+    if (window.APP.store.state.credentials.token) {
       const response = await fetch(
         'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
         { 
@@ -254,11 +253,19 @@ export default class Store extends EventTarget {
         (response) => 
         {
           if (!response.ok) {
-            this.update({ profile: { doofStick: 'Hello!' } });
+            console.log('response  not okay from get')
+            this.update({ profile: { doofStick: "Hello!" } });
             throw new Error("Not 2xx response")
           } else {
-            const resJSON = response.json();
-            this.update({ profile: { doofStick: resJSON.message } });
+            response.json().then(data => {
+              if (data.message) {
+                console.log('response 200 from get: ' +data.message)
+                this.update({ profile: { doofStick: data.message } });
+              } else {
+                console.log('response 200 from get: nothing in message')
+                this.update({ profile: { doofStick: "" } });
+              }
+            });
           }
         }
       ).catch( 
@@ -271,9 +278,9 @@ export default class Store extends EventTarget {
     
 
     // Regenerate name to encourage users to change it.
-    if (!this.state.activity.hasChangedName) {
-      this.update({ profile: { displayName: generateRandomName() } });
-    }
+    // if (!this.state.activity.hasChangedName) {
+    //   this.update({ profile: { displayName: generateRandomName() } });
+    // }
   };
 
   resetToRandomDefaultAvatar = async () => {
