@@ -59,6 +59,9 @@ class CheckoutForm extends React.Component {
       amount: 333,
       currency: 'aud',
       payment_method_types: ['card'],
+      metadata: {
+        email: this.props.email,
+      }
     })
       .then((clientSecret) => {
         console.log("got client secret", clientSecret);
@@ -80,7 +83,11 @@ class CheckoutForm extends React.Component {
         card: cardElement,
       },
     }).then((resp) => {
-      console.log('Received resp from stripe:', resp);
+      if(resp.paymentIntent) {
+        this.props.onStripeSuccess();
+      } else {
+        // TODO: handle error case! (Toast error?)
+      }
     });
   };
 
