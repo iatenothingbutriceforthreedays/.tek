@@ -1,5 +1,5 @@
 import { fetchReticulumAuthenticated } from "./phoenix-utils";
-import defaultAvatar from "../assets/models/DefaultAvatar.glb";
+import defaultAvatar from "../assets/models/avatar__eyeball(body).glb";
 
 import { insanity } from "./insanity";
 

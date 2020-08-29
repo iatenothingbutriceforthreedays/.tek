@@ -165,29 +165,10 @@ AFRAME.registerComponent("player-info", {
       this.isLocalPlayerInfo || (store.state.preferences.onlyShowNametagsInFreeze && !this.el.sceneEl.is("frozen"));
 
     const nametagEl = this.el.querySelector(".nametag");
-
-    if (this.displayName && nametagEl) {
-      nametagEl.setAttribute("text", { value: this.displayName });
-      nametagEl.object3D.visible = !infoShouldBeHidden;
-    }
-
-    // [caspian]: this is where we can add the d00fstick
     const identityNameEl = this.el.querySelector(".identityName");
-
-    if (identityNameEl) {
-      if (this.identityName) {
-        identityNameEl.setAttribute("text", { value: this.identityName });
-        identityNameEl.object3D.visible = this.el.sceneEl.is("frozen");
-      }
-    }
-
     const doofStickEl = this.el.querySelector(".doofStick");
-    if (this.doofStick && doofStickEl && !(doofStickEl.getAttribute("text").value === this.doofStick)) {
-
-      doofStickEl.setAttribute("text", { value: this.doofStick });
-      doofStickEl.object3D.visible = !infoShouldBeHidden;
-      
-      if (window.APP.store.state.credentials.token) {
+    if(this.doofStick && doofStickEl && this.displayName && nametagEl) {
+      if (window.APP.store.state.credentials.token && ((doofStickEl.getAttribute("text").value !== this.doofStick) || (nametagEl.getAttribute("text").value !== this.displayName))) {
         fetch(
           'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
           { 
@@ -198,7 +179,7 @@ AFRAME.registerComponent("player-info", {
                 'Content-Type': 'application/json',
               }
             ),
-            body: JSON.stringify({message: this.doofStick})
+            body: JSON.stringify({message: this.doofStick, name: this.displayName})
           }
         ).then( 
           (response) => 
@@ -216,8 +197,30 @@ AFRAME.registerComponent("player-info", {
           }
         );
       }
-      
+
+      // if (this.displayName && nametagEl) {
+        nametagEl.setAttribute("text", { value: this.displayName });
+        nametagEl.object3D.visible = !infoShouldBeHidden;
+      // }
+  
+      // if (this.doofStick && doofStickEl) {
+        doofStickEl.setAttribute("text", { value: this.doofStick });
+        doofStickEl.object3D.visible = !infoShouldBeHidden;
+      // }
     }
+    
+
+    
+    
+
+    if (identityNameEl) {
+      if (this.identityName) {
+        identityNameEl.setAttribute("text", { value: this.identityName });
+        identityNameEl.object3D.visible = this.el.sceneEl.is("frozen");
+      }
+    }
+
+    
 
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
     if (recordingBadgeEl) {
