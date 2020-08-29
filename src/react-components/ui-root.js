@@ -257,6 +257,8 @@ export default class UIRoot extends Component {
   };
 
   state = {
+    doofStick: window.APP.store.state.profile.doofStick,
+    name: window.APP.store.state.profile.displayName,
     enterInVR: false,
     entered: false,
     entering: false,
@@ -391,6 +393,14 @@ export default class UIRoot extends Component {
   setMenuFocus = (toggle) => {
     setPointerLock(!toggle);
     this.setState({ hide: !toggle});
+  }
+
+  updateName = (name) => {
+    this.setState({name: name})
+  }
+
+  updateDoofStick = (doofstick) => {
+    this.setState({doofStick: doofstick})
   }
 
   componentDidMount() {
@@ -1695,6 +1705,10 @@ export default class UIRoot extends Component {
           {this.state.showReport &&
             this.renderDialog(FeedbackDialog, { onClose: () => this.setState({ showReport: false }) })}
           <Menu
+            name={this.state.name}
+            doofstick={this.state.doofStick}
+            onDoofStickChange={this.updateDoofStick}
+            onNameChange={this.updateName}
             muted={this.state.muted}
             onMuteToggle={this.toggleMute}
             volume={this.state.volume}
