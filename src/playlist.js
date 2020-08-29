@@ -34,7 +34,7 @@ room1:
 
     - artist: "K.L. Mai"
       title: "KL-Mai"
-      length: "00:41:37"
+      length: "00:51:44"
 
     - artist: "~~~dr33m~~~dr33m~~~dr33m~~~"
       title: "dr33m-1"
