@@ -238,34 +238,37 @@ export default class Store extends EventTarget {
       });
     }
 
-    const response = await fetch(
-      'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
-      { 
-        method: 'GET', 
-        headers: new Headers(
-          {
-            'Authorization': 'Bearer ' + this.state.credentials.token, 
-            'Content-Type': 'application/json',
-          }
-        )
-      }
-    ).then( 
-      (response) => 
-      {
-        if (!response.ok) {
-          this.update({ profile: { doofStick: 'Hello!' } });
-          throw new Error("Not 2xx response")
-        } else {
-          const resJSON = response.json();
-          this.update({ profile: { doofStick: resJSON.message } });
+    if (this.state.credentials.token) {
+      const response = await fetch(
+        'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+        { 
+          method: 'GET', 
+          headers: new Headers(
+            {
+              'Authorization': 'Bearer ' + this.state.credentials.token, 
+              'Content-Type': 'application/json',
+            }
+          )
         }
-      }
-    ).catch( 
-      (err) => 
-      {
-        console.log(err)
-      }
-    );
+      ).then( 
+        (response) => 
+        {
+          if (!response.ok) {
+            this.update({ profile: { doofStick: 'Hello!' } });
+            throw new Error("Not 2xx response")
+          } else {
+            const resJSON = response.json();
+            this.update({ profile: { doofStick: resJSON.message } });
+          }
+        }
+      ).catch( 
+        (err) => 
+        {
+          console.log(err)
+        }
+      );
+    }
+    
 
     // Regenerate name to encourage users to change it.
     if (!this.state.activity.hasChangedName) {
