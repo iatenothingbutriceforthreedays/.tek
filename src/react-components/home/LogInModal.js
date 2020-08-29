@@ -246,7 +246,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
                     if(resp.status === 200) {
                       submitEmail(email);
                     } else if(resp.status === 404) {
-                      setLoginState({ step: "PAYMENT_FLOW" })
+                      setLoginState({ step: "PAYMENT_FLOW", email: email })
                     } else {
                       throw resp;
                     }
@@ -255,7 +255,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
                 }} initialEmail={email} signInReason={qs.get("sign_in_reason")} />
             ) : (
                     <VerifiedForm />
-                ) : <PaymentForm/>}
+                ) : <PaymentForm email={loginState.email} onSuccess={() => submitEmail(email)} />}
 
         </div>
 
@@ -276,7 +276,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
     </Modal>);
 };
 
-const PaymentForm = () => {
+const PaymentForm = ({ email, onSuccess }) => {
     return (<React.Fragment><span style={{
 
         fontFamily: "Perpetua Titling MT",
@@ -292,7 +292,7 @@ const PaymentForm = () => {
         PAYMENT
   </span>
         <Elements>
-            <InjectedCheckoutForm />
+            <InjectedCheckoutForm email={email} onStripeSuccess={onSuccess} />
         </Elements>
 
     </React.Fragment>);
