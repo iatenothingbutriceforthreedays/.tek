@@ -21,7 +21,8 @@ export const SCHEMA = {
       additionalProperties: false,
       properties: {
         displayName: { type: "string", pattern: "^[A-Za-z0-9 -]{3,32}$" },
-        doofStick: { type: "string", pattern: "^[A-Za-z0-9 -]{0,140}$" },
+        // doofStick: { type: "string", pattern: "^[A-Za-z0-9 -]{0,140}$" },
+        doofStick: { type: "string" },
         identityName: { type: "string", pattern: "^[A-Za-z0-9 -]{1,64}$" },
         avatarId: { type: "string" },
         // personalAvatarId is obsolete, but we need it here for backwards compatibility.
@@ -44,6 +45,7 @@ export const SCHEMA = {
       properties: {
         hasFoundFreeze: { type: "boolean" },
         hasChangedName: { type: "boolean" },
+        // hasSetDoofStick: { type: "boolean" },
         hasAcceptedProfile: { type: "boolean" },
         lastEnteredAt: { type: "string" },
         hasPinned: { type: "boolean" },
@@ -247,20 +249,28 @@ export default class Store extends EventTarget {
           }
         )
       }
+    ).then( 
+      (response) => 
+      {
+        if (!response.ok) {
+          this.update({ profile: { doofStick: 'Hello!' } });
+          throw new Error("Not 2xx response")
+        } else {
+          const resJSON = await response.json();
+          this.update({ profile: { doofStick: resJSON.message } });
+        }
+      }
+    ).catch( 
+      (err) => 
+      {
+        console.log(err)
+      }
     );
 
-    const doofStickStored = await response.json();
-
-    if (doofStickStored.message) {
-      this.update({ profile: { doofStick: doofStickStored.message } });
-    }
-
     // Regenerate name to encourage users to change it.
-    /*
     if (!this.state.activity.hasChangedName) {
       this.update({ profile: { displayName: generateRandomName() } });
     }
-    */
   };
 
   resetToRandomDefaultAvatar = async () => {
