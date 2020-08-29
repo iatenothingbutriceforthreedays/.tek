@@ -54,6 +54,12 @@ const createPaymentIntent = (options) => {
 };
 
 class CheckoutForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSubmitting: false
+    }
+  }
   componentDidMount() {
     createPaymentIntent({
       amount: 333,
@@ -78,16 +84,29 @@ class CheckoutForm extends React.Component {
 
     const cardElement = this.props.elements.getElement('card');
 
+    this.setState({
+      isSubmitting: true
+    });
+
     this.props.stripe.confirmCardPayment(this.state.clientSecret, {
       payment_method: {
         card: cardElement,
       },
     }).then((resp) => {
+      this.setState({
+        isSubmitting: false
+      });
+      
       if(resp.paymentIntent) {
         this.props.onStripeSuccess();
       } else {
+        
         // TODO: handle error case! (Toast error?)
       }
+    }).catch((err) => {
+      this.setState({
+        isSubmitting: false
+      });
     });
   };
 
@@ -98,7 +117,7 @@ class CheckoutForm extends React.Component {
         color: 'white'
       }}>
         <CardSection />
-        <button>Confirm order</button>
+        <button disabled={this.state.isSubmitting}>Confirm order</button>
       </form>
     );
   }
