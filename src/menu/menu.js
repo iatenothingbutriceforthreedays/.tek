@@ -110,16 +110,17 @@ export const Menu = ({
       <div id="svg-container" style={{ pointerEvents:"none", position: "fixed", top: 0, right: 0, height: "100%" }}>
         <svg
           width={SVG_WIDTH}
-          style={{ pointerEvents: inModal ? "auto" : "none" }}
           height={4689}
           draggable={"false"}
           style={{
             transform: `scale(${(0.12 * SVG_WIDTH) / vw})`,
             transformOrigin: "right top",
+            pointerEvents: hidden ? "none" : "auto",
             ...style
           }}
         >
           <SvgToggleButton
+            style={{ pointerEvents: "auto" }}
             active={!hidden}
             onToggle={() => {
               if (inModal || hidden) setInModal(false);
@@ -132,7 +133,6 @@ export const Menu = ({
           {!hidden && (
             <>
               <image
-                // style={{ pointerEvents: "none" }}
                 draggable={false}
                 x={218}
                 y={486}
