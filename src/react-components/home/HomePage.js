@@ -25,7 +25,7 @@ Modal.defaultStyles.content = {
   left: "0",
 }
 
-import getRoomMetadata from "../../room-metadata";
+import { getRoomMetadata } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
