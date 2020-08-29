@@ -245,6 +245,7 @@ module.exports = async (env, argv) => {
     entry: {
       support: path.join(__dirname, "src", "support.js"),
       index: path.join(__dirname, "src", "index.js"),
+      indexnew: path.join(__dirname, "src", "index-new.js"),
       hub: path.join(__dirname, "src", "hub.js"),
       scene: path.join(__dirname, "src", "scene.js"),
       avatar: path.join(__dirname, "src", "avatar.js"),
@@ -276,6 +277,8 @@ module.exports = async (env, argv) => {
       historyApiFallback: {
         rewrites: [
           { from: /^\/signin/, to: "/signin.html" },
+          { from: /^\/index/, to: "/indexnew.html" },
+
           { from: /^\/about/, to: "/about.html" },
           { from: /^\/credits/, to: "/credits.html" },
 
@@ -476,6 +479,15 @@ module.exports = async (env, argv) => {
         filename: "index.html",
         template: path.join(__dirname, "src", "index.html"),
         chunks: ["support", "index"],
+        chunksSortMode: "manual",
+        minify: {
+          removeComments: false
+        }
+      }),
+      new HTMLWebpackPlugin({
+        filename: "indexnew.html",
+        template: path.join(__dirname, "src", "indexnew.html"),
+        chunks: ["support", "indexnew"],
         chunksSortMode: "manual",
         minify: {
           removeComments: false
