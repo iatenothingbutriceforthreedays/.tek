@@ -1,5 +1,5 @@
 import React, { Component, Fragment, useState, useEffect } from "react";
-import { findIndex } from "lodash";
+import { findIndex, repeat } from "lodash";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
@@ -131,16 +131,15 @@ const setPointerLock = lock => {
 
 const Playing = ({ artist, hidden, ...otherProps }) =>
   !hidden &&
-  !!artist &&
+  artist &&
   !artist.includes("dr33m") && (
-    <marquee direction={"right"} className={"glow"} {...otherProps}>
-      {(artist + '  ~  ')*10}
+    <marquee loop={"infinite"} direction={"right"} className={"glow"} {...otherProps}>
+      {repeat(`${artist}     ~     `, 20)}
     </marquee>
   );
 
 const RoomAudioPlayer = React.forwardRef(
   ({ volume, hidden, playing, room, initialOffset, playlist, token, onMusicCanPlay, onTrackChange }, ref) => {
-
     const [currentTrack, setCurrentTrack] = useState({ track: null, offset: null });
 
     useEffect(() => {
@@ -159,19 +158,21 @@ const RoomAudioPlayer = React.forwardRef(
     const tokenArg = token ? `?token=${token}` : "";
     const srcPath = ext => `${ASSET_BASE}/${room}/${track.title}.${ext}${tokenArg}#t=${offset / 1e3}`;
 
-
     return (
       <>
+      { !hidden && playing && 
         <Playing
           artist={track.artist}
           hidden={hidden}
           style={{
             position: "fixed",
             bottom: 0,
+            height: "5em",
             font: "stasmic",
-            width: "100%",
+            width: "100%"
           }}
         />
+      }
         <ReactHowler
           ref={ref}
           html5={true}
