@@ -28,8 +28,8 @@ import Room2ButtonHover from "../assets/menu/Room_2_Button_Hover.png";
 import Room3Button from "../assets/menu/Room_3_Button.png";
 import Room3ButtonHover from "../assets/menu/Room_3_Button_Hover.png";
 
-import BlankButton from "../assets/menu/Button.png";
-import BlankButtonHover from "../assets/menu/Button_Hover.png";
+import ProfileButton from "../assets/menu/Profile.png";
+import ProfileButtonHover from "../assets/menu/Profile_Hover.png";
 
 import MicrophoneOff from "../assets/menu/MicrophoneOff.png";
 import MicrophoneOffHover from "../assets/menu/MicrophoneOff_Hover.png";
@@ -130,7 +130,7 @@ export const Menu = ({
 
   return (
     <>
-      <div id="svg-container" style={{ position: "fixed", top: 0, right: 0, height: "100%" }}>
+      <div id="svg-container" style={{ pointerEvents:"none", position: "fixed", top: 0, right: 0, height: "100%" }}>
         <svg
           width={SVG_WIDTH}
           height={4689}
@@ -138,20 +138,13 @@ export const Menu = ({
           style={{
             transform: `scale(${(0.12 * SVG_WIDTH) / vw})`,
             transformOrigin: "right top",
+            pointerEvents: hidden ? "none" : "auto",
             ...style
           }}
         >
-          <SvgToggleButton
-            active={!hidden}
-            onToggle={onMenuToggle}
-            normalProps={{ x: "1034", y: "132", width: "738", height: "734", href: MenuClosed }}
-            activeProps={{ x: "1044", y: "134", width: "726", height: "727", href: MenuOpen }}
-          />
-
           {!hidden && (
             <>
               <image
-                style={{ pointerEvents: "none" }}
                 draggable={false}
                 x={218}
                 y={486}
@@ -159,7 +152,6 @@ export const Menu = ({
                 height={3828}
                 href={Backplate}
               />
-              {}
 
               <WatchToggle watching={watching} onToggle={onWatchToggle} />
 
@@ -168,10 +160,10 @@ export const Menu = ({
               <Slider href={SliderEye} volume={volume} onVolumeChange={onVolumeChange} />
 
               <SvgHoverButton
-                id="Edit"
+                id="EditProfile"
                 onClick={() => setInModal(true)}
-                normalProps={{ x: "478", y: "3248", width: "938", height: "461", href: BlankButton }}
-                hoverProps={{ x: "478", y: "3248", width: "938", height: "461", href: BlankButtonHover }}
+                normalProps={{ x: "427", y: "1197", width: "1020", height: "908", href: ProfileButton }}
+                hoverProps={{ x: "427", y: "1197", width: "1020", height: "908", href: ProfileButtonHover }}
               />
 
               <SvgHoverButton
@@ -213,6 +205,16 @@ export const Menu = ({
               />
             </>
           )}
+          <SvgToggleButton
+            style={{ pointerEvents: "auto", zIndex:100 }}
+            active={!hidden}
+            onToggle={() => {
+              if (inModal || hidden) setInModal(false);
+              onMenuToggle(hidden);
+            }}
+            normalProps={{ x: "1034", y: "132", width: "738", height: "734", href: MenuClosed }}
+            activeProps={{ x: "1044", y: "134", width: "726", height: "727", href: MenuOpen }}
+          />
         </svg>
       </div>
 

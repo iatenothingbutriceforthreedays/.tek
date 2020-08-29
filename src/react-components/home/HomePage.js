@@ -25,7 +25,7 @@ Modal.defaultStyles.content = {
   left: "0",
 }
 
-import getRoomMetadata from "../../room-metadata";
+import { getRoomMetadata } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
@@ -56,15 +56,12 @@ const fbNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/fb-
 const scHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-hover.png";
 const scHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-hover.webp";
 const scNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.png";
-const scNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.webp";
-
-
+const scNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.webp"; 
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
 
 const aug20Image = "https://str33m.dr33mphaz3r.net/static-assets/aug22.gif";
 const aug20ImageWebp = "https://str33m.dr33mphaz3r.net/static-assets/aug22.webp";
-
 
 const loginButton = "https://str33m.dr33mphaz3r.net/static-assets/login-button.png";
 const loginButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-button.webp";
@@ -87,6 +84,12 @@ addLocaleData([...en]);
 
 const showLogin = qsTruthy("login");
 
+export const BackgroundVideo = () => (
+  <video playsInline loop autoPlay muted className="video-container">
+    <source src={splashMp4} type="video/mp4" />
+    <source src={splashWebm} type="video/webm" />
+  </video>
+);
 
 const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
   const [isShown, setIsShown] = useState(false);
@@ -332,10 +335,7 @@ export function HomePage() {
           zIndex: "-100"
         }}
       >
-        <video playsInline loop autoPlay muted className="video-container">
-          <source src={splashMp4} type="video/mp4" />
-          <source src={splashWebm} type="video/webm" />
-        </video>
+        <BackgroundVideo/>
       </div>
       <div
         style={{
