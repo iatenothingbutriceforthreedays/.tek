@@ -263,13 +263,15 @@ export default class Store extends EventTarget {
                 this.update({ profile: { doofStick: data.message } });
                 this.update({ profile: { displayName: data.name } });
               } else if (data.name) {
-                // console.log('response 200 from get: nothing in message')
+                console.log('response 200 no doofstick but name: ' + data.name)
                 this.update({ profile: { doofStick: "" } });
                 this.update({ profile: { displayName: data.name } });
               } else if (data.message) {
+                console.log('response 200 got doofstick ' + data.message + 'but no name')
                 this.update({ profile: { doofStick: data.message } });
                 this.update({ profile: { displayName: generateRandomName() } });
               } else {
+                console.log('response 200 got doofstick and no name')
                 this.update({ profile: { doofStick: "" } });
                 this.update({ profile: { displayName: generateRandomName() } });
               }
@@ -283,7 +285,7 @@ export default class Store extends EventTarget {
         }
       );
     } else {
-      this.update({ profile: { doofStick: "" } });
+      this.update({ profile: { doofStick: generateRandomName() } });
       this.update({ profile: { displayName: generateRandomName() } });
     }
     
