@@ -12,10 +12,10 @@ export const lobbyIDs = window.LOBBY_IDS || ["3maDzA9", "ApXo7Y3", "Ek5qYcd", "Q
 export const inLobby = (id = getHubId()) => lobbyIDs.includes(id);
 
 const roomMapping = window.ROOM_MAPPING || {
-  room1: "/EJY4miE/t3kn0-sw4mp",
-  room2: "/XRfKSWB/psyb3r-dung30n",
-  room3: "/fcWA7EE/c3r3br4l-v0rt3x",
-  lobby: "/3maDzA9/dr33m-pl4z4"
+  "room1": "/EJY4miE/solar_eclipse",
+  "room2": "/XRfKSWB/solway_firth",
+  "room3": "/fcWA7EE/stygians_gravemine",
+  "lobby": "/3maDzA9/hypnik_crypt",
 };
 
 const roomMetadata = {
