@@ -12,48 +12,52 @@ import { AuthContext } from "../auth/AuthContext";
 import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import queryString from "querystring";
 import SignInDialog from "../sign-in-dialog.js";
+import Modal from 'react-modal';
 
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
-// import splashWebm from "../../assets/video/splash2.webm";
-// import splashMp4 from "../../assets/video/splash2.mp4";
-// import aug20Image from "../../assets/images/aug22.gif";
-// import aug20ImageWebp from "../../assets/images/aug22.webp";
 
-// import loginButton from "../../assets/images/login-button.png";
-// import loginButtonWebp from "../../assets/images/login-button.webp";
-// import loginButtonHover from "../../assets/images/login-button-hover.png";
-// import loginButtonHoverWebp from "../../assets/images/login-button-hover.webp";
+Modal.defaultStyles.overlay.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+Modal.defaultStyles.content = {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  top: "0",
+  left: "0",
+}
 
-// import logoImage from "../../assets/images/logo.png";
-// import logoImageWebp from "../../assets/images/logo.webp";
-
-// import enterButton from "../../assets/images/enter-button.gif";
-// import enterButtonHover from "../../assets/images/enter-button-hover.gif";
-
-// import logoutButton from "../../assets/images/logout-button.png";
-// import logoutButtonWebp from "../../assets/images/logout-button.webp";
-
-// import logoutButtonHover from "../../assets/images/logout-button-hover.png";
-// import logoutButtonHoverWebp from "../../assets/images/logout-button-hover.webp";
-
-import getRoomMetadata from "../../room-metadata";
+import { getRoomMetadata, getRoomURL } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
-import mainMenuBack from "../../assets/images/main-menu/menu-back.png";
-import aboutHover from "../../assets/images/main-menu/about-hover.png";
-import aboutNormal from "../../assets/images/main-menu/about-normal.png";
-import creditHover from "../../assets/images/main-menu/credits-hover.png";
-import creditNormal from "../../assets/images/main-menu/credits-normal.png";
-import loginHover from "../../assets/images/main-menu/login-normal.png";
-import loginNormal from "../../assets/images/main-menu/login-hover.png";
+import { LogInModal } from "./LogInModal";
 
-import bcHover from "../../assets/images/main-menu/bc-hover.png";
-import bcNormal from "../../assets/images/main-menu/bc-normal.png";
-import fbHover from "../../assets/images/main-menu/fb-hover.png";
-import fbNormal from "../../assets/images/main-menu/fb-normal.png";
-import scHover from "../../assets/images/main-menu/sc-hover.png";
-import scNormal from "../../assets/images/main-menu/sc-normal.png";
+const mainMenuBack = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/menu-back.png";
+const mainMenuBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/menu-back.webp";
+const aboutHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/about-hover.png";
+const aboutHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/about-hover.webp";
+const aboutNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/about-normal.png";
+const aboutNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/about-normal.webp";
+const creditHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/credits-hover.png";
+const creditHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/credits-hover.webp";
+const creditNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/credits-normal.png";
+const creditNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/credits-normal.webp";
+const loginHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/login-normal.png";
+const loginHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/login-normal.webp";
+const loginNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/login-hover.png";
+const loginNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/login-hover.webp";
+
+const bcHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/bc-hover.png";
+const bcHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/bc-hover.webp";
+const bcNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/bc-normal.png";
+const bcNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/bc-normal.webp";
+const fbHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/fb-hover.png";
+const fbHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/fb-hover.webp";
+const fbNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/fb-normal.png";
+const fbNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/fb-normal.webp";
+const scHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-hover.png";
+const scHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-hover.webp";
+const scNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.png";
+const scNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.webp"; 
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
 
@@ -68,8 +72,11 @@ const loginButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/login
 const logoImage = "https://str33m.dr33mphaz3r.net/static-assets/LineUptrial05h.png";
 const logoImageWebp = "https://str33m.dr33mphaz3r.net/static-assets/LineUptrial05h.webp";
 
-const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/enter-button.gif";
-const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/enter-button-hover.gif";
+const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button.gif";
+const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button_Hover.gif";
+
+const enterButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button.webp";
+const enterButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button_Hover.webp";
 
 const logoutButton = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.png";
 const logoutButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.webp";
@@ -81,9 +88,30 @@ addLocaleData([...en]);
 
 const showLogin = qsTruthy("login");
 
+export const BackgroundVideo = () => (
+  <video playsInline loop autoPlay muted className="video-container">
+    <source src={splashMp4} type="video/mp4" />
+    <source src={splashWebm} type="video/webm" />
+  </video>
+);
 
-const SvgHoverButton =  ({ normalProps, hoverProps, style, ...otherProps }) => {
+const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
   const [isShown, setIsShown] = useState(false);
+
+  if (href) {
+    return (<a href={href}>
+      <image
+        onMouseEnter={() => setIsShown(true)}
+        onMouseLeave={() => setIsShown(false)}
+        style={{
+          ...style,
+          cursor: "pointer"
+        }}
+        {...isShown ? hoverProps : normalProps}
+        {...otherProps}
+      />
+    </a>)
+  }
 
   return (
     <image
@@ -95,22 +123,36 @@ const SvgHoverButton =  ({ normalProps, hoverProps, style, ...otherProps }) => {
       }}
       {...isShown ? hoverProps : normalProps}
       {...otherProps}
-      />
+    />
   )
-    };
+};
 
-const MenuComponent = () => {
+const MenuComponent = ({ setIsModalOpen }) => {
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
-   <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={mainMenuBack} />
-   <SvgHoverButton id="About_Button" normalProps={{ x: "2466", y: "1353", width:"472", height:"781", xlinkHref: aboutNormal}} hoverProps={{ x: "2466", y:"1353", width:"472", height:"781", xlinkHref: aboutHover}} />
-   <SvgHoverButton id="Credits_Button" hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover}} normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal }} />
-   <SvgHoverButton id="LogIn_Button" hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover }}  normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal }} />
-   <SvgHoverButton id="BC_Button" normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal }} hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover }}/>
-   <SvgHoverButton id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }}  normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }} />
-   <SvgHoverButton id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }} />
- </svg>);
- 
- }
+    <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={mainMenuBack} />
+    <SvgHoverButton href="/about" id="About_Button" normalProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutNormal, xlinkHrefWebp: aboutNormalWebp }} hoverProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutHover, xlinkHrefWebp: aboutHoverWebp }} />
+    <SvgHoverButton href="/credits" id="Credits_Button" hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover, xlinkHrefWebp: creditHoverWebp }} normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal, xlinkHrefWebp: creditNormalWebp }} />
+          { showLogin && <SvgHoverButton id="LogIn_Button" hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover, xlinkHrefWebp: loginHoverWebp }} normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal, xlinkHrefWebp: loginNormalWebp }} onClick={(e) => {
+      e.preventDefault();
+      setIsModalOpen(true);
+      return false;
+    }} /> }
+    <SvgHoverButton href="https://ultravirus.bandcamp.com/" id="BC_Button" normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal, xlinkHrefWebp: bcNormalWebp }} hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover, xlinkHrefWebp: bcHoverWebp }} />
+    <SvgHoverButton href="https://www.facebook.com/ultravirus101" id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover, xlinkHrefWebp: fbHoverWebp }} normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal, xlinkHrefWebp: fbNormalWebp }} />
+    <SvgHoverButton href="https://soundcloud.com/ultravirusss" id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover, xlinkHrefWebp: scHoverWebp }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal, xlinkHrefWebp: scNormalWebp }} />
+     { showLogin  && <SvgHoverButton 
+      onClick={async e => {
+        e.preventDefault();
+        const targetUrl = await getRoomURL("lobby");
+        if (targetUrl) {
+          location.href = targetUrl;
+        } else {
+          console.error("invalid portal targetRoom:", this.data.targetRoom);
+        }
+      }} id="Enter" hoverProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButtonHover, xlinkHrefWebp: enterButtonHoverWebp }} normalProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButton, xlinkHrefWebp: enterButtonWebp }} /> }
+  </svg>);
+
+}
 
 const LogoutButton = ({ onLinkClicked }) => {
   const [isShown, setIsShown] = useState(false);
@@ -141,18 +183,18 @@ const LogoutButton = ({ onLinkClicked }) => {
           />
         </picture>
       ) : (
-        <picture>
-          <source srcSet={logoutButtonWebp} type="image/webp" />
+          <picture>
+            <source srcSet={logoutButtonWebp} type="image/webp" />
 
-          <img
-            style={{
-              maxWidth: "200px",
-              marginRight: "-25px"
-            }}
-            src={logoutButton}
-          />
-        </picture>
-      )}
+            <img
+              style={{
+                maxWidth: "200px",
+                marginRight: "-25px"
+              }}
+              src={logoutButton}
+            />
+          </picture>
+        )}
     </button>
   );
 };
@@ -162,7 +204,12 @@ const LoginButton = ({ onLinkClicked }) => {
 
   return (
     <a
-      href="/signin"
+      href="#"
+      onClick={(e) => {
+        e.preventDefault();
+        onLinkClicked();
+        return false;
+      }}
       rel="noreferrer noopener"
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
@@ -186,58 +233,21 @@ const LoginButton = ({ onLinkClicked }) => {
           />
         </picture>
       ) : (
-        <picture>
-          <source srcSet={loginButtonWebp} type="image/webp" />
+          <picture>
+            <source srcSet={loginButtonWebp} type="image/webp" />
 
-          <img
-            style={{
-              maxWidth: "200px"
-            }}
-            src={loginButton}
-          />
-        </picture>
-      )}
+            <img
+              style={{
+                maxWidth: "200px"
+              }}
+              src={loginButton}
+            />
+          </picture>
+        )}
     </a>
   );
 };
 
-const EnterButton = props => {
-  const [isShown, setIsShown] = useState(false);
-
-  // <a onClick={this.onLinkClicked(this.showSignInDialog)}></a>
-  // <a onClick={this.onLinkClicked(this.signOut)}>
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={e => {
-        e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }}
-    >
-      <img
-        style={{
-          maxWidth: "120px",
-          mixBlendMode: "lighten"
-        }}
-        src={isShown ? enterButtonHover : enterButton}
-      />
-    </button>
-  );
-};
 
 export function HomePage() {
   const auth = useContext(AuthContext);
@@ -270,6 +280,8 @@ export function HomePage() {
     }
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const canCreateRooms = !configs.feature("disable_room_creation") || auth.isAdmin;
 
   // const pageStyle = { backgroundImage: configs.image("home_background", true) };
@@ -300,10 +312,7 @@ export function HomePage() {
           zIndex: "-100"
         }}
       >
-        <video playsInline loop autoPlay muted className="video-container">
-          <source src={splashMp4} type="video/mp4" />
-          <source src={splashWebm} type="video/webm" />
-        </video>
+        <BackgroundVideo/>
       </div>
       <div
         style={{
@@ -312,7 +321,7 @@ export function HomePage() {
           alignItems: "center",
           justifyContent: "center",
           flex: "1",
-          zIndex: "1"
+          zIndex: "0"
         }}
       >
         <audio loop autoPlay>
@@ -323,53 +332,11 @@ export function HomePage() {
             position: "relative"
           }}
         >
-          <MenuComponent/>
-          {/* <picture>
-            <source srcSet={logoImageWebp} type="image/webp" />
-            <img
-              src={logoImage}
-              style={{
-                width: "100%",
-                maxWidth: "750px",
-                animation: "logo-rotate 5s linear infinite",
+          <MenuComponent setIsModalOpen={setIsModalOpen} />
 
-                mixBlendMode: "normal"
-              }}
-            />
-          </picture> */}
-          {/* <div style={{
-            position: "absolute",
-            bottom: "-180px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-end",
-            width: "100%"
-          }}>
-            {!auth.isSignedIn &&
-              <picture>
-                <source srcset={aug20ImageWebp} type="image/webp" />
-                <source srcset={aug20Image} type="image/gif" />
-                <img src={aug20ImageWebp} style={{
-                  maxWidth: "200px",
-                  mixBlendMode: "lighten",
-                  clipPath: "inset(91px 17px 88px 27px)"
-                }} />
-              </picture>
-            }
-          </div> */}
         </div>
-        {auth.isSignedIn && (
-          <div
-            style={{
-              marginLeft: "225px", // half of maxWidth above
-              mixBlendMode: "lighten"
-            }}
-          >
-            <EnterButton />
-          </div>
-        )}
       </div>
-      <div className={styles.ctaButtons}>
+      {/* <div className={styles.ctaButtons}>
         <div
           style={{
             position: "absolute",
@@ -380,7 +347,7 @@ export function HomePage() {
             flexDirection: "column"
           }}
         >
-          {!auth.isSignedIn && showLogin && <LoginButton onLinkClicked={auth.showSignInDialog} />}
+          {!auth.isSignedIn && showLogin && <LoginButton onLinkClicked={() => setIsModalOpen(true)} />}
           {auth.isSignedIn && <LogoutButton onLinkClicked={auth.signOut} />}
           {auth.isSignedIn && (
             <div
@@ -399,54 +366,8 @@ export function HomePage() {
             </div>
           )}
         </div>
-      </div>
-      {/* <SignInDialog
-        authStarted={false}
-        authComplete={false}
-        onSignIn={null}
-        onContinue={null}
-        message={"Test"}
-        continueText={"zz"}
-        closable={false}
-      /> */}
-      {/* <section>
-        <div className={styles.appInfo}>
-          <div className={logoStyles}>
-            <img src={logoUrl} />
-          </div>
-          {showDescription && (
-            <div className={styles.appDescription}>
-              <FormattedMessage id="app-description" />
-            </div>
-          )}
-        </div>
-        <div className={styles.ctaButtons}>
-          {canCreateRooms && <CreateRoomButton />}
-          <PWAButton />
-        </div>
-      </section>
-      {featuredRooms.length > 0 && (
-        <section className={styles.featuredRooms}>
-          <MediaGrid>{featuredRooms.map(room => <RoomTile key={room.id} room={room} />)}</MediaGrid>
-        </section>
-      )}
-      <section>
-        <div className={styles.secondaryLinks}>
-          <a href="/link">
-            <FormattedMessage id="home.have_code" />
-          </a>
-          <div>
-            <IfFeature name="show_discord_bot_link">
-              <FormattedMessage id="home.add_to_discord_1" />
-              <img src={discordLogoUrl} />
-              <a href="/discord">
-                <FormattedMessage id="home.add_to_discord_2" />
-              </a>
-              <FormattedMessage id="home.add_to_discord_3" />
-            </IfFeature>
-          </div>
-        </div>
-      </section> */}
+      </div> */}
+      <LogInModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
     </Page>
   );
 }
