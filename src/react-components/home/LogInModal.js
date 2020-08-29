@@ -168,8 +168,8 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
         }} type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <br />
         <br />
-        <img src={logInButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px" }} />
-        <img src={signUpButton} style={{ width: "180px" }} />
+        <img src={logInButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px", cursor: "pointer" }} />
+        <img src={signUpButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px", cursor: "pointer" }} />
         <a href="/coc" onClick={(e) => {
           e.preventDefault();
           setCocModalOpen(true);
@@ -200,10 +200,6 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
     });
     const [isCocModalOpen, setCocModalOpen] = useState(false);
 
-
-    console.log("got login step", step);
-
-
     return (<Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
@@ -230,7 +226,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
             justifyContent: "center",
             flexDirection: "column"
         }}>
-          { loginState.step !== "PAYMENT_FLOW" ? 
+          { loginState.step !== "PAYMENT_STARTED" ? 
             step === SignInStep.submit ? (
                 <LoginForm isCocModalOpen={isCocModalOpen} setCocModalOpen={setCocModalOpen} onSubmitEmail={(email) => {
                   window
@@ -246,7 +242,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
                     if(resp.status === 200) {
                       submitEmail(email);
                     } else if(resp.status === 404) {
-                      setLoginState({ step: "PAYMENT_FLOW", email: email })
+                      setLoginState({ step: "PAYMENT_STARTED", email: email })
                     } else {
                       throw resp;
                     }
@@ -255,7 +251,10 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
                 }} initialEmail={email} signInReason={qs.get("sign_in_reason")} />
             ) : (
                     <VerifiedForm />
-                ) : <PaymentForm email={loginState.email} onSuccess={() => submitEmail(email)} />}
+                ) : <PaymentForm email={loginState.email} onSuccess={() => {
+                  setLoginState({ step: "PAYMENT_SUCCESSFUL", email: loginState.email });
+                  submitEmail(loginState.email);
+}} />}
 
         </div>
 
