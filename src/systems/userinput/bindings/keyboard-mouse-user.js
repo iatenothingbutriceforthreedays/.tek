@@ -106,6 +106,26 @@ export const keyboardMouseUserBindings = addSetsToBindings({
     },
     */
     {
+      src: { value: paths.device.keyboard.key("h") },
+      dest: { value: paths.actions.toggleARUP },
+      xform: xforms.falling
+    },
+    {
+      src: { value: paths.device.keyboard.key("j") },
+      dest: { value: paths.actions.toggleARDOWN },
+      xform: xforms.falling
+    },
+    {
+      src: { value: paths.device.keyboard.key("k") },
+      dest: { value: paths.actions.toggleARLEFT },
+      xform: xforms.falling
+    },
+    {
+      src: { value: paths.device.keyboard.key("l") },
+      dest: { value: paths.actions.toggleARRIGHT },
+      xform: xforms.falling
+    },
+    {
       src: { value: paths.device.keyboard.key("q") },
       dest: { value: paths.actions.toggleUI },
       xform: xforms.rising
