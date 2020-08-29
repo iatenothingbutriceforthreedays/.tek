@@ -37,9 +37,6 @@ const loginButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/login-but
 const loginButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-button-hover.webp";
 
 
-const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/enter-button.gif";
-const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/enter-button-hover.gif";
-
 const logoutButton = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.png";
 const logoutButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.webp";
 
@@ -186,41 +183,6 @@ const LoginButton = ({ onLinkClicked }) => {
           </picture>
         )}
     </a>
-  );
-};
-
-const EnterButton = props => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={e => {
-        e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }}
-    >
-      <img
-        style={{
-          maxWidth: "120px",
-          mixBlendMode: "lighten"
-        }}
-        src={isShown ? enterButtonHover : enterButton}
-      />
-    </button>
   );
 };
 
