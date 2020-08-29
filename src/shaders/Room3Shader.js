@@ -8,12 +8,13 @@ export const Room3Shader = {
   vertexShader: `
     varying vec2 fragCoord;
     void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    fragCoord = position.xy;
-
+        vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+        // vWorldPosition = worldPosition.xyz;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        fragCoord = worldPosition.xy;
     }
   `,
-  vertexShader: `
+  fragmentShader: `
     // Created by inigo quilez - iq/2013
     // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
     const mat2 m = mat2(0.80,  0.60, -0.60,  0.80);
@@ -79,8 +80,8 @@ export const Room3Shader = {
 
     void main()
     {
-        vec2 p = (2.0*fragCoord-resolution.xy)/resolution.y;
-        float e = 2.0/resolution.y;
+        vec2 p = sin(fragCoord);
+        float e = 0.0001;
 
         vec4 on = vec4(0.0);
         float f = func(p, on);
@@ -92,16 +93,14 @@ export const Room3Shader = {
         col = mix(col, vec3(0.0,0.2,0.4), 0.2*smoothstep(1.2,1.4,abs(on.z)+abs(on.w)));
         col = clamp(col*f*9.0, 0.4, 1.0);
 
-        #if 0
         // gpu derivatives - bad quality, but fast
-        vec3 nor = normalize(vec3(dFdx(f)*resolution.x, 6.0, dFdy(f)*resolution.y));
-        #else
+        // vec3 nor = normalize(vec3(dFdx(f)*resolution.x, 6.0, dFdy(f)*resolution.y));
+
         // manual derivatives - better quality, but slower
         vec4 kk;
         vec3 nor = normalize( vec3( func(p+vec2(e,0.0),kk)-f,
                                     2.0*e,
                                     func(p+vec2(0.0,e),kk)-f));
-        #else
 
         vec3 lig = normalize( vec3( 0.9, 0.2, -0.4 ) );
         float dif = clamp( 0.3+0.7*dot( nor, lig ), 0.0, 1.0 );
