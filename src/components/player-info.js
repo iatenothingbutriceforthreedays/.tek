@@ -41,6 +41,7 @@ const postDoofStick = async (doofStick, token) => {
       body: JSON.stringify({message: doofStick})
     }
   );
+  console.log(response)
   // const myJson = await response.json();
 }
 
