@@ -131,7 +131,7 @@ const setPointerLock = lock => {
 
 const Playing = ({ artist, hidden, ...otherProps }) =>
   !hidden &&
-  artist &&
+  !!artist &&
   !artist.includes("dr33m") && (
     <marquee direction={"right"} className={"glow"} {...otherProps}>
       {(artist + '  ~  ')*10}
