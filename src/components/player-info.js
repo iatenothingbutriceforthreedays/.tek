@@ -27,40 +27,40 @@ function ensureAvatarNodes(json) {
   return json;
 }
 
-const postDoofStick = async (doofStick, token) => {
-  const response = await fetch(
-    'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
-    { 
-      method: 'POST', 
-      headers: new Headers(
-        {
-          'Authorization': 'Bearer ' + token, 
-          'Content-Type': 'application/json',
-        }
-      ),
-      body: JSON.stringify({message: doofStick})
-    }
-  );
-  console.log(response)
-  // const myJson = await response.json();
-}
+// const postDoofStick = async (doofStick, token) => {
+//   const response = await fetch(
+//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+//     { 
+//       method: 'POST', 
+//       headers: new Headers(
+//         {
+//           'Authorization': 'Bearer ' + token, 
+//           'Content-Type': 'application/json',
+//         }
+//       ),
+//       body: JSON.stringify({message: doofStick})
+//     }
+//   );
+//   console.log(response)
+//   // const myJson = await response.json();
+// }
 
-const getDoofStick = async (token) => {
-  const response = await fetch(
-    'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
-    { 
-      method: 'GET', 
-      headers: new Headers(
-        {
-          'Authorization': 'Bearer ' + token, 
-          'Content-Type': 'application/json',
-        }
-      )
-    }
-  );
-  const myJson = await response.json();
-  return myJson
-}
+// const getDoofStick = async (token) => {
+//   const response = await fetch(
+//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+//     { 
+//       method: 'GET', 
+//       headers: new Headers(
+//         {
+//           'Authorization': 'Bearer ' + token, 
+//           'Content-Type': 'application/json',
+//         }
+//       )
+//     }
+//   );
+//   const myJson = await response.json();
+//   return myJson
+// }
 
 /**
  * Sets player info state, including avatar choice and display name.
@@ -182,12 +182,13 @@ AFRAME.registerComponent("player-info", {
     }
 
     const doofStickEl = this.el.querySelector(".doofStick");
-    if (this.doofStick && doofStickEl) {
+    if (this.doofStick && doofStickEl && !(doofStickEl.getAttribute("text").value === this.doofStick)) {
+
       doofStickEl.setAttribute("text", { value: this.doofStick });
       doofStickEl.object3D.visible = !infoShouldBeHidden;
-      // postDoofStick(this.doofStick, window.APP.store.state.credentials.token)
+      
       if (window.APP.store.state.credentials.token) {
-        const response = fetch(
+        fetch(
           'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
           { 
             method: 'POST', 
@@ -203,11 +204,9 @@ AFRAME.registerComponent("player-info", {
           (response) => 
           {
             if (!response.ok) {
-              // this.update({ profile: { doofStick: 'Hello!' } });
               throw new Error("Not 2xx response")
             } else {
-              console.log( response.json() )
-              // this.update({ profile: { doofStick: resJSON.message } });
+              console.log(response)
             }
           }
         ).catch( 
