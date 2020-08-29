@@ -1169,6 +1169,7 @@ AFRAME.registerComponent("media-image", {
     }
 
     this.mesh.material.map = texture;
+    this.mesh.material.color.setScalar(0.5); // dim video
     this.mesh.material.needsUpdate = true;
 
     if (projection === "flat") {
