@@ -1684,7 +1684,9 @@ export default class UIRoot extends Component {
       uiRootHtml = this.renderBotMode();
     }
     else if (!this.state.showHubsUI) {
-      const navigateToRoom = room => (window.location.href = getRoomURL(room));
+      const navigateToRoom = room => {
+        getRoomURL(room).then(url => (window.location.href = url));
+      };
 
       uiRootHtml = (
         <div className={classNames([menuStyles, styles.gameMenu])}>
