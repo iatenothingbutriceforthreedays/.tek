@@ -275,7 +275,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
       }}
     >
       <MenuComponent />
-    </Modal>);
+    </Modal>
   </Modal>);
 };
 
