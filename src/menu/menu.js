@@ -228,6 +228,7 @@ export const Menu = ({
             { 
               function (name) { 
                   var trimmedString = name.substring(0, 32);
+                  onNameChange(trimmedString)
                   window.APP.store.update({ profile: { displayName: trimmedString } }) 
               } 
             }
@@ -246,6 +247,7 @@ export const Menu = ({
             { 
               function (doofstick) { 
                 var trimmedString = doofstick.substring(0, 120);
+                onDoofStickChange(trimmedString)
                 window.APP.store.update({ profile: { doofStick: trimmedString } }) 
               } 
             }
