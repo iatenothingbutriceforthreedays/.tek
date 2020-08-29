@@ -15,7 +15,7 @@ const roomMapping = window.ROOM_MAPPING || {
   "room1": "/EJY4miE/solar_eclipse",
   "room2": "/XRfKSWB/solway_firth",
   "room3": "/fcWA7EE/stygians_gravemine",
-  "lobby": "/3maDzA9/hypnik_crypt",
+  "lobby": "/3maDzA9/hypnik_crypt333",
 };
 
 const roomMetadata = {
