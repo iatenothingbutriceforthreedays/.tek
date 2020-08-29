@@ -41,7 +41,7 @@ import logoImageWebp from "../assets/images/logo.webp";
 import AuthDialog from "./auth-dialog.js";
 import SignInDialog from "./sign-in-dialog.js";
 
-import getRoomMetadata from "../room-metadata";
+import { getRoomMetadata } from "../room-metadata";
 
 addLocaleData([...en]);
 
