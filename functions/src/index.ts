@@ -12,6 +12,8 @@ import * as express from 'express';
 
 import * as cors from 'cors';
 
+import * as bodyParser from 'body-parser';
+
 import { addMonths, subSeconds, getUnixTime } from 'date-fns'
 
 import { omitBy, isUndefined } from 'lodash'
@@ -37,6 +39,22 @@ const DR33M_ADMIN_ID = env.dr33m.admin_id || '1234'
 const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2020-03-02' });
 
 const app = express();
+
+app.use(
+  (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): void => {
+    if (req.originalUrl === '/payment/webhook') {
+      next();
+    } else {
+      bodyParser.json()(req, res, next);
+    }
+  }
+);
+
+app.use(cors({ origin: true }))
 
 interface Token {
   aud: string
@@ -119,9 +137,6 @@ const updateAccount = async (email : string, name : string) => {
 }
 */
 
-
-app.use(cors({ origin: true }))
-
 // dr33mphaz3r
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -170,7 +185,7 @@ app.post('/doofsticks', async (req: express.Request, res) => {
   } else {
 
     const meta = omitBy(req.body, isUndefined)
-    await db.collection(DOOFSTICKS).doc(userId).set({ ...meta }, {merge: true})
+    await db.collection(DOOFSTICKS).doc(userId).set({ ...meta }, { merge: true })
 
     res.sendStatus(200)
   }
@@ -189,9 +204,8 @@ app.post('/payment/intents', async (req, res) => {
 });
 
 
-
 // Notify payment's status
-app.post('/payment/webhook', express.raw({type: "application/json"}), async (req, res) => {
+app.post('/payment/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'] as string
 
   let event
