@@ -138,7 +138,7 @@ const MenuComponent = ({ setIsModalOpen }) => {
     <SvgHoverButton href="https://www.facebook.com/ultravirus101" id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }} normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }} />
     <SvgHoverButton href="https://soundcloud.com/ultravirusss" id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }} />
     <SvgHoverButton 
-      onClick={e => {
+      onClick={async e => {
         e.preventDefault();
         const targetUrl = await getRoomURL("lobby");
         if (targetUrl) {
