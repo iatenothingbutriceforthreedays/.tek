@@ -137,7 +137,7 @@ const MenuComponent = ({ setIsModalOpen }) => {
     <SvgHoverButton href="https://ultravirus.bandcamp.com/" id="BC_Button" normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal }} hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover }} />
     <SvgHoverButton href="https://www.facebook.com/ultravirus101" id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }} normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }} />
     <SvgHoverButton href="https://soundcloud.com/ultravirusss" id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }} />
-    <SvgHoverButton 
+     { showLogin  && <SvgHoverButton 
       onClick={async e => {
         e.preventDefault();
         const targetUrl = await getRoomURL("lobby");
@@ -146,7 +146,7 @@ const MenuComponent = ({ setIsModalOpen }) => {
         } else {
           console.error("invalid portal targetRoom:", this.data.targetRoom);
         }
-      }} id="Enter" hoverProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButtonHover}} normalProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButton }} />
+      }} id="Enter" hoverProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButtonHover}} normalProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButton }} /> }
   </svg>);
 
 }
