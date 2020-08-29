@@ -151,7 +151,7 @@ const RoomAudioPlayer = React.forwardRef(
 
     if (track === null) return null;
 
-    console.info(`track: ${JSON.stringify(track)}`);
+    // console.info(`track: ${JSON.stringify(track)}`);
 
     const nextTrack = track => playlist[(playlist.indexOf(track) + 1) % playlist.length];
 
