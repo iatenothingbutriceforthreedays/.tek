@@ -197,7 +197,8 @@ app.post('/payment/webhook', async (req, res) => {
 
   try {
     event = stripe.webhooks.constructEvent(req.body.rawBody, sig, STRIPE_WH_SECRET)
-  } catch (err) {
+  } catch (error) {
+    functions.logger.error("Failed to construct webhook event", { error })
     res.status(400).end()
     return
   }
