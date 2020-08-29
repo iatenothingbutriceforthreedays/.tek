@@ -237,7 +237,7 @@ export default class Store extends EventTarget {
       });
     }
 
-    if (window.APP.store.state.credentials.token) {
+    if (this.state.credentials.token) {
       const response = await fetch(
         'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
         { 
@@ -289,10 +289,6 @@ export default class Store extends EventTarget {
       this.update({ profile: { displayName: generateRandomName() } });
     }
     
-    // Regenerate name to encourage users to change it.
-    // if (!this.displayName) {
-    //   this.update({ profile: { displayName: generateRandomName() } });
-    // }
   };
 
   resetToRandomDefaultAvatar = async () => {
