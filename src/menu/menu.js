@@ -119,17 +119,6 @@ export const Menu = ({
             ...style
           }}
         >
-          <SvgToggleButton
-            style={{ pointerEvents: "auto" }}
-            active={!hidden}
-            onToggle={() => {
-              if (inModal || hidden) setInModal(false);
-              onMenuToggle();
-            }}
-            normalProps={{ x: "1034", y: "132", width: "738", height: "734", href: MenuClosed }}
-            activeProps={{ x: "1044", y: "134", width: "726", height: "727", href: MenuOpen }}
-          />
-
           {!hidden && (
             <>
               <image
@@ -193,6 +182,16 @@ export const Menu = ({
               />
             </>
           )}
+          <SvgToggleButton
+            style={{ pointerEvents: "auto", zIndex:100 }}
+            active={!hidden}
+            onToggle={() => {
+              if (inModal || hidden) setInModal(false);
+              onMenuToggle(hidden);
+            }}
+            normalProps={{ x: "1034", y: "132", width: "738", height: "734", href: MenuClosed }}
+            activeProps={{ x: "1044", y: "134", width: "726", height: "727", href: MenuOpen }}
+          />
         </svg>
       </div>
 
