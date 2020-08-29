@@ -8,11 +8,7 @@ import Stripe from 'stripe';
 import fetch from 'node-fetch'
 
 import * as retry from 'async-retry'
-
 import * as express from 'express';
-
-import { Request } from 'express'
-
 import * as cors from 'cors';
 
 import { addMonths, subSeconds, getUnixTime } from 'date-fns'
@@ -20,27 +16,22 @@ import { addMonths, subSeconds, getUnixTime } from 'date-fns'
 import {
   sign,
   // verify,
-   decode,
+  decode,
 } from 'jsonwebtoken'
-
-// import * as jwtMiddleware from 'express-jwt'
 
 import { v4 as uuidv4 } from 'uuid';
 
-const {
-  stripe: {
-    key: STRIPE_KEY = 'pk_stripe',
-    wh_secret: STRIPE_WH_SECRET = 'wh_stripe',
-  },
-  dr33m: {
-    secret: DR33M_SECRET = 'super_secret',
-    admin_id: DR33M_ADMIN_ID = '1234',
-  }
-} = functions.config()
+const db = admin.firestore()
+
+const env = functions.config()
+
+const STRIPE_KEY = env.stripe.key || 'pk_stripe'
+const STRIPE_WH_SECRET = env.stripe.wh_secret || 'wh_stripe'
+
+const DR33M_SECRET = env.dr33m.secret || 'super_secret'
+const DR33M_ADMIN_ID = env.dr33m.admin_id || '1234'
 
 const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2020-03-02' });
-
-const db = admin.firestore()
 
 const app = express();
 
@@ -86,7 +77,7 @@ const lookup = async (email: string) => {
   });
 
   if (!res.ok) {
-    console.error(await res.text())
+    functions.logger.error(await res.text())
     return null
   }
 
@@ -145,7 +136,7 @@ app.post('/search', async (req, res) => {
 
 // const validateToken = jwtMiddleware({ secret: DR33M_SECRET, algorithms: ['HS512'] })
 
-const parseAndExtractUser = (req: Request) => {
+const parseAndExtractUser = (req: express.Request) => {
   try {
     const token = (req.headers.authorization as string).split(' ')[1]
     // 3ast3r 3gg
@@ -153,12 +144,12 @@ const parseAndExtractUser = (req: Request) => {
     const payload: Token = decode(token) as Token
     return payload.sub
   } catch (error) {
-    console.error({ error });
+    functions.logger.error({ error });
     return null;
   }
 }
 
-app.get('/doofsticks', async (req: Request, res) => {
+app.get('/doofsticks', async (req: express.Request, res) => {
   const userId = parseAndExtractUser(req)
   if (!userId) {
     res.sendStatus(401)
@@ -168,7 +159,7 @@ app.get('/doofsticks', async (req: Request, res) => {
   }
 })
 
-app.post('/doofsticks', async (req: Request, res) => {
+app.post('/doofsticks', async (req: express.Request, res) => {
   const userId = parseAndExtractUser(req)
 
   if (!userId) {
@@ -195,6 +186,8 @@ app.post('/payment/intents', async (req, res) => {
   res.send(paymentIntent);
 });
 
+
+
 // Notify payment's status
 app.post('/payment/webhook', async (req, res) => {
   const sig = req.headers['stripe-signature'] as string
@@ -208,7 +201,7 @@ app.post('/payment/webhook', async (req, res) => {
     return
   }
 
-  console.log({ event })
+  functions.logger.debug({ event })
 
   const intent = event.data.object
 
@@ -216,7 +209,7 @@ app.post('/payment/webhook', async (req, res) => {
   switch (event.type) {
     case 'payment_intent.succeeded':
       // Create user account
-      console.log("Payment Success:", { intent });
+      functions.logger.log("Payment Success:", { intent });
 
       const user = parseSuccess(intent)
 
@@ -229,16 +222,17 @@ app.post('/payment/webhook', async (req, res) => {
           return created
         }, { retries: 5 })
       } catch (e) {
+        functions.logger.error("Failed to create user:", { intent, e });
         res.status(500).send('Failed to create user after successful payment').end()
         return
       }
 
-      console.log('Account Creation Success:', { createdUser })
+      functions.logger.log('Account Creation Success:', { createdUser })
 
       break;
     case 'payment_intent.payment_failed':
       // const message = intent.last_payment_error && intent.last_payment_error.message
-      console.log('Failed:', { intent })
+      functions.logger.log('Failed Payment:', { intent })
       break;
   }
 
