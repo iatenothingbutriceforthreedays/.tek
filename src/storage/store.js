@@ -258,12 +258,20 @@ export default class Store extends EventTarget {
             throw new Error("Not 2xx response")
           } else {
             response.json().then(data => {
-              if (data.message) {
-                console.log('response 200 from get: ' +data.message)
+              if (data.message && data.name) {
+                console.log('response 200 from get, message: ' + data.message + ' name: ' + data.name)
                 this.update({ profile: { doofStick: data.message } });
-              } else {
-                console.log('response 200 from get: nothing in message')
+                this.update({ profile: { displayName: data.name } });
+              } else if (data.name) {
+                // console.log('response 200 from get: nothing in message')
                 this.update({ profile: { doofStick: "" } });
+                this.update({ profile: { displayName: data.name } });
+              } else if (data.message) {
+                this.update({ profile: { doofStick: data.message } });
+                this.update({ profile: { displayName: generateRandomName() } });
+              } else {
+                this.update({ profile: { doofStick: "" } });
+                this.update({ profile: { displayName: generateRandomName() } });
               }
             });
           }
@@ -274,11 +282,13 @@ export default class Store extends EventTarget {
           console.log(err)
         }
       );
+    } else {
+      this.update({ profile: { doofStick: "" } });
+      this.update({ profile: { displayName: generateRandomName() } });
     }
     
-
     // Regenerate name to encourage users to change it.
-    // if (!this.state.activity.hasChangedName) {
+    // if (!this.displayName) {
     //   this.update({ profile: { displayName: generateRandomName() } });
     // }
   };
