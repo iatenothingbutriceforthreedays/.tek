@@ -197,22 +197,18 @@ AFRAME.registerComponent("player-info", {
           }
         );
       }
+    }
 
-      // if (this.displayName && nametagEl) {
-        nametagEl.setAttribute("text", { value: this.displayName });
-        nametagEl.object3D.visible = !infoShouldBeHidden;
-      // }
-  
-      // if (this.doofStick && doofStickEl) {
-        doofStickEl.setAttribute("text", { value: this.doofStick });
-        doofStickEl.object3D.visible = !infoShouldBeHidden;
-      // }
+    if (this.displayName && nametagEl) {
+      nametagEl.setAttribute("text", { value: this.displayName });
+      nametagEl.object3D.visible = !infoShouldBeHidden;
+    }
+
+    if (this.doofStick && doofStickEl) {
+      doofStickEl.setAttribute("text", { value: this.doofStick });
+      doofStickEl.object3D.visible = !infoShouldBeHidden;
     }
     
-
-    
-    
-
     if (identityNameEl) {
       if (this.identityName) {
         identityNameEl.setAttribute("text", { value: this.identityName });

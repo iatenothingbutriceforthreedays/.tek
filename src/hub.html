@@ -64,6 +64,8 @@
             <a-asset-item id="drawing-pen" response-type="arraybuffer" src="./assets/models/DrawingPen.glb"></a-asset-item>
             <a-asset-item id="spawn-point" response-type="arraybuffer" src="./assets/models/spawn-point.glb"></a-asset-item>
 
+            <a-asset-item id="eyearms" response-type="arraybuffer" src="./assets/models/avatar__eyeball(arm).glb"></a-asset-item>
+
             <template id="template-waypoint-avatar">
                 <a-entity waypoint></a-entity>
             </template>
@@ -202,7 +204,7 @@
                                 body-helper="type: kinematic; collisionFilterGroup: 4; collisionFilterMask: 1;"
                                 shape-helper="type: cylinder; fit: manual; halfExtents: 0.11 0.10 0.11; offset: 0 0.06 0.04;"
                             >
-                                <a-gltf-model class="qwop-arms" matrix-auto-update arms-comp scale="0.2 0.2 0.2" rotation="0 90 0" src="https://unsw-immersive-solutions-data.s3-ap-southeast-2.amazonaws.com/Sarri/FPS+arms.blend.gltf"></a-gltf-model>
+                                <a-entity class="qwop-arms" matrix-auto-update loop-animation animation-mixer arms-comp scale="1 1 1" rotation="0 0 0" gltf-model-plus="inflate: true; src: #eyearms;"></a-entity>
                             </a-entity>
                         </template>
 
