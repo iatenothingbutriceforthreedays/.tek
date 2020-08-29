@@ -256,7 +256,7 @@ export default class Store extends EventTarget {
           this.update({ profile: { doofStick: 'Hello!' } });
           throw new Error("Not 2xx response")
         } else {
-          const resJSON = await response.json();
+          const resJSON = response.json();
           this.update({ profile: { doofStick: resJSON.message } });
         }
       }
