@@ -30,15 +30,17 @@ const db = admin.firestore()
 
 const env = functions.config()
 
-const STRIPE_KEY = env.stripe.key || 'pk_stripe'
+const STRIPE_KEY = env.stripe.secret_key || 'pk_stripe'
 const STRIPE_WH_SECRET = env.stripe.wh_secret || 'wh_stripe'
 
 const DR33M_SECRET = env.dr33m.secret || 'super_secret'
 const DR33M_ADMIN_ID = env.dr33m.admin_id || '1234'
 
-const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2020-03-02' });
+const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2020-08-27' });
 
 const app = express();
+
+app.use(cors({ origin: true }))
 
 app.use(
   (
@@ -46,15 +48,13 @@ app.use(
     res: express.Response,
     next: express.NextFunction
   ): void => {
-    if (req.originalUrl === '/payment/webhook') {
+    if (req.originalUrl.endsWith('/payment/webhook')) {
       next();
     } else {
       bodyParser.json()(req, res, next);
     }
   }
 );
-
-app.use(cors({ origin: true }))
 
 interface Token {
   aud: string
@@ -208,12 +208,16 @@ app.post('/payment/intents', async (req, res) => {
 app.post('/payment/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'] as string
 
-  let event
+  let event: Stripe.Event
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WH_SECRET)
   } catch (e) {
-    functions.logger.error("Failed to construct webhook event", { e, body: req.body })
+    functions.logger.error("Failed to construct webhook event", {
+      okay: req.originalUrl.endsWith('/payment/webhook'),
+      url: req.originalUrl
+    });
+
     res.status(400).end()
     return
   }
