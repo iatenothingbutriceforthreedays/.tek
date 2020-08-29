@@ -80,17 +80,17 @@ function registerNetworkSchemas() {
         component: "visible"
       },
       {
-        selector: ".qwopArms",
+        selector: ".qwop-arms",
         component: "position",
         requiresNetworkUpdate: vectorRequiresUpdate(0.001)
       },
       {
-        selector: ".qwopArms",
+        selector: ".qwop-arms",
         component: "rotation",
         requiresNetworkUpdate: vectorRequiresUpdate(0.5)
       },
       {
-        selector: ".qwopArms",
+        selector: ".qwop-arms",
         component: "visible"
       },
       // {
