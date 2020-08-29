@@ -20,11 +20,37 @@ $breakpoint-lg: 992px; // Desktops
 $breakpoint-xl: 1200px; // Large Desktops
 $breakpoint-xxl: 1600px; // Extra Large Desktops
 
+.glow {
+  color: rgb(157, 203, 141);
+  animation: glow 1s ease-in-out infinite alternate;
+  font-size: 2em;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 0.1em rgb(157, 203, 141), 0 0 0.5em rgb(171, 216, 155);
+  }
+  to {
+    text-shadow: 0 0 0.3em rgb(157, 203, 141), 0 0 1.0em rgb(171, 216, 155);
+  }
+}
+
 %unselectable  {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+%undraggable {
+  -moz-user-drag: none;
+  -webkit-user-drag: none;
+  -ms-user-drag: none;
+  user-drag: none;
+}
+
+.squiggle:hover{
+	border-bottom: 1px dotted #000;
 }
 
 %default-font {

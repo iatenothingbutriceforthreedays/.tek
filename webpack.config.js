@@ -252,6 +252,7 @@ module.exports = async (env, argv) => {
       link: path.join(__dirname, "src", "link.js"),
       // discord: path.join(__dirname, "src", "discord.js"),
       credits: path.join(__dirname, "src", "credits.js"),
+      coc: path.join(__dirname, "src", "coc.js"),
       cloud: path.join(__dirname, "src", "cloud.js"),
       signin: path.join(__dirname, "src", "signin.js"),
       about: path.join(__dirname, "src", "about.js"),
@@ -277,11 +278,10 @@ module.exports = async (env, argv) => {
       historyApiFallback: {
         rewrites: [
           { from: /^\/signin/, to: "/signin.html" },
-          { from: /^\/index/, to: "/indexnew.html" },
-
           { from: /^\/about/, to: "/about.html" },
           { from: /^\/credits/, to: "/credits.html" },
 
+          { from: /^\/coc/, to: "/coc.html" },
           // { from: /^\/discord/, to: "/discord.html" },
           { from: /^\/cloud/, to: "/cloud.html" },
           { from: /^\/verify/, to: "/verify.html" },
@@ -570,6 +570,14 @@ module.exports = async (env, argv) => {
         filename: "credits.html",
         template: path.join(__dirname, "src", "credits.html"),
         chunks: ["credits"],
+        minify: {
+          removeComments: false
+        }
+      }),
+      new HTMLWebpackPlugin({
+        filename: "coc.html",
+        template: path.join(__dirname, "src", "coc.html"),
+        chunks: ["coc"],
         minify: {
           removeComments: false
         }
