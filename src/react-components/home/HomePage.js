@@ -25,7 +25,7 @@ Modal.defaultStyles.content = {
   left: "0",
 }
 
-import { getRoomMetadata } from "../../room-metadata";
+import { getRoomMetadata, getRoomURL } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
@@ -251,9 +251,9 @@ const EnterButton = props => {
         margin: "0",
         cursor: "pointer"
       }}
-      onClick={e => {
+      onClick={async e => {
         e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
+        const targetUrl = await getRoomURL("lobby");
         if (targetUrl) {
           location.href = targetUrl;
         } else {

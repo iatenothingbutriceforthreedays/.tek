@@ -6,16 +6,16 @@ import configs from "./utils/configs";
 const maxRoomCap = configs.feature("max_room_cap") || 50;
 
 export const LOBBY_SCENE_ID = window.LOBBY_SCENE_ID || "kPeiTQC";
-export const ENABLE_LOAD_BALANCING = !!window.ENABLE_LOAD_BALANCING;
+export const ENABLE_LOAD_BALANCING = true // !!window.ENABLE_LOAD_BALANCING;
 export const lobbyIDs = window.LOBBY_IDS || ["3maDzA9", "ApXo7Y3", "Ek5qYcd", "QETdxTw", "oQLA4Sx", "zNYKYnv"];
 
 export const inLobby = (id = getHubId()) => lobbyIDs.includes(id);
 
 const roomMapping = window.ROOM_MAPPING || {
-  "room1": "/EJY4miE/solar_eclipse",
-  "room2": "/XRfKSWB/solway_firth",
-  "room3": "/fcWA7EE/stygians_gravemine",
-  "lobby": "/3maDzA9/hypnik_crypt333",
+  room1: "/EJY4miE/solar_eclipse",
+  room2: "/XRfKSWB/solway_firth",
+  room3: "/fcWA7EE/stygians_gravemine",
+  lobby: "/3maDzA9/hypnik_crypt333"
 };
 
 const roomMetadata = {
@@ -112,7 +112,7 @@ export const bestLobby = async () => {
   return room ? new URL(room.url).pathname : defaultLobby;
 };
 
-export const getRoomURL = roomKey => {
+export const getRoomURL = async roomKey => {
   if (!roomKey) roomKey = currentRoomKey();
-  return roomKey == "lobby" ? bestLobby() : getRoomMetadata(roomKey).url;
+  return roomKey == "lobby" ? await bestLobby() : getRoomMetadata(roomKey).url;
 };
