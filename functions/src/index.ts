@@ -10,7 +10,6 @@ import fetch from 'node-fetch'
 import * as retry from 'async-retry'
 
 import * as express from 'express';
-
 import { Request } from 'express'
 
 import * as cors from 'cors';
@@ -20,7 +19,7 @@ import { addMonths, subSeconds, getUnixTime } from 'date-fns'
 import {
   sign,
   // verify,
-   decode,
+  decode,
 } from 'jsonwebtoken'
 
 // import * as jwtMiddleware from 'express-jwt'
@@ -92,16 +91,16 @@ const lookup = async (email: string) => {
 
   const data = await res.json()
 
-  const { data: [{ identity: { name }, id }] } = data
+  const { data: [{ id }] } = data
 
-  return { email, name, id }
+  return { email, id }
 }
 
-const createAccount = async ({ email, name }: User) => {
+const createAccount = async ({ email }: User) => {
   const res = await fetch(`${HUBS_API_BASE}/accounts`, {
     method: 'POST',
     headers: { ...HUBS_AUTH_HEADER, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data: { email, name } })
+    body: JSON.stringify({ data: { email } })
   });
 
   return res.ok ? lookup(email) : null
@@ -247,13 +246,12 @@ app.post('/payment/webhook', async (req, res) => {
 
 interface User {
   email: string
-  name: string
 }
 
 const parseSuccess = (intent: any) => {
   const {
     charges: {
-      data: [{ metadata: { email, name } }]
+      data: [{ metadata: { email } }]
     }
   }: { charges: { data: { metadata: User }[] } } = intent
 
