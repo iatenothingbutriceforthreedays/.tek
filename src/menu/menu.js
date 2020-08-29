@@ -50,6 +50,7 @@ const paneWidth = 1865;
 const paneHeight = 4689;
 
 
+
 export const Menu = ({
   watching,
   hidden,
@@ -60,7 +61,7 @@ export const Menu = ({
   onMenuToggle,
   onMuteToggle,
   onNameChange,
-  onDoofstickChange,
+  onDoofStickChange,
   onWatchToggle,
   onVolumeChange,
   onReport,
@@ -118,6 +119,11 @@ export const Menu = ({
       )
     );
   };
+
+  // const onDoofStickChange = (doofstick) => {
+  //   window.APP.store.update({ profile: { doofStick: doofstick } })
+  // }
+  
 
  
 
@@ -234,7 +240,7 @@ export const Menu = ({
           <TextForm
             id={"menu-doofstick-input"}
             value={doofstick}
-            onValueChange={onDoofstickChange}
+            onValueChange={ function (doofstick) { window.APP.store.update({ profile: { doofStick: doofstick } }) } }
             minLength={0}
             maxLength={120}
             spellCheck="false"
