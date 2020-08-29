@@ -194,35 +194,6 @@ export const Menu = ({
           />
         </svg>
       </div>
-
-      {false && !hidden && inModal && (
-        <DialogContainer wide={true} title={"3dit dr33m"} onClose={() => setInModal(false)}>
-          <span>nam3</span>
-          <TextForm
-            id={"menu-name-input"}
-            value={name}
-            onValueChange={onNameChange}
-            minLength={1}
-            maxLength={64}
-            spellCheck="false"
-            pattern={SCHEMA.definitions.profile.properties.displayName.pattern}
-            onFocus={e => handleTextFieldFocus(e.target)}
-            onBlur={() => handleTextFieldBlur()}
-          />
-          <span>D00F571C</span>
-          <TextForm
-            id={"menu-doofstick-input"}
-            value={doofstick}
-            onValueChange={onDoofstickChange}
-            minLength={0}
-            maxLength={120}
-            spellCheck="false"
-            pattern={"^[A-Za-z0-9 -]{0,120}$"}
-            onFocus={e => handleTextFieldFocus(e.target)}
-            onBlur={() => handleTextFieldBlur()}
-          />
-        </DialogContainer>
-      )}
     </>
   );
 };
