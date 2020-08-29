@@ -25,7 +25,7 @@ import { CursorPoseTrackingSystem } from "./cursor-pose-tracking";
 import { ScaleInScreenSpaceSystem } from "./scale-in-screen-space";
 import { MenuAnimationSystem } from "./menu-animation-system";
 import { AudioSettingsSystem } from "./audio-settings-system";
-import { EnterVRButtonSystem } from "./enter-vr-button-system";
+// import { EnterVRButtonSystem } from "./enter-vr-button-system";
 import { AudioSystem } from "./audio-system";
 import { EffectsSystem } from "./effects-system";
 
@@ -60,7 +60,7 @@ AFRAME.registerSystem("hubs-systems", {
     this.scaleInScreenSpaceSystem = new ScaleInScreenSpaceSystem();
     this.menuAnimationSystem = new MenuAnimationSystem();
     this.audioSettingsSystem = new AudioSettingsSystem(this.el);
-    this.enterVRButtonSystem = new EnterVRButtonSystem(this.el);
+    // this.enterVRButtonSystem = new EnterVRButtonSystem(this.el);
     this.animationMixerSystem = new AnimationMixerSystem();
     this.boneVisibilitySystem = new BoneVisibilitySystem();
     this.uvScrollSystem = new UVScrollSystem();
@@ -104,7 +104,7 @@ AFRAME.registerSystem("hubs-systems", {
     this.waypointSystem.tick(t, dt);
     this.menuAnimationSystem.tick(t);
     this.spriteSystem.tick(t, dt);
-    this.enterVRButtonSystem.tick();
+    // this.enterVRButtonSystem.tick();
     this.effectsSystem.tick(t,dt);
     this.uvScrollSystem.tick(dt);
     // We run this late in the frame so that its the last thing to have an opinion about the scale of an object
