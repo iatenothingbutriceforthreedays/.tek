@@ -21,10 +21,6 @@ const loginButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-butt
 const loginButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/login-button-hover.png";
 const loginButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-button-hover.webp";
 
-
-const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/enter-button.gif";
-const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/enter-button-hover.gif";
-
 const logoutButton = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.png";
 const logoutButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.webp";
 
