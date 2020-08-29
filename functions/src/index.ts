@@ -14,6 +14,8 @@ import * as cors from 'cors';
 
 import { addMonths, subSeconds, getUnixTime } from 'date-fns'
 
+import { omitBy, isUndefined } from 'lodash'
+
 import {
   sign,
   // verify,
@@ -167,9 +169,8 @@ app.post('/doofsticks', async (req: express.Request, res) => {
     res.sendStatus(401)
   } else {
 
-    const { message } = req.body
-
-    await db.collection(DOOFSTICKS).doc(userId).set({ message })
+    const meta = omitBy(req.body, isUndefined)
+    await db.collection(DOOFSTICKS).doc(userId).set({ ...meta }, {merge: true})
 
     res.sendStatus(200)
   }
