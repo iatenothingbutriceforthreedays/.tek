@@ -8,13 +8,13 @@ import { FormattedMessage } from "react-intl";
 import { AuthContext } from "../auth/AuthContext";
 import { BackgroundVideo } from "../home/HomePage";
 
-const SignInStep = {
+export const SignInStep = {
   submit: "submit",
   waitForVerification: "waitForVerification",
   complete: "complete"
 };
 
-const SignInAction = {
+export const SignInAction = {
   submitEmail: "submitEmail",
   verificationReceived: "verificationReceived",
   cancel: "cancel"
@@ -36,7 +36,7 @@ function loginReducer(state, action) {
   }
 }
 
-function useSignIn() {
+export function useSignIn() {
   const auth = useContext(AuthContext);
   const [state, dispatch] = useReducer(loginReducer, initialSignInState);
 

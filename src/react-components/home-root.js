@@ -41,7 +41,7 @@ import logoImageWebp from "../assets/images/logo.webp";
 import AuthDialog from "./auth-dialog.js";
 import SignInDialog from "./sign-in-dialog.js";
 
-import { getRoomMetadata } from "../room-metadata";
+import getRoomMetadata from "../room-metadata";
 
 addLocaleData([...en]);
 
@@ -53,6 +53,9 @@ let showLogin = false;
 if (queryArgs["login"]) {
   showLogin = true;
 }
+
+
+
 
 class HomeRoot extends Component {
   static propTypes = {
@@ -232,8 +235,8 @@ class HomeRoot extends Component {
                 transform: "scale(1.2, 1.2)"
               }}
             >
-              <source src={splashMp4} type="video/mp4" />
               <source src={splashWebm} type="video/webm" />
+              <source src={splashMp4} type="video/mp4" />
             </video>
           </div>
           <div className={mainContentClassNames}>
@@ -295,13 +298,10 @@ class HomeRoot extends Component {
       <picture>
         <source srcset={aug20ImageWebp} type="image/webp" />
         <source srcset={aug20Image} type="image/gif" />
-        <img
-          src={aug20ImageWebp}
-          style={{
-            maxWidth: "200px",
-            mixBlendMode: "lighten"
-          }}
-        />
+        <img src={aug20ImageWebp} style={{
+          maxWidth: "200px",
+          mixBlendMode: "lighten"
+        }} />
       </picture>
     );
   }
@@ -310,14 +310,22 @@ class HomeRoot extends Component {
     // <a onClick={}></a>
     // <a onClick={this.onLinkClicked(this.signOut)}>
 
-    return <LoginButton onLinkClicked={this.onLinkClicked(this.showSignInDialog)} />;
+    return (
+      <LoginButton
+        onLinkClicked={
+          this.onLinkClicked(this.showSignInDialog)} />
+    );
   }
 
   renderSignOutDialog() {
     // <a onClick={}></a>
     // <a onClick={this.onLinkClicked(this.signOut)}>
 
-    return <LogoutButton onLinkClicked={this.onLinkClicked(this.signOut)} />;
+    return (
+      <LogoutButton
+        onLinkClicked={
+          this.onLinkClicked(this.signOut)} />
+    );
   }
 
   renderBody() {
@@ -338,15 +346,9 @@ class HomeRoot extends Component {
             />
           </picture>
           {!this.state.signedIn && this.renderAug20Button()}
-          {this.state.signedIn && (
-            <div
-              style={{
-                marginLeft: "225px" // half of maxWidth above
-              }}
-            >
-              <EnterButton />
-            </div>
-          )}
+          {this.state.signedIn && <div style={{
+            marginLeft: "225px" // half of maxWidth above
+          }}><EnterButton /></div>}
         </div>
         <div className={styles.ctaButtons}>
           <div
