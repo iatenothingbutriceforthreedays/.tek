@@ -190,15 +190,15 @@ app.post('/payment/intents', async (req, res) => {
 
 
 // Notify payment's status
-app.post('/payment/webhook', async (req, res) => {
+app.post('/payment/webhook', express.raw({type: "application/json"}), async (req, res) => {
   const sig = req.headers['stripe-signature'] as string
 
   let event
 
   try {
-    event = stripe.webhooks.constructEvent(req.body.rawBody, sig, STRIPE_WH_SECRET)
-  } catch (error) {
-    functions.logger.error("Failed to construct webhook event", { error })
+    event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WH_SECRET)
+  } catch (e) {
+    functions.logger.error("Failed to construct webhook event", { e, body: req.body })
     res.status(400).end()
     return
   }
