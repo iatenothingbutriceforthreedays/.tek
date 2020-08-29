@@ -183,7 +183,7 @@ export const Menu = ({
             </>
           )}
           <SvgToggleButton
-            style={{ pointerEvents: "auto", zIndex:100 }}
+            style={{ pointerEvents: "auto", zIndex: 100 }}
             active={!hidden}
             onToggle={() => {
               if (inModal || hidden) setInModal(false);
@@ -195,7 +195,7 @@ export const Menu = ({
         </svg>
       </div>
 
-      {!hidden && inModal && (
+      {false && !hidden && inModal && (
         <DialogContainer wide={true} title={"3dit dr33m"} onClose={() => setInModal(false)}>
           <span>nam3</span>
           <TextForm
