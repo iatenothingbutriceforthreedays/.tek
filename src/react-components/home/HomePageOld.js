@@ -15,6 +15,7 @@ import SignInDialog from "../sign-in-dialog.js";
 import Modal from 'react-modal';
 
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
+import { check_webp_feature_support_cache } from "../../utils/compat";
 
 Modal.defaultStyles.overlay.backgroundColor = 'rgba(0, 0, 0, 0.75)';
 Modal.defaultStyles.content = {
@@ -105,9 +106,14 @@ export const BackgroundVideo = () => (
 const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalOpen, setCoCModalOpen }) => {
   const auth = useContext(AuthContext);
   
+  let backImage = mainMenuBack;
+
+  if (check_webp_feature_support_cache("lossy")) {
+    backImage = mainMenuBackWebp;
+  }
   
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
-    <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={mainMenuBack} />
+    <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={backImage} />
     <defs>
       <clipPath id="cut-off-bottom">
         <rect x="1340" y="2980" width="680" height="90" />
