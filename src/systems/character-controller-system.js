@@ -66,7 +66,7 @@ export class CharacterControllerSystem {
     waitForDOMContentLoaded().then(() => {
       this.avatarPOV = document.getElementById("avatar-pov-node");
       this.avatarRig = document.getElementById("avatar-rig");
-      this.avatarEyeBallHandz = document.getElementById("eye-ball-handz");
+      // this.avatarEyeBallHandz = document.getElementById("eye-ball-handz");
     });
   }
   // Use this API for waypoint travel so that your matrix doesn't end up in the pool
