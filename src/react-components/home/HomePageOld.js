@@ -28,11 +28,13 @@ Modal.defaultStyles.content = {
 import { getRoomURL } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
+import { CoCModal } from "../coc/CoC";
 
 
 import { LogInModal } from "./LogInModal";
 import { AboutModal } from "../about/About";
 import { CreditsModal } from "../credits/Credits";
+import { SvgHoverButton } from "../../utils/svg-helpers";
 
 
 const mainMenuBack = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/menu-back.png";
@@ -77,7 +79,9 @@ const logoImage = "https://str33m.dr33mphaz3r.net/static-assets/LineUptrial05h.p
 const logoImageWebp = "https://str33m.dr33mphaz3r.net/static-assets/LineUptrial05h.webp";
 
 const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button.gif";
-const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button_Hover.webp";
+const enterButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button.webp";
+const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button_Hover.gif";
+const enterButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button_Hover.webp";
 
 const logoutButton = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.png";
 const logoutButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/logout-button.webp";
@@ -97,39 +101,8 @@ export const BackgroundVideo = () => (
   </video>
 );
 
-const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
-  const [isShown, setIsShown] = useState(false);
 
-  if (href) {
-    return (<a href={href}>
-      <image
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        style={{
-          ...style,
-          cursor: "pointer"
-        }}
-        {...isShown ? hoverProps : normalProps}
-        {...otherProps}
-      />
-    </a>)
-  }
-
-  return (
-    <image
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        ...style,
-        cursor: "pointer"
-      }}
-      {...isShown ? hoverProps : normalProps}
-      {...otherProps}
-    />
-  )
-};
-
-const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalOpen }) => {
+const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalOpen, setCoCModalOpen }) => {
   const auth = useContext(AuthContext);
   
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
@@ -157,16 +130,11 @@ const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalO
     <SvgHoverButton href="https://ultravirus.bandcamp.com/" id="BC_Button" normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal }} hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover }} />
     <SvgHoverButton href="https://www.facebook.com/ultravirus101" id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }} normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }} />
     <SvgHoverButton href="https://soundcloud.com/ultravirusss" id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }} />
-    { (showLogin || auth.isSignedIn) && <SvgHoverButton 
+    { (showLogin && auth.isSignedIn) && <SvgHoverButton 
       onClick={async e => {
         e.preventDefault();
-        const targetUrl = await getRoomURL("lobby");
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }} id="Enter" hoverProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButtonHover}} normalProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButton }} /> }
+        setCoCModalOpen(true)
+      }} id="Enter" hoverProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButtonHover, xlinkHrefWebp: enterButtonHoverWebp}} normalProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButton, xlinkHrefWebp: enterButtonWebp }} /> }
   </svg>);
 
 }
@@ -337,6 +305,7 @@ export function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(showLoginModal);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
+  const [isCoCModalOpen, setCoCModalOpen] = useState(false);
 
 
   const canCreateRooms = !configs.feature("disable_room_creation") || auth.isAdmin;
@@ -389,7 +358,7 @@ export function HomePage() {
             position: "relative"
           }}
         >
-          <MenuComponent setIsModalOpen={setIsModalOpen} setIsAboutModalOpen={setIsAboutModalOpen} setIsCreditsModalOpen={setIsCreditsModalOpen} />
+          <MenuComponent setIsModalOpen={setIsModalOpen} setIsAboutModalOpen={setIsAboutModalOpen} setIsCreditsModalOpen={setIsCreditsModalOpen} setCoCModalOpen={setCoCModalOpen} />
 
         </div>
       </div>
@@ -429,6 +398,10 @@ export function HomePage() {
       { isCreditsModalOpen && <CreditsModal isOpen={isCreditsModalOpen} onRequestClose={() => setIsCreditsModalOpen(false)} /> }
 
 
+      { isCoCModalOpen && <CoCModal
+      isOpen={isCoCModalOpen}
+      onRequestClose={() => setCoCModalOpen(false)}
+      /> }
     </Page>
   );
 }

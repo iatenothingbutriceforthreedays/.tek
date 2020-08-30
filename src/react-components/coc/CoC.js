@@ -12,6 +12,15 @@ import { SvgHoverButton } from "../../utils/svg-helpers";
 
 import qsTruthy from "../../utils/qs_truthy";
 import { check_webp_feature_support_cache } from "../../utils/compat";
+import Modal from "react-modal";
+import { getRoomURL } from "../../room-metadata";
+
+
+const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button.gif";
+const enterButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button.webp";
+const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button_Hover.gif";
+const enterButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/Enter_Button_Hover.webp";
+
 
 const cocBack = "https://str33m.dr33mphaz3r.net/static-assets/coc/coc-back.png";
 const cocBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/coc/coc-back.webp";
@@ -35,6 +44,25 @@ addLocaleData([...en]);
 
 const showLogin = qsTruthy("login");
 
+export const CoCModal = ({ isOpen, onRequestClose }) => {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Credits"
+      style={{
+        content: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }
+      }}
+    >
+      <MenuComponent onRequestClose={onRequestClose} />
+    </Modal>
+  );
+};
+
 export const MenuComponent = () => {
   let backImage = cocBack;
 
@@ -43,9 +71,17 @@ export const MenuComponent = () => {
   }
 
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3601 3737">
-  <image id="CodeofConduct" x="78" y="95" width="3425" height="3579" xlinkHref={cocBack}/>
-  <image id="Enter_Hover" x="1479" y="2760" width="612" height="623" xlinkHref={null}/>
-  <image id="Enter" x="1479" y="2760" width="612" height="623" xlinkHref={null}/>
+  <image id="CodeofConduct" x="78" y="95" width="3425" height="3579" xlinkHref={backImage}/>
+  <SvgHoverButton 
+      onClick={async e => {
+        e.preventDefault();
+        const targetUrl = await getRoomURL("lobby");
+        if (targetUrl) {
+          location.href = targetUrl;
+        } else {
+          console.error("invalid portal targetRoom:", this.data.targetRoom);
+        }
+      }} id="Enter" hoverProps={{ x: "1479", y: "2760", width: "612", height: "623", xlinkHref: enterButtonHover, xlinkHrefWebp: enterButtonHoverWebp}} normalProps={{ x: "1479", y: "2760", width: "612", height: "623", xlinkHref: enterButton, xlinkHrefWebp: enterButtonWebp }} />
 </svg>
 );
 
