@@ -144,7 +144,7 @@ const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalO
         setIsCreditsModalOpen(true);
         return false;
       }} id="Credits_Button" hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover }} normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal }} />
-    { (showLogin || auth.signedIn) && <SvgHoverButton id="LogIn_Button" hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover }} normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal }} onClick={(e) => {
+    { (showLogin && !auth.signedIn) && <SvgHoverButton id="LogIn_Button" hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover }} normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal }} onClick={(e) => {
       e.preventDefault();
       setIsModalOpen(true);
       return false;
