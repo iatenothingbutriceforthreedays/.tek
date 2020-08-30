@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SvgButton as SvgHoverButton, SvgToggleButton } from "../utils/svg-helpers";
+import { SvgHoverButton, SvgToggleButton } from "../utils/svg-helpers";
 import { TextForm, TextArea } from "./text-form";
 import { Slider } from "./slider";
 
@@ -14,29 +14,49 @@ import { handleTextFieldBlur, handleTextFieldFocus } from "../utils/focus-utils"
 import { inLobby } from "../room-metadata";
 
 const Backplate = "https://str33m.dr33mphaz3r.net/static-assets/menu/Backplate.png";
+const BackplateWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Backplate.webp";
 const HomeExit = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit.png";
+const HomeExitWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit.webp";
 const HomeExitHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit_Hover.png";
+const HomeExitHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit_Hover.webp";
 const LobbyExit = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit.png";
+const LobbyExitWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit.webp";
 const LobbyExitHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit_Hover.png";
+const LobbyExitHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit_Hover.webp";
 const MenuClosed = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Closed.png";
+const MenuClosedWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Closed.webp";
 const MenuOpen = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Open_Eyeball.png";
+const MenuOpenWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Open_Eyeball.webp";
 const Report = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report.png";
+const ReportWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report.webp";
 const SliderEye = "https://str33m.dr33mphaz3r.net/static-assets/menu/Slider.png";
+const SliderEyeWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Slider.webp";
 const ReportHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report_Hover.png";
+const ReportHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report_Hover.webp";
 const Room1Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button.png";
+const Room1ButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button.webp";
 const Room1ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button_Hover.png";
+const Room1ButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button_Hover.webp";
 const Room2Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button.png";
+const Room2ButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button.webp";
 const Room2ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button_Hover.png";
+const Room2ButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button_Hover.webp";
 const Room3Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button.png";
+const Room3ButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button.webp";
 const Room3ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button_Hover.png";
-
+const Room3ButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button_Hover.webp";
 const ProfileButton = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile.png";
+const ProfileButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile.webp";
 const ProfileButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile_Hover.png";
-
+const ProfileButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile_Hover.webp";
 const MicrophoneOff = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff.png";
+const MicrophoneOffWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff.webp";
 const MicrophoneOffHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff_Hover.png";
+const MicrophoneOffHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff_Hover.webp";
 const MicrophoneOn = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.png";
+const MicrophoneOnWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.webp";
 const MicrophoneOnHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.png";
+const MicrophoneOnHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.webp";
 
 const modalSmallBg = "https://str33m.dr33mphaz3r.net/static-assets/modal/modal-small-bg.png";
 const modalSmallBgWebp = "https://str33m.dr33mphaz3r.net/static-assets/modal/modal-small-bg.webp";
@@ -226,7 +246,7 @@ export const Menu = ({
   const SVG_WIDTH = 1865;
 
   const WatchToggle = ({ watching, onToggle }) => {
-    const baseProps = { y: "2771", width: "217", height: "217", href: SliderEye };
+    const baseProps = { y: "2771", width: "217", height: "217", xlinkHrefWebp: SliderEyeWebp, xlinkHref: SliderEye };
     return (
       <SvgToggleButton
         active={!watching}
@@ -251,10 +271,10 @@ export const Menu = ({
         <SvgToggleButton
           active={muted}
           onToggle={onMuteToggle}
-          activeProps={{ ...mutePosition, href: MicrophoneOff }}
-          activeHoverProps={{ ...mutePosition, href: MicrophoneOffHover }}
-          normalProps={{ ...mutePosition, href: MicrophoneOn }}
-          normalHoverProps={{ ...mutePosition, href: MicrophoneOnHover }}
+          activeProps={{ ...mutePosition, xlinkHrefWebp: MicrophoneOffWebp, xlinkHref: MicrophoneOff }}
+          activeHoverProps={{ ...mutePosition, xlinkHrefWebp: MicrophoneOffHoverWebp, xlinkHref: MicrophoneOffHover }}
+          normalProps={{ ...mutePosition, xlinkHrefWebp: MicrophoneOnWebp, xlinkHref: MicrophoneOn }}
+          normalHoverProps={{ ...mutePosition, xlinkHrefWebp: MicrophoneOnHoverWebp, xlinkHref: MicrophoneOnHover }}
         />
       )
     );
@@ -295,45 +315,45 @@ export const Menu = ({
               <SvgHoverButton
                 id="EditProfile"
                 onClick={() => setInModal(true)}
-                normalProps={{ ...editPosition, href: ProfileButton }}
-                hoverProps={{ ...editPosition, href: ProfileButtonHover }}
+                normalProps={{ ...editPosition, xlinkHrefWebp: ProfileButtonWebp, xlinkHref: ProfileButton }}
+                hoverProps={{ ...editPosition, xlinkHrefWebp: ProfileButtonHoverWebp, xlinkHref: ProfileButtonHover }}
               />
 
               <SvgHoverButton
                 id="Report"
                 onClick={onReport}
-                normalProps={{ ...reportPosition, href: Report }}
-                hoverProps={{ ...reportPosition, href: ReportHover }}
+                normalProps={{ ...reportPosition, xlinkHrefWebp: ReportWebp, xlinkHref: Report }}
+                hoverProps={{ ...reportPosition, xlinkHrefWebp: ReportHoverWebp, xlinkHref: ReportHover }}
               />
               <SvgHoverButton
                 id="HomeExit"
                 onClick={onHome}
-                normalProps={{ ...homePosition, href: HomeExit }}
-                hoverProps={{ ...homePosition, href: HomeExitHover }}
+                normalProps={{ ...homePosition, xlinkHrefWebp: HomeExitWebp, xlinkHref: HomeExit }}
+                hoverProps={{ ...homePosition, xlinkHrefWebp: HomeExitHoverWebp, xlinkHref: HomeExitHover }}
               />
               <SvgHoverButton
                 id="LobbyExit"
                 onClick={onLobby}
-                normalProps={{ ...lobbyPosition, href: LobbyExit }}
-                hoverProps={{ ...lobbyPosition, href: LobbyExitHover }}
+                normalProps={{ ...lobbyPosition, xlinkHrefWebp: LobbyExitWebp, xlinkHref: LobbyExit }}
+                hoverProps={{ ...lobbyPosition, xlinkHrefWebp: LobbyExitHoverWebp, xlinkHref: LobbyExitHover }}
               />
               <SvgHoverButton
                 id="Room1Button"
                 onClick={onRoom1}
-                normalProps={{ ...room1Position, href: Room1Button }}
-                hoverProps={{ ...room1Position, href: Room1ButtonHover }}
+                normalProps={{ ...room1Position, xlinkHrefWebp: Room1ButtonWebp, xlinkHref: Room1Button }}
+                hoverProps={{ ...room1Position, xlinkHrefWebp: Room1ButtonHoverWebp, xlinkHref: Room1ButtonHover }}
               />
               <SvgHoverButton
                 id="Room2Button"
                 onClick={onRoom2}
-                normalProps={{ ...room2Position, href: Room2Button }}
-                hoverProps={{ ...room2Position, href: Room2ButtonHover }}
+                normalProps={{ ...room2Position, xlinkHrefWebp: Room2ButtonWebp, xlinkHref: Room2Button }}
+                hoverProps={{ ...room2Position, xlinkHrefWebp: Room2ButtonHoverWebp, xlinkHref: Room2ButtonHover }}
               />
               <SvgHoverButton
                 id="Room3Button"
                 onClick={onRoom3}
-                normalProps={{ ...room3Position, href: Room3Button }}
-                hoverProps={{ ...room3Position, href: Room3ButtonHover }}
+                normalProps={{ ...room3Position, xlinkHrefWebp: Room3ButtonWebp, xlinkHref: Room3Button }}
+                hoverProps={{ ...room3Position, xlinkHrefWebp: Room3ButtonHoverWebp, xlinkHref: Room3ButtonHover }}
               />
             </>
           )}
@@ -344,8 +364,8 @@ export const Menu = ({
               if (inModal || hidden) setInModal(false);
               onMenuToggle(hidden);
             }}
-            normalProps={{ x: "1034", y: "132", width: "738", height: "734", href: MenuClosed }}
-            activeProps={{ x: "1044", y: "134", width: "726", height: "727", href: MenuOpen }}
+            normalProps={{ x: "1034", y: "132", width: "738", height: "734", xlinkHrefWebp: MenuClosedWebp, xlinkHref: MenuClosed }}
+            activeProps={{ x: "1044", y: "134", width: "726", height: "727", xlinkHrefWebp: MenuOpenWebp, xlinkHref: MenuOpen }}
           />
         </svg>
       </div>
