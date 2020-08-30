@@ -353,7 +353,7 @@ AFRAME.registerComponent("media-loader", {
 
     try {
       if ((forceLocalRefresh || srcChanged) && !this.showLoaderTimeout) {
-        this.showLoaderTimeout = setTimeout(this.showLoader, 100);
+        //this.showLoaderTimeout = setTimeout(this.showLoader, 100);
       }
 
       let canonicalUrl = src;
