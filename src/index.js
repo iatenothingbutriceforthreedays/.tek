@@ -4,7 +4,7 @@ import { IntlProvider } from "react-intl";
 import registerTelemetry from "./telemetry";
 import Store from "./storage/store";
 import "./utils/theme";
-import { HomePage } from "./react-components/home/HomePage";
+import { HomePage } from "./react-components/home/HomePageOld";
 import { lang, messages } from "./utils/i18n";
 import "./assets/stylesheets/globals.scss";
 import { AuthContextProvider } from "./react-components/auth/AuthContext";
@@ -27,4 +27,6 @@ function Root() {
   );
 }
 
+setTimeout(() => {
 ReactDOM.render(<Root />, document.getElementById("home-root"));
+}, 50);

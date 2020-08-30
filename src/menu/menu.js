@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { SvgHoverButton, SvgToggleButton } from "../utils/svg-helpers";
-import { TextForm } from "./text-form";
+import { SvgButton as SvgHoverButton, SvgToggleButton } from "../utils/svg-helpers";
+import { TextForm, TextArea } from "./text-form";
 import { Slider } from "./slider";
 
+// import networkAsset from "../utils/network-asset"
 
 import DialogContainer from "../react-components/dialog-container";
 import Modal from "react-modal";
@@ -59,27 +60,28 @@ const textStyles = {
   fontSize: "16px",
   lineHeight: "18px",
   textAlign: "center",
-  color: "#FFE6C1",
+  color: "#FFE6C1"
 };
 
 const HoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
   const [isShown, setIsShown] = useState(false);
 
-  if(href) {
-    return (<a href={href}>
-      <img
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        style={{
-          ...style,
-          cursor: "pointer"
-        }}
-        {...isShown ? hoverProps : normalProps}
-        src={isShown ? hoverProps['src'] : normalProps['src']}
-
-        {...otherProps}
-      />
-      </a>)
+  if (href) {
+    return (
+      <a href={href}>
+        <img
+          onMouseEnter={() => setIsShown(true)}
+          onMouseLeave={() => setIsShown(false)}
+          style={{
+            ...style,
+            cursor: "pointer"
+          }}
+          {...(isShown ? hoverProps : normalProps)}
+          src={isShown ? hoverProps["src"] : normalProps["src"]}
+          {...otherProps}
+        />
+      </a>
+    );
   }
 
   return (
@@ -90,84 +92,91 @@ const HoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) =>
         ...style,
         cursor: "pointer"
       }}
-      {...isShown ? hoverProps : normalProps}
-      src={isShown ? hoverProps['src'] : normalProps['src']}
+      {...(isShown ? hoverProps : normalProps)}
+      src={isShown ? hoverProps["src"] : normalProps["src"]}
       {...otherProps}
     />
-  )
+  );
 };
 
 export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick, onDoofstickChange }) => {
-  return (<Modal
-    isOpen={isOpen}
-    onRequestClose={() => setInModal(false)}
-    contentLabel="3dit dr33m"
-    style={{
-      content: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      },
-    }}
-  >
-    <div style={{
-      backgroundImage: `url(${modalSmallBg})`,
-      position: 'relative',
-      width: "600px",
-      height: "600px",
-      backgroundPosition: "center",
-      backgroundRepeat: "none",
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "contain",
-      color: "white",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      flexDirection: "column"
-    }}>
-      <HoverButton  onClick={(e) => {
-        e.preventDefault();
-        setInModal(false);
-        return false;
-      }} hoverProps={{ width: "32", height: "32", src: ExitButtonHover}} normalProps={{ width: "32", height: "32", src: ExitButton}}
-      
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={() => setInModal(false)}
+      contentLabel="3dit dr33m"
       style={{
-        top: "44px",
-        left: "64px",
-        position: "absolute",
-        zIndex: "9001"
-      }}/>
-      <span>nam3</span>
-      <input
-        type="text"
-        style={textStyles}
-        value={name}
-        onChange={(e) => onNameChange(e.target.value)}
-        minLength={1}
-        maxLength={64}
-        spellCheck="false"
-        pattern={SCHEMA.definitions.profile.properties.displayName.pattern}
-        onFocus={e => handleTextFieldFocus(e.target)}
-        onBlur={() => handleTextFieldBlur()}
-      />
-      <span>D00F571C</span>
-      <textarea
-        id={"menu-doofstick-input"}
-        value={doofstick}
-        onChange={(e) => onDoofstickChange(e.target.value)}
-        minLength={0}
-        maxLength={120}
+        content: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }
+      }}
+    >
+      <div
         style={{
-          ...textStyles,
-          minHeight: '120px'
+          backgroundImage: `url(${modalSmallBg})`,
+          position: "relative",
+          width: "600px",
+          height: "600px",
+          backgroundPosition: "center",
+          backgroundRepeat: "none",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column"
         }}
-        spellCheck="false"
-        pattern={"^[A-Za-z0-9 -]{0,120}$"}
-        onFocus={e => handleTextFieldFocus(e.target)}
-        onBlur={() => handleTextFieldBlur()}
-      />
-    </div>
-  </Modal>);
+      >
+        <HoverButton
+          onClick={e => {
+            e.preventDefault();
+            setInModal(false);
+            return false;
+          }}
+          hoverProps={{ width: "32", height: "32", src: ExitButtonHover }}
+          normalProps={{ width: "32", height: "32", src: ExitButton }}
+          style={{
+            top: "44px",
+            left: "64px",
+            position: "absolute",
+            zIndex: "9001"
+          }}
+        />
+        <span>nam3</span>
+        <TextForm
+          type="text"
+          style={textStyles}
+          value={name}
+          onChange={e => onNameChange(e.target.value)}
+          minLength={1}
+          maxLength={64}
+          spellCheck="false"
+          pattern={SCHEMA.definitions.profile.properties.displayName.pattern}
+          onFocus={e => handleTextFieldFocus(e.target)}
+          onBlur={() => handleTextFieldBlur()}
+        />
+        <span>D00F571C</span>
+        <TextArea
+          id={"menu-doofstick-input"}
+          value={doofstick}
+          onChange={e => onDoofstickChange(e.target.value)}
+          minLength={0}
+          maxLength={120}
+          style={{
+            ...textStyles,
+            minHeight: "120px"
+          }}
+          spellCheck="false"
+          pattern={"^[A-Za-z0-9 -]{0,120}$"}
+          onFocus={e => handleTextFieldFocus(e.target)}
+          onBlur={() => handleTextFieldBlur()}
+        />
+      </div>
+    </Modal>
+  );
 };
 
 export const Menu = ({
@@ -241,7 +250,7 @@ export const Menu = ({
 
   return (
     <>
-      <div id="svg-container" style={{ pointerEvents:"none", position: "fixed", top: 0, right: 0, height: "100%" }}>
+      <div id="svg-container" style={{ pointerEvents: "none", position: "fixed", top: 0, right: 0, height: "100%" }}>
         <svg
           width={SVG_WIDTH}
           height={4689}
@@ -255,14 +264,7 @@ export const Menu = ({
         >
           {!hidden && (
             <>
-              <image
-                draggable={false}
-                x={218}
-                y={486}
-                width={1461}
-                height={3828}
-                href={Backplate}
-              />
+              <image draggable={false} x={218} y={486} width={1461} height={3828} href={Backplate} />
 
               <WatchToggle watching={watching} onToggle={onWatchToggle} />
 
@@ -329,14 +331,16 @@ export const Menu = ({
         </svg>
       </div>
 
-      {!hidden && inModal && <DoofLoadout
-      isOpen={inModal}
-      setInModal={setInModal}
-      name={name}
-      onNameChange={onNameChange}
-      doofstick={doofstick}
-      onDoofstickChange={onDoofstickChange}
-      />}
+      {!hidden && inModal && (
+        <DoofLoadout
+          isOpen={inModal}
+          setInModal={setInModal}
+          name={name}
+          onNameChange={onNameChange}
+          doofstick={doofstick}
+          onDoofstickChange={onDoofstickChange}
+        />
+      )}
     </>
   );
 };
