@@ -18,10 +18,11 @@ interface Token {
   typ: string
 }
 
+const API_BASE = 'https://dr33mphaz3r.net/api/v1'
+
 export const dr33mApiClient = (
-  admin_id: string,
+  adminId: string,
   secret: string,
-  apiBase: string = 'https://dr33mphaz3r.net/api/v1'
 ) => {
 
   const createJWT = () => {
@@ -36,7 +37,7 @@ export const dr33mApiClient = (
       iat: getUnixTime(issuedAt),
       nbf: getUnixTime(notBefore),
       jti: uuidv4(),
-      sub: admin_id,
+      sub: adminId,
       typ: 'access',
     }
 
@@ -47,7 +48,7 @@ export const dr33mApiClient = (
 
   // `null` if not present
   const lookup = async (email: string) => {
-    const res = await fetch(`${apiBase}/accounts/search`, {
+    const res = await fetch(`${API_BASE}/accounts/search`, {
       method: 'POST',
       headers: { ...authHeader, 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email })
@@ -66,7 +67,7 @@ export const dr33mApiClient = (
   }
 
   const createAccount = async ({ email }: User) => {
-    const res = await fetch(`${apiBase}/accounts`, {
+    const res = await fetch(`${API_BASE}/accounts`, {
       method: 'POST',
       headers: { ...authHeader, 'Content-Type': 'application/json' },
       body: JSON.stringify({ data: { email } })
