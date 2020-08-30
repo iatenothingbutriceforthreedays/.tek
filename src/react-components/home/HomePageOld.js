@@ -129,6 +129,8 @@ const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps })
 };
 
 const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalOpen }) => {
+  const auth = useContext(AuthContext);
+
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
     <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={mainMenuBack} />
     <SvgHoverButton  onClick={async e => {
@@ -146,6 +148,10 @@ const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalO
       setIsModalOpen(true);
       return false;
     }} /> */}
+        { auth.isSignedIn && <text dominantBaseline="middle" textAnchor="middle" x="1680" y="3025" style={{ fontSize: "48px" }} fill="white">
+          { auth.email }
+  </text> }
+         
     <SvgHoverButton href="https://ultravirus.bandcamp.com/" id="BC_Button" normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal }} hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover }} />
     <SvgHoverButton href="https://www.facebook.com/ultravirus101" id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }} normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }} />
     <SvgHoverButton href="https://soundcloud.com/ultravirusss" id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }} />
