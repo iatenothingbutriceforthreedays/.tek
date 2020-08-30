@@ -7,6 +7,7 @@ import "./utils/theme";
 import { lang, messages } from "./utils/i18n";
 import { AuthContextProvider } from "./react-components/auth/AuthContext";
 import { Credits } from "./react-components/credits/Credits";
+import Modal from "react-modal";
 
 import "./assets/stylesheets/globals.scss";
 
