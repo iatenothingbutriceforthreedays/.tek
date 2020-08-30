@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Modal from 'react-modal';
 import configs from "../../utils/configs";
+import { validate } from 'email-validator';
 
 import IfFeature from "../if-feature";
 
@@ -128,6 +129,7 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
 
   const [email, setEmail] = useState(initialEmail);
 
+  
   const onSubmitForm = useCallback(
     e => {
       e.preventDefault();
@@ -135,6 +137,8 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
     },
     [onSubmitEmail, email]
   );
+
+  const buttonDisabled = !validate(email);
 
 
   return (<React.Fragment><span style={{
@@ -152,7 +156,7 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
     LOGIN TO
   <br />DR33MPHAZ3R
   </span>
-    <input placeholder="YOUR EMAIL ADDRESS" style={{
+    <input placeholder="YOUR EMAIL ADDRESS"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"  style={{
       background: "unset",
       border: "1px solid #FFE6C1",
       boxSizing: "border-box",
@@ -172,8 +176,18 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
     }} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
     <br />
     <br />
-    <img src={logInButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px", cursor: "pointer" }} />
-    <img src={signUpButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px", cursor: "pointer" }} />
+    <img src={logInButton} onClick={() => {
+      if(buttonDisabled) {
+        return;
+      }
+      onSubmitEmail(email)
+    }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
+    <img src={signUpButton} onClick={() => {
+      if(buttonDisabled) {
+        return;
+      }
+      onSubmitEmail(email)
+    }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
     <a href="/coc" onClick={(e) => {
       e.preventDefault();
       setCocModalOpen(true);
@@ -199,6 +213,18 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
   const qs = new URLSearchParams(location.search);
 
   const { step, submitEmail, cancel, email } = useSignIn();
+  const redirectUrl = qs.get("sign_in_destination_url") || "/";
+
+  useEffect(
+    () => {
+      if (step === SignInStep.complete) {
+        window.location = redirectUrl;
+      }
+    },
+    [step, redirectUrl]
+  );
+
+
   const [loginState, setLoginState] = useState({
     step: "NOT_LOGGED_IN"
   });
