@@ -1,12 +1,15 @@
 FROM node:14.9-alpine3.11
 
-ENV NODE_ENV=production
+RUN mkdir -p /app
+WORKDIR /app
 
-WORKDIR /espresso
-
-COPY package.json package-lock.json ./
+COPY package.json /app
+COPY package-lock.json /app
+COPY tsconfig.json /app
 
 RUN npm ci
+
+COPY ./src /app/src
 
 RUN npm run build
 
