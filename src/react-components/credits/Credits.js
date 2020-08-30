@@ -6,6 +6,7 @@ import styles from "./Credits.scss";
 import { AuthContext } from "../auth/AuthContext";
 import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
+import Modal from "react-modal";
 
 import { getRoomMetadata } from "../../room-metadata";
 
@@ -134,6 +135,26 @@ const logoutButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/logout-bu
 const logoutButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/logout-button-hover.png";
 const logoutButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/logout-button-hover.webp";
 
+
+export const CreditsModal = ({ isOpen, onRequestClose }) => {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Credits"
+      style={{
+        content: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }
+      }}
+    >
+      <MenuComponent onRequestClose={onRequestClose} />
+    </Modal>
+  );
+};
+
 addLocaleData([...en]);
 
 const showLogin = qsTruthy("login");
@@ -171,7 +192,7 @@ const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps })
   )
 };
 
-const MenuComponent = () => {
+const MenuComponent = ({ onRequestClose }) => {
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 4961 3508">
     <image id="Ultravirus_ID01_W" x="72" y="74" width="4810" height="3420" xlinkHref={creditsBack} />
 <SvgHoverButton id="mozilla" href="https://github.com/mozilla/reticulum" hoverProps={{x: "3550", y: "3090", width: "509", height: "118", xlinkHref: mozillaHover}} normalProps={{x: "3550", y: "3090", width: "509", height: "118", xlinkHref: mozilla}} />
@@ -190,7 +211,11 @@ const MenuComponent = () => {
 <SvgHoverButton id="s1m0nc3ll0" href="https://soundcloud.com/simon-villaret" hoverProps={{x: "3694", y: "2637", width: "314", height: "48", xlinkHref: s1m0nc3ll0Hover}} normalProps={{x: "3670", y: "2612", width: "361", height: "97", xlinkHref: s1m0nc3ll0}} />
 <SvgHoverButton id="Synergetix_live" hoverProps={{x: "3627", y: "2714", width: "442", height: "60", xlinkHref: Synergetix_liveHover}} normalProps={{x: "3603", y: "2689", width: "492", height: "110", xlinkHref: Synergetix_live}} />
 <SvgHoverButton id="Thick_Owens_pres_The_Coretaker"  href="https://soundcloud.com/thickowens" hoverProps={{x: "3393", y: "2788", width: "912", height: "59", xlinkHref: Thick_Owens_pres_The_CoretakerHover}} normalProps={{x: "3369", y: "2763", width: "960", height: "109", xlinkHref: Thick_Owens_pres_The_Coretaker}} />
-<SvgHoverButton id="ExitButton" href="/" hoverProps={{x: "285", y: "348", width: "204", height: "210", xlinkHref: ExitButtonHover}} normalProps={{x: "303", y: "367", width: "172", height: "172", xlinkHref: ExitButton}} />
+<SvgHoverButton id="ExitButton" onClick={(e) => {
+  e.preventDefault();
+  onRequestClose();
+  return false;
+}} hoverProps={{x: "285", y: "348", width: "204", height: "210", xlinkHref: ExitButtonHover}} normalProps={{x: "303", y: "367", width: "172", height: "172", xlinkHref: ExitButton}} />
 <SvgHoverButton id="_Artemis"  href="https://soundcloud.com/artemis_424" hoverProps={{x: "1014", y: "2310", width: "221", height: "47", xlinkHref: _ArtemisHover}} normalProps={{x: "991", y: "2285", width: "268", height: "97", xlinkHref: _Artemis}} />
 <SvgHoverButton id="DJ_Marcelle" href="https://soundcloud.com/marcelle" hoverProps={{x: "966", y: "2384", width: "320", height: "58", xlinkHref: DJ_MarcelleHover}} normalProps={{x: "942", y: "2359", width: "368", height: "106", xlinkHref: DJ_Marcelle}} />
 <SvgHoverButton id="KL_Mai" href="https://instagram.com/pd_sky/" hoverProps={{x: "1012", y: "2461", width: "225", height: "47", xlinkHref: KL_MaiHover}} normalProps={{x: "990", y: "2436", width: "272", height: "97", xlinkHref: KL_Mai}} />
@@ -293,40 +318,6 @@ const LoginButton = ({ onLinkClicked }) => {
   );
 };
 
-const EnterButton = props => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={e => {
-        e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }}
-    >
-      <img
-        style={{
-          maxWidth: "120px",
-          mixBlendMode: "lighten"
-        }}
-        src={isShown ? enterButtonHover : enterButton}
-      />
-    </button>
-  );
-};
 
 export function Credits() {
   const auth = useContext(AuthContext);
@@ -393,47 +384,6 @@ export function Credits() {
           }}
         >
           <MenuComponent />
-        </div>
-        {auth.isSignedIn && (
-          <div
-            style={{
-              marginLeft: "225px", // half of maxWidth above
-              mixBlendMode: "lighten"
-            }}
-          >
-            <EnterButton />
-          </div>
-        )}
-      </div>
-      <div className={styles.ctaButtons}>
-        <div
-          style={{
-            position: "absolute",
-            top: "32px",
-            right: "16px",
-            display: "flex",
-            alignItems: "flex-end",
-            flexDirection: "column"
-          }}
-        >
-          {!auth.isSignedIn && showLogin && <LoginButton onLinkClicked={auth.showSignInDialog} />}
-          {auth.isSignedIn && <LogoutButton onLinkClicked={auth.signOut} />}
-          {auth.isSignedIn && (
-            <div
-              style={{
-                color: "#667000",
-                textTransform: "lowercase",
-                maxWidth: "240px",
-                textAlign: "right",
-                marginTop: "24px",
-                marginRight: "20px"
-              }}
-            >
-              <span>
-                <FormattedMessage id="sign-in.as" /> {auth.email}
-              </span>{" "}
-            </div>
-          )}
         </div>
       </div>
     </Page>

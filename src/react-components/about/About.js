@@ -6,39 +6,61 @@ import styles from "./About.scss";
 import { AuthContext } from "../auth/AuthContext";
 import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
+import Modal from "react-modal";
 
-import { getRoomMetadata } from "../../room-metadata";
+import { getRoomURL } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
+import { SvgHoverButton } from "../../utils/svg-helpers";
+// import { check_webp_feature_support_cache } from "../../utils/compat";
 
 const aboutBack = "https://str33m.dr33mphaz3r.net/static-assets/about/about-back.png";
-const aboutBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/about-back.webp";
 const limboHover = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-hover.png";
-const limboHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-hover.webp";
 const limboNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-normal.png";
-const limboNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-normal.webp";
 const metabNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-normal.png";
-const metabNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-normal.webp";
 const metabHover = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-hover.png";
-const metabHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-hover.webp";
 const aDeathNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-normal.png";
-const aDeathNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-normal.webp";
 const aDeathHover = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-hover.png";
-const aDeathHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-hover.webp";
 const exitNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-normal.png";
-const exitNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-normal.webp";
 const exitHover = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-hover.png";
+
+const aboutBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/about-back.webp";
+const limboHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-hover.webp";
+const limboNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-normal.webp";
+const metabNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-normal.webp";
+const metabHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-hover.webp";
+const aDeathNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-normal.webp";
+const aDeathHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-hover.webp";
+const exitNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-normal.webp";
 const exitHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-hover.webp";
+
+
+export const AboutModal = ({ isOpen, onRequestClose }) => {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Credits"
+      style={{
+        content: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }
+      }}
+    >
+      <MenuComponent onRequestClose={onRequestClose} />
+    </Modal>
+  );
+};
 
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
-
 
 const loginButton = "https://str33m.dr33mphaz3r.net/static-assets/login-button.png";
 const loginButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-button.webp";
 const loginButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/login-button-hover.png";
 const loginButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/login-button-hover.webp";
-
 
 const enterButton = "https://str33m.dr33mphaz3r.net/static-assets/enter-button.gif";
 const enterButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/enter-button-hover.gif";
@@ -53,55 +75,114 @@ addLocaleData([...en]);
 
 const showLogin = qsTruthy("login");
 
+const MenuComponent = ({ onRequestClose }) => {
+  let backImage = aboutBack;
 
-const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  if(href) {
-    return (<a href={href}>
-      <image
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        style={{
-          ...style,
-          cursor: "pointer"
-        }}
-        {...isShown ? hoverProps : normalProps}
-        {...otherProps}
-      />
-      </a>)
+  /*
+  if (check_webp_feature_support_cache("lossy")) {
+    backImage = aboutBackWebp;
   }
+  */
 
   return (
-    <image
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        ...style,
-        cursor: "pointer"
-      }}
-      {...isShown ? hoverProps : normalProps}
-      {...otherProps}
-    />
-  )
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width="100vw"
+      height="100vh"
+      viewBox="0 0 4961 3508"
+    >
+      <image id="About" x="287" y="144" width="4463" height="3273" xlinkHref={backImage} />
+      <SvgHoverButton
+        id="A-death"
+        href="https://libcom.org/files/%5BCcru,_Nick_Land%5D_Ccru_Writings_1997-2003(BookZZ.org).pdf"
+        hoverProps={{
+          x: "2630",
+          y: "1526",
+          width: "367",
+          height: "167",
+          xlinkHrefWebp: aDeathHoverWebp,
+          xlinkHref: aDeathHover
+        }}
+        normalProps={{
+          x: "2630",
+          y: "1526",
+          width: "367",
+          height: "167",
+          xlinkHrefWebp: aDeathNormalWebp,
+          xlinkHref: aDeathNormal
+        }}
+      />
+      <SvgHoverButton
+        id="Limbo"
+        href="https://www.youtube.com/watch?v=ol4OSIGGukA"
+        normalProps={{
+          x: "3369",
+          y: "1289",
+          width: "307",
+          height: "206",
+          xlinkHrefWebp: limboNormalWebp,
+          xlinkHref: limboNormal
+        }}
+        hoverProps={{
+          x: "3375",
+          y: "1294",
+          width: "296",
+          height: "196",
+          xlinkHref: limboHover,
+          xlinkHrefWebp: limboHoverWebp
+        }}
+      />
+      <SvgHoverButton
+        href="https://www.discogs.com/Insectoid-Groovology-Of-The-Metaverse/release/565285"
+        id="Metabolising"
+        hoverProps={{
+          x: "2800",
+          y: "2315",
+          width: "987",
+          height: "83",
+          xlinkHrefWebp: metabHoverWebp,
+          xlinkHref: metabHover
+        }}
+        normalProps={{
+          x: "2800",
+          y: "2314",
+          width: "987",
+          height: "83",
+          xlinkHrefWebp: metabNormalWebp,
+          xlinkHref: metabNormal
+        }}
+      />
+      <SvgHoverButton
+        onClick={e => {
+          if (onRequestClose) {
+            e.preventDefault();
+
+            onRequestClose();
+            return false;
+          }
+        }}
+        id="ExitButton"
+        normalProps={{
+          x: "526",
+          y: "434",
+          width: "191",
+          height: "191",
+          xlinkHrefWebp: exitNormalWebp,
+          xlinkHref: exitNormal
+        }}
+        hoverProps={{
+          x: "507",
+          y: "412",
+          width: "226",
+          height: "233",
+          xlinkHref: exitHover,
+          xlinkHrefWebp: exitHoverWebp
+        }}
+      />
+    </svg>
+  );
 };
-
-
-const MenuComponent = () => {
-  return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 4961 3508">
-  <image id="About" x="287" y="144" width="4463" height="3273" xlinkHref={aboutBack}/>
-  <SvgHoverButton id="A-death" href="https://libcom.org/files/%5BCcru,_Nick_Land%5D_Ccru_Writings_1997-2003(BookZZ.org).pdf" hoverProps={{ x: "2630", y: "1526", width: "367", height: "167", xlinkHref: aDeathHover }} normalProps={{ x: "2630", y: "1526", width: "367", height: "167", xlinkHref: aDeathNormal }} />
-  <SvgHoverButton id="Limbo" href="https://www.youtube.com/watch?v=ol4OSIGGukA" normalProps={{ x:"3369", y: "1289", width: "307", height: "206", xlinkHref: limboNormal }} hoverProps={{
-    x: "3375", y: "1294", width: "296", height: "196", xlinkHref: limboHover
-  }} />
-  <SvgHoverButton href="https://www.discogs.com/Insectoid-Groovology-Of-The-Metaverse/release/565285" id="Metabolising" hoverProps={{ x: "2800", y: "2315", width: "987", height: "83", xlinkHref: metabHover }} normalProps={{ x: "2800", y: "2314", width: "987", height: "83", xlinkHref: metabNormal }} />
-  <SvgHoverButton href="/" id="ExitButton" normalProps={{ x: "526", y: "434", width: "191", height: "191", xlinkHref: exitNormal }} hoverProps={{
-    x: "507", y: "412", width: "226", height: "233", xlinkHref: exitHover
-  }} />
-</svg>
-);
-
-}
 
 const LogoutButton = ({ onLinkClicked }) => {
   const [isShown, setIsShown] = useState(false);
@@ -132,18 +213,18 @@ const LogoutButton = ({ onLinkClicked }) => {
           />
         </picture>
       ) : (
-          <picture>
-            <source srcSet={logoutButtonWebp} type="image/webp" />
+        <picture>
+          <source srcSet={logoutButtonWebp} type="image/webp" />
 
-            <img
-              style={{
-                maxWidth: "200px",
-                marginRight: "-25px"
-              }}
-              src={logoutButton}
-            />
-          </picture>
-        )}
+          <img
+            style={{
+              maxWidth: "200px",
+              marginRight: "-25px"
+            }}
+            src={logoutButton}
+          />
+        </picture>
+      )}
     </button>
   );
 };
@@ -177,17 +258,17 @@ const LoginButton = ({ onLinkClicked }) => {
           />
         </picture>
       ) : (
-          <picture>
-            <source srcSet={loginButtonWebp} type="image/webp" />
+        <picture>
+          <source srcSet={loginButtonWebp} type="image/webp" />
 
-            <img
-              style={{
-                maxWidth: "200px"
-              }}
-              src={loginButton}
-            />
-          </picture>
-        )}
+          <img
+            style={{
+              maxWidth: "200px"
+            }}
+            src={loginButton}
+          />
+        </picture>
+      )}
     </a>
   );
 };
@@ -206,9 +287,9 @@ const EnterButton = props => {
         margin: "0",
         cursor: "pointer"
       }}
-      onClick={e => {
+      onClick={async e => {
         e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
+        const targetUrl = await getRoomURL("lobby");
         if (targetUrl) {
           location.href = targetUrl;
         } else {
