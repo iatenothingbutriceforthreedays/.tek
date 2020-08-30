@@ -14,6 +14,27 @@ import qsTruthy from "../../utils/qs_truthy";
 import { SvgHoverButton } from "../../utils/svg-helpers";
 // import { check_webp_feature_support_cache } from "../../utils/compat";
 
+const aboutBack = "https://str33m.dr33mphaz3r.net/static-assets/about/about-back.png";
+const limboHover = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-hover.png";
+const limboNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-normal.png";
+const metabNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-normal.png";
+const metabHover = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-hover.png";
+const aDeathNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-normal.png";
+const aDeathHover = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-hover.png";
+const exitNormal = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-normal.png";
+const exitHover = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-hover.png";
+
+const aboutBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/about-back.webp";
+const limboHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-hover.webp";
+const limboNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-normal.webp";
+const metabNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-normal.webp";
+const metabHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/metab-hover.webp";
+const aDeathNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-normal.webp";
+const aDeathHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/a-death-hover.webp";
+const exitNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-normal.webp";
+const exitHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/about/exit-hover.webp";
+
+
 export const AboutModal = ({ isOpen, onRequestClose }) => {
   return (
     <Modal
@@ -32,16 +53,6 @@ export const AboutModal = ({ isOpen, onRequestClose }) => {
     </Modal>
   );
 };
-
-import aboutBack from "../../assets/images/about/about-back.png";
-import limboHover from "../../assets/images/about/limbo-hover.png";
-import limboNormal from "../../assets/images/about/limbo-normal.png";
-import metabNormal from "../../assets/images/about/metab-normal.png";
-import metabHover from "../../assets/images/about/metab-hover.png";
-import aDeathNormal from "../../assets/images/about/a-death-normal.png";
-import aDeathHover from "../../assets/images/about/a-death-hover.png";
-import exitNormal from "../../assets/images/about/exit-normal.png";
-import exitHover from "../../assets/images/about/exit-hover.png";
 
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
