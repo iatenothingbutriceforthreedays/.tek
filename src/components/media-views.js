@@ -674,6 +674,7 @@ AFRAME.registerComponent("media-video", {
     } else {
       this.mesh.material.map = texture;
     }
+    this.mesh.material.color.setScalar(0.5); // dim video
     this.mesh.material.needsUpdate = true;
 
     if (projection === "flat" && !this.data.contentType.startsWith("audio/")) {
@@ -1038,6 +1039,15 @@ AFRAME.registerComponent("media-image", {
     }
   },
 
+  tick() {
+    // if (!this.dimmed && this.mesh && this.mesh.material) {
+    //   this.mesh.material.color.setScalar(0.1); // dim video
+    //   this.mesh.material.needsUpdate = true;
+    //   this.dimmed = true;
+    // }
+
+  },
+
   async update(oldData) {
     let texture;
     let ratio = 1;
@@ -1169,7 +1179,6 @@ AFRAME.registerComponent("media-image", {
     }
 
     this.mesh.material.map = texture;
-    this.mesh.material.color.setScalar(0.5); // dim video
     this.mesh.material.needsUpdate = true;
 
     if (projection === "flat") {
