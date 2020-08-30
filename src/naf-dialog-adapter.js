@@ -177,7 +177,7 @@ export default class DialogAdapter {
     });
 
     this._protoo.on("notification", notification => {
-      debug('proto "notification" event [method:%s, data:%o]', notification.method, notification.data);
+      // debug('proto "notification" event [method:%s, data:%o]', notification.method, notification.data);
 
       switch (notification.method) {
         case "newPeer": {

@@ -3,23 +3,28 @@
 export const Room3Shader = {
   uniforms: {
     time: { value: 1.0 },
-    resolution: { value: new THREE.Vector2() }
+    resolution: { value: new THREE.Vector2() },
   },
   vertexShader: `
     varying vec2 fragCoord;
+    varying vec3 vWorldPosition;
     void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    fragCoord = position.xy;
+        vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+        // vWorldPosition = worldPosition.xyz;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 
+        fragCoord = worldPosition.xy;
+        vWorldPosition = worldPosition.xyz;
     }
   `,
-  vertexShader: `
+  fragmentShader: `
     // Created by inigo quilez - iq/2013
     // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
     const mat2 m = mat2(0.80,  0.60, -0.60,  0.80);
     uniform float time;
     uniform vec2 resolution;
     varying vec2 fragCoord;
+    varying vec3 vWorldPosition;
 
     float noise( in vec2 p )
     {
@@ -42,8 +47,8 @@ export const Room3Shader = {
         f+=0.500000*(0.5+0.5*noise(p)); p=m*p*2.02;
         f+=0.250000*(0.5+0.5*noise(p)); p=m*p*2.03;
         f+=0.125000*(0.5+0.5*noise(p)); p=m*p*2.01;
-        f+=0.062500*(0.5+0.5*noise(p)); p=m*p*2.04;
-        f+=0.031250*(0.5+0.5*noise(p)); p=m*p*2.01;
+        f+=0.062500*(0.5+0.5*noise(p)); p=m*p*1.03;
+        f+=0.031250*(0.5+0.5*noise(p)); p=m*p*1.01;
         f+=0.015625*(0.5+0.5*noise(p));
         return f/0.96875;
     }
@@ -62,11 +67,11 @@ export const Room3Shader = {
 
     float func(vec2 q, out vec4 ron)
     {
-        q += 0.03*sin( vec2(0.27,0.23)*time + length(q)*vec2(4.1,4.3));
+        q += 0.03*sin( vec2(0.27,0.23)*time*0.002 + length(q)*vec2(4.1,4.3));
 
         vec2 o = fbm4_2( .8*q );
 
-        o += 0.03*cos( vec2(0.12,0.14)*time*1. + length(o));
+        o += 0.05*cos( vec2(0.12,0.14)*time*0.006 + length(o));
 
         vec2 n = fbm6_2( 3.0*o );
 
@@ -79,8 +84,8 @@ export const Room3Shader = {
 
     void main()
     {
-        vec2 p = (2.0*fragCoord-resolution.xy)/resolution.y;
-        float e = 2.0/resolution.y;
+        vec2 p = normalize(vWorldPosition).xy;
+        float e = 0.01;
 
         vec4 on = vec4(0.0);
         float f = func(p, on);
@@ -92,16 +97,14 @@ export const Room3Shader = {
         col = mix(col, vec3(0.0,0.2,0.4), 0.2*smoothstep(1.2,1.4,abs(on.z)+abs(on.w)));
         col = clamp(col*f*9.0, 0.4, 1.0);
 
-        #if 0
         // gpu derivatives - bad quality, but fast
-        vec3 nor = normalize(vec3(dFdx(f)*resolution.x, 6.0, dFdy(f)*resolution.y));
-        #else
+        // vec3 nor = normalize(vec3(dFdx(f)*resolution.x, 6.0, dFdy(f)*resolution.y));
+
         // manual derivatives - better quality, but slower
         vec4 kk;
         vec3 nor = normalize( vec3( func(p+vec2(e,0.0),kk)-f,
                                     2.0*e,
                                     func(p+vec2(0.0,e),kk)-f));
-        #else
 
         vec3 lig = normalize( vec3( 0.9, 0.2, -0.4 ) );
         float dif = clamp( 0.3+0.7*dot( nor, lig ), 0.0, 1.0 );

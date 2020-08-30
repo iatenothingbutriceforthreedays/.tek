@@ -1,5 +1,23 @@
 import React, { useState } from "react";
 
+export const SvgButton = ({ normalProps, hoverProps, style, ...otherProps }) => {
+  const [isShown, setIsShown] = useState(false);
+
+  return (
+    <image
+      draggable={"false"}
+      onMouseEnter={() => setIsShown(true)}
+      onMouseLeave={() => setIsShown(false)}
+      style={{
+        ...style,
+        cursor: "pointer"
+      }}
+      {...(isShown ? hoverProps : normalProps)}
+      {...otherProps}
+    />
+  );
+};
+
 export const SvgToggleButton = ({
   onToggle,
   active,
@@ -37,8 +55,32 @@ export const SvgToggleButton = ({
   );
 };
 
-export const SvgHoverButton = ({ normalProps, hoverProps, style, ...otherProps }) => {
+export const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
   const [isShown, setIsShown] = useState(false);
+
+    if(normalProps["xlinkHrefWebp"]) {
+      delete normalProps["xlinkHrefWebp"];
+    }
+
+
+    if(hoverProps["xlinkHrefWebp"]) {
+      delete hoverProps["xlinkHrefWebp"];
+    }
+
+    if (href) {
+    return (<a href={href}>
+      <image
+        onMouseEnter={() => setIsShown(true)}
+        onMouseLeave={() => setIsShown(false)}
+        style={{
+          ...style,
+          cursor: "pointer"
+        }}
+        {...isShown ? hoverProps : normalProps}
+        {...otherProps}
+      />
+    </a>)
+  }
 
   return (
     <image

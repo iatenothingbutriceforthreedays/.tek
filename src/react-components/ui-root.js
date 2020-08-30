@@ -132,7 +132,7 @@ const isFirefoxReality = isMobileVR && navigator.userAgent.match(/Firefox/);
 const AUTO_EXIT_TIMER_SECONDS = 60 * 3;
 
 const setPointerLock = lock => {
-  console.info(`lock: ${lock}`);
+  //console.info(`lock: ${lock}`);
   const event = new CustomEvent("action_pointerlock", { detail: { lock: lock } });
   document.dispatchEvent(event);
 };
@@ -158,7 +158,7 @@ const RoomAudioPlayer = React.forwardRef(
 
     if (track === null) return null;
 
-    console.info(`track: ${JSON.stringify(track)}`);
+    // console.info(`track: ${JSON.stringify(track)}`);
 
     const nextTrack = track => playlist[(playlist.indexOf(track) + 1) % playlist.length];
 
@@ -194,7 +194,7 @@ const RoomAudioPlayer = React.forwardRef(
           }}
           onEnd={() => {
             const next = nextTrack(track);
-            console.info(`starting next track: ${JSON.stringify(next)}`);
+            // console.info(`starting next track: ${JSON.stringify(next)}`);
             setCurrentTrack({ track: next, offset: 0 });
           }}
           volume={volume}
@@ -265,6 +265,8 @@ export default class UIRoot extends Component {
   };
 
   state = {
+    doofStick: window.APP.store.state.profile.doofStick,
+    name: window.APP.store.state.profile.displayName,
     enterInVR: false,
     entered: false,
     entering: false,
@@ -399,6 +401,14 @@ export default class UIRoot extends Component {
   setMenuFocus = (toggle) => {
     setPointerLock(!toggle);
     this.setState({ hide: !toggle});
+  }
+
+  updateName = (name) => {
+    this.setState({name: name})
+  }
+
+  updateDoofStick = (doofstick) => {
+    this.setState({doofStick: doofstick})
   }
 
   componentDidMount() {
@@ -1703,6 +1713,10 @@ export default class UIRoot extends Component {
           {this.state.showReport &&
             this.renderDialog(FeedbackDialog, { onClose: () => this.setState({ showReport: false }) })}
           <Menu
+            name={this.state.name}
+            doofstick={this.state.doofStick}
+            onDoofStickChange={this.updateDoofStick}
+            onNameChange={this.updateName}
             muted={this.state.muted}
             onMuteToggle={this.toggleMute}
             volume={this.state.volume}
