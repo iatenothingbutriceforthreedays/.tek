@@ -88,8 +88,6 @@ class CheckoutForm extends React.Component {
       }
     })
     .then((clientSecret) => {
-      console.log("got client secret", clientSecret);
-
       this.props.stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
@@ -122,7 +120,6 @@ class CheckoutForm extends React.Component {
       });
     })
     .catch((err) => {
-      console.log("got error", err);
       this.setState({ error: err.message });
     });
   };
