@@ -3,7 +3,7 @@
 export const Room3Shader = {
   uniforms: {
     time: { value: 1.0 },
-    resolution: { value: new THREE.Vector2() }
+    resolution: { value: new THREE.Vector2() },
   },
   vertexShader: `
     varying vec2 fragCoord;
@@ -67,11 +67,11 @@ export const Room3Shader = {
 
     float func(vec2 q, out vec4 ron)
     {
-        q += 0.03*sin( vec2(0.27,0.23)*time + length(q)*vec2(4.1,4.3));
+        q += 0.03*sin( vec2(0.27,0.23)*time*0.002 + length(q)*vec2(4.1,4.3));
 
         vec2 o = fbm4_2( .8*q );
 
-        o += 0.03*cos( vec2(0.12,0.14)*time*1. + length(o));
+        o += 0.03*cos( vec2(0.12,0.14)*time*0.002 + length(o));
 
         vec2 n = fbm6_2( 3.0*o );
 
@@ -84,8 +84,8 @@ export const Room3Shader = {
 
     void main()
     {
-        vec2 p = sin(fragCoord/100.0);
-        float e = 0.0001;
+        vec2 p = normalize(vWorldPosition).xy;
+        float e = 0.01;
 
         vec4 on = vec4(0.0);
         float f = func(p, on);
@@ -113,7 +113,7 @@ export const Room3Shader = {
         col = 1.0 - col;
         col = 1.1*col*col;
 
-        gl_FragColor = vec4(vWorldPosition, 1.0);
+        gl_FragColor = vec4(col, 1.0);
     }
   `,
 }
