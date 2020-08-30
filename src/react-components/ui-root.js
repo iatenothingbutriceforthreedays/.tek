@@ -89,7 +89,15 @@ import { CAMERA_MODE_INSPECT } from "../systems/camera-system";
 import { Menu } from "../menu/menu";
 
 import ReactHowler from "react-howler";
-
+import Modal from "react-modal";
+Modal.defaultStyles.overlay.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+Modal.defaultStyles.content = {
+  position: "absolute",
+  width: "100%",
+  height: "100%",
+  top: "0",
+  left: "0",
+}
 const avatarEditorDebug = qsTruthy("avatarEditorDebug");
 
 addLocaleData([...en]);
