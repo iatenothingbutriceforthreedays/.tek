@@ -7,11 +7,14 @@ export const Room3Shader = {
   },
   vertexShader: `
     varying vec2 fragCoord;
+    varying vec3 vWorldPosition;
     void main() {
         vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
         // vWorldPosition = worldPosition.xyz;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+
         fragCoord = worldPosition.xy;
+        vWorldPosition = worldPosition.xyz;
     }
   `,
   fragmentShader: `
@@ -21,6 +24,7 @@ export const Room3Shader = {
     uniform float time;
     uniform vec2 resolution;
     varying vec2 fragCoord;
+    varying vec3 vWorldPosition;
 
     float noise( in vec2 p )
     {
@@ -80,7 +84,7 @@ export const Room3Shader = {
 
     void main()
     {
-        vec2 p = sin(fragCoord);
+        vec2 p = sin(fragCoord/100.0);
         float e = 0.0001;
 
         vec4 on = vec4(0.0);
@@ -109,7 +113,7 @@ export const Room3Shader = {
         col = 1.0 - col;
         col = 1.1*col*col;
 
-        gl_FragColor = vec4(col, 1.0);
+        gl_FragColor = vec4(vWorldPosition, 1.0);
     }
   `,
 }
