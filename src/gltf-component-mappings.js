@@ -111,12 +111,17 @@ AFRAME.GLTFModelPlus.registerComponent("portal", "portal", (el, componentName, c
     componentData = {targetRoom: componentData, padding: -1.5};
   }
   if (componentData.targetRoom) {
-    el.object3D.children[0].material = registerShaderFrogShader(Liquifier, {
+    el.object3DMap.mesh.material = registerShaderFrogShader(Liquifier, {
       "tex": imageLoader.load(roomPreviews[componentData.targetRoom])
     });
   }
   componentData['padding'] = -0.15 // not sure why i set these all to -1.5 in the glb lol
   el.setAttribute("portal", componentData);
+});
+
+AFRAME.GLTFModelPlus.registerComponent("orb", "orb", (el, componentName, componentData) => {
+  el.object3DMap.mesh.material = registerShaderFrogShader(Neurons, {});
+  el.setAttribute("portal", {targetUrl: componentData, padding: 0.1, openInNewWindow:true});
 });
 
 AFRAME.GLTFModelPlus.registerComponent("setlist", "setlist");
