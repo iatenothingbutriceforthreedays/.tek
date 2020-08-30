@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { check_webp_feature_support_cache } from "./compat";
 
 export const SvgButton = ({ normalProps, hoverProps, style, ...otherProps }) => {
   const [isShown, setIsShown] = useState(false);
@@ -58,16 +59,21 @@ export const SvgToggleButton = ({
 export const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
   const [isShown, setIsShown] = useState(false);
 
-    if(normalProps["xlinkHrefWebp"]) {
-      delete normalProps["xlinkHrefWebp"];
-    }
-
-
+  if(check_webp_feature_support_cache("animation")) {
     if(hoverProps["xlinkHrefWebp"]) {
+      hoverProps["xlinkHref"] = hoverProps["xlinkHrefWebp"]
       delete hoverProps["xlinkHrefWebp"];
     }
+    if(normalProps["xlinkHrefWebp"]) {
+      normalProps["xlinkHref"] = normalProps["xlinkHrefWebp"]
+      delete normalProps["xlinkHrefWebp"];
+    }
+  } else {
+    delete normalProps["xlinkHrefWebp"];
+    delete hoverProps["xlinkHrefWebp"];
+  }
 
-    if (href) {
+  if (href) {
     return (<a href={href}>
       <image
         onMouseEnter={() => setIsShown(true)}
@@ -84,15 +90,14 @@ export const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherP
 
   return (
     <image
-      draggable={"false"}
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
       style={{
         ...style,
         cursor: "pointer"
       }}
-      {...(isShown ? hoverProps : normalProps)}
+      {...isShown ? hoverProps : normalProps}
       {...otherProps}
     />
-  );
+  )
 };

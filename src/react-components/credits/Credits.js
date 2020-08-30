@@ -9,8 +9,10 @@ import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
 import Modal from "react-modal";
 
 import { getRoomMetadata } from "../../room-metadata";
+import { SvgHoverButton } from "../../utils/svg-helpers";
 
 import qsTruthy from "../../utils/qs_truthy";
+import { check_webp_feature_support_cache } from "../../utils/compat";
 
 const creditsBack = "https://str33m.dr33mphaz3r.net/static-assets/credits/credits-back.png";
 const creditsBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/credits/credits-back.webp";
@@ -160,163 +162,48 @@ addLocaleData([...en]);
 const showLogin = qsTruthy("login");
 
 
-const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) => {
-  const [isShown, setIsShown] = useState(false);
+const MenuComponent = ({ onRequestClose }) => {
+  let backImage = creditsBack;
 
-  if(href) {
-    return (<a href={href}>
-      <image
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        style={{
-          ...style,
-          cursor: "pointer"
-        }}
-        {...isShown ? hoverProps : normalProps}
-        {...otherProps}
-      />
-      </a>)
+  if (check_webp_feature_support_cache("lossy")) {
+    backImage = creditsBackWebp;
   }
 
-  return (
-    <image
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        ...style,
-        cursor: "pointer"
-      }}
-      {...isShown ? hoverProps : normalProps}
-      {...otherProps}
-    />
-  )
-};
-
-const MenuComponent = ({ onRequestClose }) => {
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 4961 3508">
-    <image id="Ultravirus_ID01_W" x="72" y="74" width="4810" height="3420" xlinkHref={creditsBack} />
-<SvgHoverButton id="mozilla" href="https://github.com/mozilla/reticulum" hoverProps={{x: "3550", y: "3090", width: "509", height: "118", xlinkHref: mozillaHover}} normalProps={{x: "3550", y: "3090", width: "509", height: "118", xlinkHref: mozilla}} />
-<SvgHoverButton id="altjira" href="https://soundcloud.com/leerinc" hoverProps={{x: "2411", y: "2314", width: "177", height: "60", xlinkHref: altjiraHover}} normalProps={{x: "2388", y: "2291", width: "223", height: "107", xlinkHref: altjira}} />
-<SvgHoverButton id="DBR_hybrid" href="https://soundcloud.com/breezydbr" hoverProps={{x: "2308", y: "2390", width: "352", height: "61", xlinkHref: DBR_hybridHover}} normalProps={{x: "2284", y: "2365", width: "400", height: "110", xlinkHref: DBR_hybrid}} />
-<SvgHoverButton id="factorXIII" href="https://soundcloud.com/factorxiii" hoverProps={{x: "2341", y: "2468", width: "298", height: "45", xlinkHref: factorXIIIHover}} normalProps={{x: "2319", y: "2442", width: "343", height: "96", xlinkHref: factorXIII}} />
-<SvgHoverButton id="hamLaosethakul" href="https://soundcloud.com/ham-laosethakul" hoverProps={{x: "2251", y: "2540", width: "481", height: "48", xlinkHref: hamLaosethakulHover}} normalProps={{x: "2229", y: "2516", width: "526", height: "97", xlinkHref: hamLaosethakul}} />
-<SvgHoverButton id="harold" href="https://soundcloud.com/djharoldd" hoverProps={{x: "2398", y: "2615", width: "187", height: "48", xlinkHref: haroldHover}} normalProps={{x: "2376", y: "2591", width: "233", height: "97", xlinkHref: harold}} />
-<SvgHoverButton id="kia" href="https://soundcloud.com/kia-sydney" hoverProps={{x: "2449", y: "2693", width: "90", height: "47", xlinkHref: kiaHover}} normalProps={{x: "2426", y: "2668", width: "135", height: "96", xlinkHref: kia}} />
-<SvgHoverButton id="woody92" href="https://soundcloud.com/woody92" hoverProps={{x: "2366", y: "2765", width: "252", height: "61", xlinkHref: woody92Hover}} normalProps={{x: "2341", y: "2741", width: "301", height: "108", xlinkHref: woody92}} />
-<SvgHoverButton id="_LuulI_" href="https://soundcloud.com/luuli" hoverProps={{x: "3760", y: "2414", width: "177", height: "48", xlinkHref: _LuulI_Hover}} normalProps={{x: "3737", y: "2389", width: "224", height: "96", xlinkHref: _LuulI_}} />
-<SvgHoverButton id="Bartolomé" href="https://soundcloud.com/bartolenosis" hoverProps={{x: "3713", y: "2262", width: "286", height: "48", xlinkHref: BartoloméHover}} normalProps={{x: "3690", y: "2237", width: "333", height: "96", xlinkHref: Bartolomé}} />
-<SvgHoverButton id="DGrade_x_Durin_s_Bane" href="https://soundcloud.com/dgradeknockoff" hoverProps={{x: "3518", y: "2339", width: "646", height: "48", xlinkHref: DGrade_x_Durin_s_BaneHover}} normalProps={{x: "3494", y: "2314", width: "694", height: "96", xlinkHref: DGrade_x_Durin_s_Bane}} />
-<SvgHoverButton id="Meuko___Meuko__live" href="https://soundcloud.com/meukomeuko" hoverProps={{x: "3552", y: "2487", width: "595", height: "60", xlinkHref: Meuko___Meuko__liveHover}} normalProps={{x: "3528", y: "2462", width: "642", height: "110", xlinkHref: Meuko___Meuko__live}} />
-<SvgHoverButton id="Nicha_N_Hooch" href="https://soundcloud.com/alwaysanicha" hoverProps={{x: "3642", y: "2563", width: "414", height: "48", xlinkHref: Nicha_N_HoochHover}} normalProps={{x: "3619", y: "2538", width: "460", height: "96", xlinkHref: Nicha_N_Hooch}} />
-<SvgHoverButton id="s1m0nc3ll0" href="https://soundcloud.com/simon-villaret" hoverProps={{x: "3694", y: "2637", width: "314", height: "48", xlinkHref: s1m0nc3ll0Hover}} normalProps={{x: "3670", y: "2612", width: "361", height: "97", xlinkHref: s1m0nc3ll0}} />
-<SvgHoverButton id="Synergetix_live" hoverProps={{x: "3627", y: "2714", width: "442", height: "60", xlinkHref: Synergetix_liveHover}} normalProps={{x: "3603", y: "2689", width: "492", height: "110", xlinkHref: Synergetix_live}} />
-<SvgHoverButton id="Thick_Owens_pres_The_Coretaker"  href="https://soundcloud.com/thickowens" hoverProps={{x: "3393", y: "2788", width: "912", height: "59", xlinkHref: Thick_Owens_pres_The_CoretakerHover}} normalProps={{x: "3369", y: "2763", width: "960", height: "109", xlinkHref: Thick_Owens_pres_The_Coretaker}} />
-<SvgHoverButton id="ExitButton" onClick={(e) => {
-  e.preventDefault();
-  onRequestClose();
-  return false;
-}} hoverProps={{x: "285", y: "348", width: "204", height: "210", xlinkHref: ExitButtonHover}} normalProps={{x: "303", y: "367", width: "172", height: "172", xlinkHref: ExitButton}} />
-<SvgHoverButton id="_Artemis"  href="https://soundcloud.com/artemis_424" hoverProps={{x: "1014", y: "2310", width: "221", height: "47", xlinkHref: _ArtemisHover}} normalProps={{x: "991", y: "2285", width: "268", height: "97", xlinkHref: _Artemis}} />
-<SvgHoverButton id="DJ_Marcelle" href="https://soundcloud.com/marcelle" hoverProps={{x: "966", y: "2384", width: "320", height: "58", xlinkHref: DJ_MarcelleHover}} normalProps={{x: "942", y: "2359", width: "368", height: "106", xlinkHref: DJ_Marcelle}} />
-<SvgHoverButton id="KL_Mai" href="https://instagram.com/pd_sky/" hoverProps={{x: "1012", y: "2461", width: "225", height: "47", xlinkHref: KL_MaiHover}} normalProps={{x: "990", y: "2436", width: "272", height: "97", xlinkHref: KL_Mai}} />
-<SvgHoverButton id="Mija_Healey" href="https://soundcloud.com/mijahealey"  hoverProps={{x: "963", y: "2534", width: "330", height: "62", xlinkHref: Mija_HealeyHover}} normalProps={{x: "941", y: "2510", width: "375", height: "109", xlinkHref: Mija_Healey}} />
-<SvgHoverButton id="Nar" href="https://soundcloud.com/naaaaar" hoverProps={{x: "1076", y: "2612", width: "101", height: "45", xlinkHref: NarHover}} normalProps={{x: "1053", y: "2587", width: "147", height: "96", xlinkHref: Nar}} />
-<SvgHoverButton id="Pyruvic_Acid" href="https://soundcloud.com/mynameisnotmata" hoverProps={{x: "953", y: "2685", width: "348", height: "62", xlinkHref: Pyruvic_AcidHover}} normalProps={{x: "932", y: "2661", width: "393", height: "109", xlinkHref: Pyruvic_Acid}} />
-<SvgHoverButton id="Spekki_Webu" href="https://soundcloud.com/spekkiwbu" hoverProps={{x: "950", y: "2759", width: "354", height: "61", xlinkHref: Spekki_WebuHover}} normalProps={{x: "926", y: "2735", width: "401", height: "110", xlinkHref: Spekki_Webu}} />
-<SvgHoverButton id="Vox_supreme" href="https://soundcloud.com/voxsupreme" hoverProps={{x: "945", y: "2837", width: "359", height: "58", xlinkHref: Vox_supremeHover}} normalProps={{x: "922", y: "2810", width: "407", height: "109", xlinkHref: Vox_supreme}} />
-</svg>
-);
+    <image id="Ultravirus_ID01_W" x="72" y="74" width="4810" height="3420" xlinkHref={backImage} />
+    <SvgHoverButton id="mozilla" href="https://github.com/mozilla/reticulum" hoverProps={{ x: "3550", y: "3090", width: "509", height: "118", xlinkHref: mozillaHover, xlinkHrefWebp: mozillaHoverWebp }} normalProps={{ x: "3550", y: "3090", width: "509", height: "118", xlinkHref: mozilla, xlinkHrefWebp: mozillaWebp }} />
+    <SvgHoverButton id="altjira" href="https://soundcloud.com/leerinc" hoverProps={{ x: "2411", y: "2314", width: "177", height: "60", xlinkHref: altjiraHover, xlinkHrefWebp: altjiraHoverWebp }} normalProps={{ x: "2388", y: "2291", width: "223", height: "107", xlinkHref: altjira, xlinkHrefWebp: altjiraWebp }} />
+    <SvgHoverButton id="DBR_hybrid" href="https://soundcloud.com/breezydbr" hoverProps={{ x: "2308", y: "2390", width: "352", height: "61", xlinkHref: DBR_hybridHover, xlinkHrefWebp: DBR_hybridHoverWebp }} normalProps={{ x: "2284", y: "2365", width: "400", height: "110", xlinkHref: DBR_hybrid, xlinkHrefWebp: DBR_hybridWebp }} />
+    <SvgHoverButton id="factorXIII" href="https://soundcloud.com/factorxiii" hoverProps={{ x: "2341", y: "2468", width: "298", height: "45", xlinkHref: factorXIIIHover, xlinkHrefWebp: factorXIIIHoverWebp }} normalProps={{ x: "2319", y: "2442", width: "343", height: "96", xlinkHref: factorXIII, xlinkHrefWebp: factorXIIIWebp }} />
+    <SvgHoverButton id="hamLaosethakul" href="https://soundcloud.com/ham-laosethakul" hoverProps={{ x: "2251", y: "2540", width: "481", height: "48", xlinkHref: hamLaosethakulHover, xlinkHrefWebp: hamLaosethakulHoverWebp }} normalProps={{ x: "2229", y: "2516", width: "526", height: "97", xlinkHref: hamLaosethakul, xlinkHrefWebp: hamLaosethakulWebp }} />
+    <SvgHoverButton id="harold" href="https://soundcloud.com/djharoldd" hoverProps={{ x: "2398", y: "2615", width: "187", height: "48", xlinkHref: haroldHover, xlinkHrefWebp: haroldHoverWebp }} normalProps={{ x: "2376", y: "2591", width: "233", height: "97", xlinkHref: harold, xlinkHrefWebp: haroldWebp }} />
+    <SvgHoverButton id="kia" href="https://soundcloud.com/kia-sydney" hoverProps={{ x: "2449", y: "2693", width: "90", height: "47", xlinkHref: kiaHover, xlinkHrefWebp: kiaHoverWebp }} normalProps={{ x: "2426", y: "2668", width: "135", height: "96", xlinkHref: kia, xlinkHrefWebp: kiaWebp }} />
+    <SvgHoverButton id="woody92" href="https://soundcloud.com/woody92" hoverProps={{ x: "2366", y: "2765", width: "252", height: "61", xlinkHref: woody92Hover, xlinkHrefWebp: woody92HoverWebp }} normalProps={{ x: "2341", y: "2741", width: "301", height: "108", xlinkHref: woody92, xlinkHrefWebp: woody92Webp }} />
+    <SvgHoverButton id="_LuulI_" href="https://soundcloud.com/luuli" hoverProps={{ x: "3760", y: "2414", width: "177", height: "48", xlinkHref: _LuulI_Hover, xlinkHrefWebp: _LuulI_HoverWebp }} normalProps={{ x: "3737", y: "2389", width: "224", height: "96", xlinkHref: _LuulI_, xlinkHrefWebp: _LuulI_Webp }} />
+    <SvgHoverButton id="Bartolomé" href="https://soundcloud.com/bartolenosis" hoverProps={{ x: "3713", y: "2262", width: "286", height: "48", xlinkHref: BartoloméHover, xlinkHrefWebp: BartoloméHoverWebp }} normalProps={{ x: "3690", y: "2237", width: "333", height: "96", xlinkHref: Bartolomé, xlinkHrefWebp: BartoloméWebp }} />
+    <SvgHoverButton id="DGrade_x_Durin_s_Bane" href="https://soundcloud.com/dgradeknockoff" hoverProps={{ x: "3518", y: "2339", width: "646", height: "48", xlinkHref: DGrade_x_Durin_s_BaneHover, xlinkHrefWebp: DGrade_x_Durin_s_BaneHoverWebp }} normalProps={{ x: "3494", y: "2314", width: "694", height: "96", xlinkHref: DGrade_x_Durin_s_Bane, xlinkHrefWebp: DGrade_x_Durin_s_BaneWebp }} />
+    <SvgHoverButton id="Meuko___Meuko__live" href="https://soundcloud.com/meukomeuko" hoverProps={{ x: "3552", y: "2487", width: "595", height: "60", xlinkHref: Meuko___Meuko__liveHover, xlinkHrefWebp: Meuko___Meuko__liveHoverWebp }} normalProps={{ x: "3528", y: "2462", width: "642", height: "110", xlinkHref: Meuko___Meuko__live, xlinkHrefWebp: Meuko___Meuko__liveWebp }} />
+    <SvgHoverButton id="Nicha_N_Hooch" href="https://soundcloud.com/alwaysanicha" hoverProps={{ x: "3642", y: "2563", width: "414", height: "48", xlinkHref: Nicha_N_HoochHover, xlinkHrefWebp: Nicha_N_HoochHoverWebp }} normalProps={{ x: "3619", y: "2538", width: "460", height: "96", xlinkHref: Nicha_N_Hooch, xlinkHrefWebp: Nicha_N_HoochWebp }} />
+    <SvgHoverButton id="s1m0nc3ll0" href="https://soundcloud.com/simon-villaret" hoverProps={{ x: "3694", y: "2637", width: "314", height: "48", xlinkHref: s1m0nc3ll0Hover, xlinkHrefWebp: s1m0nc3ll0HoverWebp }} normalProps={{ x: "3670", y: "2612", width: "361", height: "97", xlinkHref: s1m0nc3ll0, xlinkHrefWebp: s1m0nc3ll0Webp }} />
+    <SvgHoverButton id="Synergetix_live" hoverProps={{ x: "3627", y: "2714", width: "442", height: "60", xlinkHref: Synergetix_liveHover, xlinkHrefWebp: Synergetix_liveHoverWebp }} normalProps={{ x: "3603", y: "2689", width: "492", height: "110", xlinkHref: Synergetix_live, xlinkHrefWebp: Synergetix_liveWebp }} />
+    <SvgHoverButton id="Thick_Owens_pres_The_Coretaker" href="https://soundcloud.com/thickowens" hoverProps={{ x: "3393", y: "2788", width: "912", height: "59", xlinkHref: Thick_Owens_pres_The_CoretakerHover, xlinkHrefWebp: Thick_Owens_pres_The_CoretakerHoverWebp }} normalProps={{ x: "3369", y: "2763", width: "960", height: "109", xlinkHref: Thick_Owens_pres_The_Coretaker, xlinkHrefWebp: Thick_Owens_pres_The_CoretakerWebp }} />
+    <SvgHoverButton id="ExitButton" onClick={(e) => {
+      e.preventDefault();
+      onRequestClose();
+      return false;
+    }} hoverProps={{ x: "285", y: "348", width: "204", height: "210", xlinkHref: ExitButtonHover, xlinkHrefWebp: ExitButtonHoverWebp }} normalProps={{ x: "303", y: "367", width: "172", height: "172", xlinkHref: ExitButton, xlinkHrefWebp: ExitButtonWebp }} />
+    <SvgHoverButton id="_Artemis" href="https://soundcloud.com/artemis_424" hoverProps={{ x: "1014", y: "2310", width: "221", height: "47", xlinkHref: _ArtemisHover, xlinkHrefWebp: _ArtemisHoverWebp }} normalProps={{ x: "991", y: "2285", width: "268", height: "97", xlinkHref: _Artemis, xlinkHrefWebp: _ArtemisWebp }} />
+    <SvgHoverButton id="DJ_Marcelle" href="https://soundcloud.com/marcelle" hoverProps={{ x: "966", y: "2384", width: "320", height: "58", xlinkHref: DJ_MarcelleHover, xlinkHrefWebp: DJ_MarcelleHoverWebp }} normalProps={{ x: "942", y: "2359", width: "368", height: "106", xlinkHref: DJ_Marcelle, xlinkHrefWebp: DJ_MarcelleWebp }} />
+    <SvgHoverButton id="KL_Mai" href="https://instagram.com/pd_sky/" hoverProps={{ x: "1012", y: "2461", width: "225", height: "47", xlinkHref: KL_MaiHover, xlinkHrefWebp: KL_MaiHoverWebp }} normalProps={{ x: "990", y: "2436", width: "272", height: "97", xlinkHref: KL_Mai, xlinkHrefWebp: KL_MaiWebp }} />
+    <SvgHoverButton id="Mija_Healey" href="https://soundcloud.com/mijahealey" hoverProps={{ x: "963", y: "2534", width: "330", height: "62", xlinkHref: Mija_HealeyHover, xlinkHrefWebp: Mija_HealeyHoverWebp }} normalProps={{ x: "941", y: "2510", width: "375", height: "109", xlinkHref: Mija_Healey, xlinkHrefWebp: Mija_HealeyWebp }} />
+    <SvgHoverButton id="Nar" href="https://soundcloud.com/naaaaar" hoverProps={{ x: "1076", y: "2612", width: "101", height: "45", xlinkHref: NarHover, xlinkHrefWebp: NarHoverWebp }} normalProps={{ x: "1053", y: "2587", width: "147", height: "96", xlinkHref: Nar, xlinkHrefWebp: NarWebp }} />
+    <SvgHoverButton id="Pyruvic_Acid" href="https://soundcloud.com/mynameisnotmata" hoverProps={{ x: "953", y: "2685", width: "348", height: "62", xlinkHref: Pyruvic_AcidHover, xlinkHrefWebp: Pyruvic_AcidHoverWebp }} normalProps={{ x: "932", y: "2661", width: "393", height: "109", xlinkHref: Pyruvic_Acid, xlinkHrefWebp: Pyruvic_AcidWebp }} />
+    <SvgHoverButton id="Spekki_Webu" href="https://soundcloud.com/spekkiwbu" hoverProps={{ x: "950", y: "2759", width: "354", height: "61", xlinkHref: Spekki_WebuHover, xlinkHrefWebp: Spekki_WebuHoverWebp }} normalProps={{ x: "926", y: "2735", width: "401", height: "110", xlinkHref: Spekki_Webu, xlinkHrefWebp: Spekki_WebuWebp }} />
+    <SvgHoverButton id="Vox_supreme" href="https://soundcloud.com/voxsupreme" hoverProps={{ x: "945", y: "2837", width: "359", height: "58", xlinkHref: Vox_supremeHover, xlinkHrefWebp: Vox_supremeHoverWebp }} normalProps={{ x: "922", y: "2810", width: "407", height: "109", xlinkHref: Vox_supreme, xlinkHrefWebp: Vox_supremeWebp }} />
+  </svg>
+  );
 
 }
-
-const LogoutButton = ({ onLinkClicked }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={onLinkClicked}
-    >
-      {isShown ? (
-        <picture>
-          <source srcSet={logoutButtonHoverWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px",
-              marginRight: "-25px"
-            }}
-            src={logoutButtonHover}
-          />
-        </picture>
-      ) : (
-          <picture>
-            <source srcSet={logoutButtonWebp} type="image/webp" />
-
-            <img
-              style={{
-                maxWidth: "200px",
-                marginRight: "-25px"
-              }}
-              src={logoutButton}
-            />
-          </picture>
-        )}
-    </button>
-  );
-};
-
-const LoginButton = ({ onLinkClicked }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <a
-      href="/signin"
-      rel="noreferrer noopener"
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-    >
-      {isShown ? (
-        <picture>
-          <source srcSet={loginButtonHoverWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px"
-            }}
-            src={loginButtonHover}
-          />
-        </picture>
-      ) : (
-          <picture>
-            <source srcSet={loginButtonWebp} type="image/webp" />
-
-            <img
-              style={{
-                maxWidth: "200px"
-              }}
-              src={loginButton}
-            />
-          </picture>
-        )}
-    </a>
-  );
-};
 
 
 export function Credits() {

@@ -8,8 +8,10 @@ import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
 
 import { getRoomMetadata } from "../../room-metadata";
+import { SvgHoverButton } from "../../utils/svg-helpers";
 
 import qsTruthy from "../../utils/qs_truthy";
+import { check_webp_feature_support_cache } from "../../utils/compat";
 
 const cocBack = "https://str33m.dr33mphaz3r.net/static-assets/coc/coc-back.png";
 const cocBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/coc/coc-back.webp";
@@ -33,25 +35,13 @@ addLocaleData([...en]);
 
 const showLogin = qsTruthy("login");
 
-
-const SvgHoverButton = ({ normalProps, hoverProps, style, ...otherProps }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <image
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        ...style,
-        cursor: "pointer"
-      }}
-      {...isShown ? hoverProps : normalProps}
-      {...otherProps}
-    />
-  )
-};
-
 export const MenuComponent = () => {
+  let backImage = cocBack;
+
+  if (check_webp_feature_support_cache("lossy")) {
+    backImage = cocBackWebp;
+  }
+
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3601 3737">
   <image id="CodeofConduct" x="78" y="95" width="3425" height="3579" xlinkHref={cocBack}/>
   <image id="Enter_Hover" x="1479" y="2760" width="612" height="623" xlinkHref={null}/>
@@ -60,96 +50,6 @@ export const MenuComponent = () => {
 );
 
 }
-
-const LogoutButton = ({ onLinkClicked }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={onLinkClicked}
-    >
-      {isShown ? (
-        <picture>
-          <source srcSet={logoutButtonHoverWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px",
-              marginRight: "-25px"
-            }}
-            src={logoutButtonHover}
-          />
-        </picture>
-      ) : (
-          <picture>
-            <source srcSet={logoutButtonWebp} type="image/webp" />
-
-            <img
-              style={{
-                maxWidth: "200px",
-                marginRight: "-25px"
-              }}
-              src={logoutButton}
-            />
-          </picture>
-        )}
-    </button>
-  );
-};
-
-const LoginButton = ({ onLinkClicked }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <a
-      href="/signin"
-      rel="noreferrer noopener"
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-    >
-      {isShown ? (
-        <picture>
-          <source srcSet={loginButtonHoverWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px"
-            }}
-            src={loginButtonHover}
-          />
-        </picture>
-      ) : (
-          <picture>
-            <source srcSet={loginButtonWebp} type="image/webp" />
-
-            <img
-              style={{
-                maxWidth: "200px"
-              }}
-              src={loginButton}
-            />
-          </picture>
-        )}
-    </a>
-  );
-};
-
 
 export function CoC() {
   const auth = useContext(AuthContext);
