@@ -21,7 +21,7 @@ import { Elements } from 'react-stripe-elements';
 import InjectedCheckoutForm from './CheckoutForm';
 import { useSignIn, SignInStep } from "../auth/SignInPage";
 
-import { MenuComponent } from "../coc/CoC";
+import { CoCModal } from "../coc/CoC";
 
 require('es6-promise').polyfill();
 
@@ -246,7 +246,7 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
       }
       onSubmitEmail(email)
     }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
-    <a href="/coc" onClick={(e) => {
+    {/* <a href="/coc" onClick={(e) => {
       e.preventDefault();
       setCocModalOpen(true);
       return false;
@@ -263,7 +263,7 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
       marginTop: "16px"
     }}>
       Code of Conduct
-</a>
+</a> */}
   </React.Fragment>);
 };
 
@@ -346,20 +346,10 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
 
     </div>
 
-    <Modal
+    <CoCModal
       isOpen={isCocModalOpen}
       onRequestClose={() => setCocModalOpen(false)}
-      contentLabel="dr33mphaz3r sign in"
-      style={{
-        content: {
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        },
-      }}
-    >
-      <MenuComponent />
-    </Modal>
+      />
   </Modal>);
 };
 
