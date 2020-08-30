@@ -87,7 +87,8 @@ const logoutButtonHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/logo
 
 addLocaleData([...en]);
 
-const showLogin = qsTruthy("login") || window.showLogin;
+const showLoginModal = qsTruthy("loginModal");
+const showLogin = qsTruthy("login") || window.showLogin || showLoginModal;
 
 export const BackgroundVideo = () => (
   <video playsInline loop autoPlay muted className="video-container">
@@ -333,7 +334,7 @@ export function HomePage() {
     }
   }, []);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(showLoginModal);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
 
