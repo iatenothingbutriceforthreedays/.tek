@@ -105,8 +105,15 @@ export const BackgroundVideo = () => (
 const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalOpen, setCoCModalOpen }) => {
   const auth = useContext(AuthContext);
   
+  
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
     <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={mainMenuBack} />
+    <defs>
+      <clipPath id="cut-off-bottom">
+        <rect x="1340" y="2980" width="680" height="90" />
+      </clipPath>
+    </defs>
+
     <SvgHoverButton  onClick={async e => {
         e.preventDefault();
         setIsAboutModalOpen(true);
@@ -122,8 +129,9 @@ const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalO
       setIsModalOpen(true);
       return false;
     }} /> } 
-        { auth.isSignedIn && <text dominantBaseline="middle" textAnchor="middle" x="1680" y="3025" style={{ fontSize: "48px" }} fill="white">
-          { auth.email }
+        { auth.isSignedIn && <text dominantBaseline="middle" textAnchor="middle" x="1680" y="3025" clipPath="url(#cut-off-bottom)" style={{ fontSize: "48px" }} fill="white">
+          <animate attributeName="x" values="750;2550" dur="5s" repeatCount="indefinite" fill="freeze" />
+          welcome, { auth.email }
   </text> }
          
          
