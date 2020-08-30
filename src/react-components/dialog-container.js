@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import configs from "../utils/configs";
+
 import modalButton from "../assets/images/modal-button.png";
 import modalBg from "../assets/images/modal-bg.png";
 

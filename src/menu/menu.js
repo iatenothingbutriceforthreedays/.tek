@@ -13,30 +13,30 @@ import { handleTextFieldBlur, handleTextFieldFocus } from "../utils/focus-utils"
 
 import { inLobby } from "../room-metadata";
 
-import Backplate from "../assets/menu/Backplate.png";
-import HomeExit from "../assets/menu/Home_Exit.png";
-import HomeExitHover from "../assets/menu/Home_Exit_Hover.png";
-import LobbyExit from "../assets/menu/Lobby_Exit.png";
-import LobbyExitHover from "../assets/menu/Lobby_Exit_Hover.png";
-import MenuClosed from "../assets/menu/Menu_Closed.png";
-import MenuOpen from "../assets/menu/Menu_Open_Eyeball.png";
-import Report from "../assets/menu/Report.png";
-import SliderEye from "../assets/menu/Slider.png";
-import ReportHover from "../assets/menu/Report_Hover.png";
-import Room1Button from "../assets/menu/Room_1_Button.png";
-import Room1ButtonHover from "../assets/menu/Room_1_Button_Hover.png";
-import Room2Button from "../assets/menu/Room_2_Button.png";
-import Room2ButtonHover from "../assets/menu/Room_2_Button_Hover.png";
-import Room3Button from "../assets/menu/Room_3_Button.png";
-import Room3ButtonHover from "../assets/menu/Room_3_Button_Hover.png";
+const Backplate = "https://str33m.dr33mphaz3r.net/static-assets/menu/Backplate.png";
+const HomeExit = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit.png";
+const HomeExitHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit_Hover.png";
+const LobbyExit = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit.png";
+const LobbyExitHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit_Hover.png";
+const MenuClosed = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Closed.png";
+const MenuOpen = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Open_Eyeball.png";
+const Report = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report.png";
+const SliderEye = "https://str33m.dr33mphaz3r.net/static-assets/menu/Slider.png";
+const ReportHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report_Hover.png";
+const Room1Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button.png";
+const Room1ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button_Hover.png";
+const Room2Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button.png";
+const Room2ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button_Hover.png";
+const Room3Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button.png";
+const Room3ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button_Hover.png";
 
-import ProfileButton from "../assets/menu/Profile.png";
-import ProfileButtonHover from "../assets/menu/Profile_Hover.png";
+const ProfileButton = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile.png";
+const ProfileButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile_Hover.png";
 
-import MicrophoneOff from "../assets/menu/MicrophoneOff.png";
-import MicrophoneOffHover from "../assets/menu/MicrophoneOff_Hover.png";
-import MicrophoneOn from "../assets/menu/MicrophoneOn.png";
-import MicrophoneOnHover from "../assets/menu/MicrophoneOn.png";
+const MicrophoneOff = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff.png";
+const MicrophoneOffHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff_Hover.png";
+const MicrophoneOn = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.png";
+const MicrophoneOnHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.png";
 
 const modalSmallBg = "https://str33m.dr33mphaz3r.net/static-assets/modal/modal-small-bg.png";
 const modalSmallBgWebp = "https://str33m.dr33mphaz3r.net/static-assets/modal/modal-small-bg.webp";
