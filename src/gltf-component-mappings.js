@@ -101,7 +101,7 @@ function registerRootSceneComponent(componentName) {
 }
 
 registerRootSceneComponent("fog");
-registerRootSceneComponent("background");
+// registerRootSceneComponent("background");
 
 AFRAME.GLTFModelPlus.registerComponent("portal", "portal", (el, componentName, componentData) => {
   if (componentData.includes(':')) { //css style multi-attribute

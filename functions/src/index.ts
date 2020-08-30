@@ -9,7 +9,6 @@ import fetch from 'node-fetch'
 
 import * as retry from 'async-retry'
 import * as express from 'express';
-
 import * as cors from 'cors';
 
 import * as bodyParser from 'body-parser';
@@ -17,6 +16,7 @@ import * as bodyParser from 'body-parser';
 import { addMonths, subSeconds, getUnixTime } from 'date-fns'
 
 import { omitBy, isUndefined } from 'lodash'
+
 
 import {
   sign,
@@ -137,6 +137,7 @@ const updateAccount = async (email : string, name : string) => {
 }
 */
 
+
 // dr33mphaz3r
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -203,15 +204,14 @@ app.post('/payment/intents', async (req, res) => {
   res.send(paymentIntent);
 });
 
-
 // Notify payment's status
-app.post('/payment/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
+app.post('/payment/webhook', bodyParser.raw(), async (req: any, res) => {
   const sig = req.headers['stripe-signature'] as string
 
   let event: Stripe.Event
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WH_SECRET)
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, STRIPE_WH_SECRET)
   } catch (e) {
     functions.logger.error("Failed to construct webhook event", {
       okay: req.originalUrl.endsWith('/payment/webhook'),
@@ -271,7 +271,7 @@ const parseSuccess = (intent: any) => {
     }
   }: { charges: { data: { metadata: User }[] } } = intent
 
-  return { email, name }
+  return { email }
 }
 
 export const dr33mphaz3r = functions.https.onRequest(app);

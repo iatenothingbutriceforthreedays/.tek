@@ -13,30 +13,30 @@ import { handleTextFieldBlur, handleTextFieldFocus } from "../utils/focus-utils"
 
 import { inLobby } from "../room-metadata";
 
-import Backplate from "../assets/menu/Backplate.png";
-import HomeExit from "../assets/menu/Home_Exit.png";
-import HomeExitHover from "../assets/menu/Home_Exit_Hover.png";
-import LobbyExit from "../assets/menu/Lobby_Exit.png";
-import LobbyExitHover from "../assets/menu/Lobby_Exit_Hover.png";
-import MenuClosed from "../assets/menu/Menu_Closed.png";
-import MenuOpen from "../assets/menu/Menu_Open_Eyeball.png";
-import Report from "../assets/menu/Report.png";
-import SliderEye from "../assets/menu/Slider.png";
-import ReportHover from "../assets/menu/Report_Hover.png";
-import Room1Button from "../assets/menu/Room_1_Button.png";
-import Room1ButtonHover from "../assets/menu/Room_1_Button_Hover.png";
-import Room2Button from "../assets/menu/Room_2_Button.png";
-import Room2ButtonHover from "../assets/menu/Room_2_Button_Hover.png";
-import Room3Button from "../assets/menu/Room_3_Button.png";
-import Room3ButtonHover from "../assets/menu/Room_3_Button_Hover.png";
+const Backplate = "https://str33m.dr33mphaz3r.net/static-assets/menu/Backplate.png";
+const HomeExit = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit.png";
+const HomeExitHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Home_Exit_Hover.png";
+const LobbyExit = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit.png";
+const LobbyExitHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Lobby_Exit_Hover.png";
+const MenuClosed = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Closed.png";
+const MenuOpen = "https://str33m.dr33mphaz3r.net/static-assets/menu/Menu_Open_Eyeball.png";
+const Report = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report.png";
+const SliderEye = "https://str33m.dr33mphaz3r.net/static-assets/menu/Slider.png";
+const ReportHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Report_Hover.png";
+const Room1Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button.png";
+const Room1ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_1_Button_Hover.png";
+const Room2Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button.png";
+const Room2ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_2_Button_Hover.png";
+const Room3Button = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button.png";
+const Room3ButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Room_3_Button_Hover.png";
 
-import ProfileButton from "../assets/menu/Profile.png";
-import ProfileButtonHover from "../assets/menu/Profile_Hover.png";
+const ProfileButton = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile.png";
+const ProfileButtonHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/Profile_Hover.png";
 
-import MicrophoneOff from "../assets/menu/MicrophoneOff.png";
-import MicrophoneOffHover from "../assets/menu/MicrophoneOff_Hover.png";
-import MicrophoneOn from "../assets/menu/MicrophoneOn.png";
-import MicrophoneOnHover from "../assets/menu/MicrophoneOn.png";
+const MicrophoneOff = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff.png";
+const MicrophoneOffHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOff_Hover.png";
+const MicrophoneOn = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.png";
+const MicrophoneOnHover = "https://str33m.dr33mphaz3r.net/static-assets/menu/MicrophoneOn.png";
 
 const modalSmallBg = "https://str33m.dr33mphaz3r.net/static-assets/modal/modal-small-bg.png";
 const modalSmallBgWebp = "https://str33m.dr33mphaz3r.net/static-assets/modal/modal-small-bg.webp";
@@ -260,6 +260,14 @@ export const Menu = ({
     );
   };
 
+  const editPosition = { x: "427", y: "1197", width: "1020", height: "908" };
+  const homePosition = { x: "1022", y: "3974", width: "353", height: "491" };
+  const lobbyPosition = { x: "518", y: "3974", width: "353", height: "491" };
+  const reportPosition = { x: "478", y: "3000", width: "938", height: "461" };
+  const room1Position = { x: "473", y: "3609", width: "281", height: "281" };
+  const room2Position = { x: "826", y: "3609", width: "281", height: "280" };
+  const room3Position = { x: "1178", y: "3605", width: "281", height: "281" };
+
   return (
     <>
       <div id="svg-container" style={{ pointerEvents: "none", position: "fixed", top: 0, right: 0, height: "100%" }}>
@@ -287,46 +295,45 @@ export const Menu = ({
               <SvgHoverButton
                 id="EditProfile"
                 onClick={() => setInModal(true)}
-                normalProps={{ x: "427", y: "1197", width: "1020", height: "908", href: ProfileButton }}
-                hoverProps={{ x: "427", y: "1197", width: "1020", height: "908", href: ProfileButtonHover }}
+                normalProps={{ ...editPosition, href: ProfileButton }}
+                hoverProps={{ ...editPosition, href: ProfileButtonHover }}
               />
 
               <SvgHoverButton
                 id="Report"
                 onClick={onReport}
-                normalProps={{ x: "478", y: "3098", width: "938", height: "461", href: Report }}
-                hoverProps={{ x: "478", y: "3098", width: "938", height: "461", href: ReportHover }}
+                normalProps={{ ...reportPosition, href: Report }}
+                hoverProps={{ ...reportPosition, href: ReportHover }}
               />
               <SvgHoverButton
                 id="HomeExit"
                 onClick={onHome}
-                normalProps={{ x: "1032", y: "3981", width: "336", height: "475", href: HomeExit }}
-                hoverProps={{ x: "1022", y: "3974", width: "353", height: "491", href: HomeExitHover }}
+                normalProps={{ ...homePosition, href: HomeExit }}
+                hoverProps={{ ...homePosition, href: HomeExitHover }}
               />
               <SvgHoverButton
                 id="LobbyExit"
                 onClick={onLobby}
-                normalProps={{ x: "460", y: "3965", width: "475", height: "475", href: LobbyExit }}
-                hoverProps={{ x: "518", y: "3974", width: "353", height: "491", href: LobbyExitHover }}
+                normalProps={{ ...lobbyPosition, href: LobbyExit }}
+                hoverProps={{ ...lobbyPosition, href: LobbyExitHover }}
               />
               <SvgHoverButton
                 id="Room1Button"
                 onClick={onRoom1}
-                hoverProps={{ x: "473", y: "3609", width: "281", height: "281", href: Room1ButtonHover }}
-                normalProps={{ x: "486", y: "3624", width: "251", height: "251", href: Room1Button }}
+                normalProps={{ ...room1Position, href: Room1Button }}
+                hoverProps={{ ...room1Position, href: Room1ButtonHover }}
               />
               <SvgHoverButton
                 id="Room2Button"
                 onClick={onRoom2}
-                hoverProps={{ x: "826", y: "3609", width: "281", height: "280", href: Room2ButtonHover }}
-                normalProps={{ x: "839", y: "3623", width: "251", height: "251", href: Room2Button }}
+                normalProps={{ ...room2Position, href: Room2Button }}
+                hoverProps={{ ...room2Position, href: Room2ButtonHover }}
               />
-
               <SvgHoverButton
                 id="Room3Button"
                 onClick={onRoom3}
-                hoverProps={{ x: "1178", y: "3605", width: "281", height: "281", href: Room3ButtonHover }}
-                normalProps={{ x: "1191", y: "3620", width: "251", height: "251", href: Room3Button }}
+                normalProps={{ ...room3Position, href: Room3Button }}
+                hoverProps={{ ...room3Position, href: Room3ButtonHover }}
               />
             </>
           )}
