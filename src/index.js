@@ -4,7 +4,7 @@ import { IntlProvider } from "react-intl";
 import registerTelemetry from "./telemetry";
 import Store from "./storage/store";
 import "./utils/theme";
-import { HomePage } from "./react-components/home/HomePage";
+import { HomePage } from "./react-components/home/HomePageOld";
 import { lang, messages } from "./utils/i18n";
 import "./assets/stylesheets/globals.scss";
 import { AuthContextProvider } from "./react-components/auth/AuthContext";
@@ -19,7 +19,7 @@ function Root() {
   return (
     <IntlProvider locale={lang} messages={messages}>
       <AuthContextProvider store={store}>
-        <StripeProvider apiKey="pk_test_51Gyz7NBvCtr0PkoPQLGAdHP6qLtechXlKcTqgjLfcNgnCHmJuwYvG0IeP5yH4EUZJB5hzm5t3jsPWQKFn947Rgq100APsKrCXg">
+        <StripeProvider apiKey="pk_live_51Gyz7NBvCtr0PkoP4zj8iAO4XStn8hW2EK1OtZvE7VPWSeg8yszmXcmvSGz1sL58BECkTI1ORq78aW7yHpGPGw4900OvDxhZ3Z">
           <HomePage />
         </StripeProvider>
       </AuthContextProvider>
@@ -27,4 +27,6 @@ function Root() {
   );
 }
 
+setTimeout(() => {
 ReactDOM.render(<Root />, document.getElementById("home-root"));
+}, 50);
