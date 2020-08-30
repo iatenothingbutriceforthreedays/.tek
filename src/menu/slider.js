@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { minBy } from "lodash";
 
 export const Slider = ({ volume, onVolumeChange, style, ...otherProps }) => {
-  const notches = [0, 25, 50, 75, 100];
+  const notches = [0, 10, 40, 70, 100];
   const boxWidth = 190;
   const sliderLeftOffset = 479;
 

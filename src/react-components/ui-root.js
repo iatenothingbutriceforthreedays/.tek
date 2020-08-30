@@ -1,5 +1,5 @@
 import React, { Component, Fragment, useState, useEffect } from "react";
-import { findIndex } from "lodash";
+import { findIndex, repeat } from "lodash";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
@@ -131,16 +131,15 @@ const setPointerLock = lock => {
 
 const Playing = ({ artist, hidden, ...otherProps }) =>
   !hidden &&
-  !!artist &&
+  artist &&
   !artist.includes("dr33m") && (
-    <marquee direction={"right"} className={"glow"} {...otherProps}>
-      {(artist + '  ~  ')*10}
+    <marquee loop={"infinite"} direction={"right"} className={"glow"} {...otherProps}>
+      {repeat(`${artist}     ~     `, 20)}
     </marquee>
   );
 
 const RoomAudioPlayer = React.forwardRef(
   ({ volume, hidden, playing, room, initialOffset, playlist, token, onMusicCanPlay, onTrackChange }, ref) => {
-
     const [currentTrack, setCurrentTrack] = useState({ track: null, offset: null });
 
     useEffect(() => {
@@ -159,19 +158,22 @@ const RoomAudioPlayer = React.forwardRef(
     const tokenArg = token ? `?token=${token}` : "";
     const srcPath = ext => `${ASSET_BASE}/${room}/${track.title}.${ext}${tokenArg}#t=${offset / 1e3}`;
 
-
     return (
       <>
+      { !hidden && playing && 
         <Playing
           artist={track.artist}
           hidden={hidden}
           style={{
             position: "fixed",
             bottom: 0,
+            // height: "3em",
             font: "stasmic",
             width: "100%",
+            padding: "0.5em 0em 0.5em"
           }}
         />
+      }
         <ReactHowler
           ref={ref}
           html5={true}
@@ -255,6 +257,8 @@ export default class UIRoot extends Component {
   };
 
   state = {
+    doofStick: window.APP.store.state.profile.doofStick,
+    name: window.APP.store.state.profile.displayName,
     enterInVR: false,
     entered: false,
     entering: false,
@@ -389,6 +393,14 @@ export default class UIRoot extends Component {
   setMenuFocus = (toggle) => {
     setPointerLock(!toggle);
     this.setState({ hide: !toggle});
+  }
+
+  updateName = (name) => {
+    this.setState({name: name})
+  }
+
+  updateDoofStick = (doofstick) => {
+    this.setState({doofStick: doofstick})
   }
 
   componentDidMount() {
@@ -1684,13 +1696,19 @@ export default class UIRoot extends Component {
       uiRootHtml = this.renderBotMode();
     }
     else if (!this.state.showHubsUI) {
-      const navigateToRoom = room => (window.location.href = getRoomURL(room));
+      const navigateToRoom = room => {
+        getRoomURL(room).then(url => (window.location.href = url));
+      };
 
       uiRootHtml = (
         <div className={classNames([menuStyles, styles.gameMenu])}>
           {this.state.showReport &&
             this.renderDialog(FeedbackDialog, { onClose: () => this.setState({ showReport: false }) })}
           <Menu
+            name={this.state.name}
+            doofstick={this.state.doofStick}
+            onDoofStickChange={this.updateDoofStick}
+            onNameChange={this.updateName}
             muted={this.state.muted}
             onMuteToggle={this.toggleMute}
             volume={this.state.volume}

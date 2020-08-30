@@ -12,7 +12,11 @@ import * as express from 'express';
 
 import * as cors from 'cors';
 
+import * as bodyParser from 'body-parser';
+
 import { addMonths, subSeconds, getUnixTime } from 'date-fns'
+
+import { omitBy, isUndefined } from 'lodash'
 
 import {
   sign,
@@ -26,15 +30,31 @@ const db = admin.firestore()
 
 const env = functions.config()
 
-const STRIPE_KEY = env.stripe.key || 'pk_stripe'
+const STRIPE_KEY = env.stripe.secret_key || 'pk_stripe'
 const STRIPE_WH_SECRET = env.stripe.wh_secret || 'wh_stripe'
 
 const DR33M_SECRET = env.dr33m.secret || 'super_secret'
 const DR33M_ADMIN_ID = env.dr33m.admin_id || '1234'
 
-const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2020-03-02' });
+const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2020-08-27' });
 
 const app = express();
+
+app.use(cors({ origin: true }))
+
+app.use(
+  (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ): void => {
+    if (req.originalUrl.endsWith('/payment/webhook')) {
+      next();
+    } else {
+      bodyParser.json()(req, res, next);
+    }
+  }
+);
 
 interface Token {
   aud: string
@@ -117,9 +137,6 @@ const updateAccount = async (email : string, name : string) => {
 }
 */
 
-
-app.use(cors({ origin: true }))
-
 // dr33mphaz3r
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -167,9 +184,8 @@ app.post('/doofsticks', async (req: express.Request, res) => {
     res.sendStatus(401)
   } else {
 
-    const { message } = req.body
-
-    await db.collection(DOOFSTICKS).doc(userId).set({ message })
+    const meta = omitBy(req.body, isUndefined)
+    await db.collection(DOOFSTICKS).doc(userId).set({ ...meta }, { merge: true })
 
     res.sendStatus(200)
   }
@@ -188,17 +204,20 @@ app.post('/payment/intents', async (req, res) => {
 });
 
 
-
 // Notify payment's status
-app.post('/payment/webhook', express.raw({type: "application/json"}), async (req, res) => {
+app.post('/payment/webhook', bodyParser.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'] as string
 
-  let event
+  let event: Stripe.Event
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WH_SECRET)
   } catch (e) {
-    functions.logger.error("Failed to construct webhook event", { e, body: req.body })
+    functions.logger.error("Failed to construct webhook event", {
+      okay: req.originalUrl.endsWith('/payment/webhook'),
+      url: req.originalUrl
+    });
+
     res.status(400).end()
     return
   }
