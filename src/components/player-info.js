@@ -21,7 +21,6 @@ function ensureAvatarNodes(json) {
     nodes.push({ name: "Neck", children: [nodes.length - 1] });
     nodes.push({ name: "Spine", children: [nodes.length - 1] });
     nodes.push({ name: "Hips", children: [nodes.length - 1] });
-    nodes.push({ name: "EyeBallHandz", children: [nodes.length - 1] });
     nodes.push({ name: "AvatarRoot", children: [nodes.length - 1] });
     json.scenes[json.scene].nodes[0] = nodes.length - 1;
   }
