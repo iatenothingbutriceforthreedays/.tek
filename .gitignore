@@ -67,3 +67,12 @@ dist/
 certs/
 results/
 .ret.credentials
+
+## Compiled JavaScript files
+**/*.js
+**/*.js.map
+
+# Typescript v1 declaration files
+typings/
+
+node_modules/
