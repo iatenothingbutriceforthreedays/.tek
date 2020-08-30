@@ -336,7 +336,7 @@ export function HomePage() {
 
         </div>
       </div>
-      {/* <div className={styles.ctaButtons}>
+      <div id="xyzzy" className={styles.ctaButtons}>
         <div
           style={{
             position: "absolute",
@@ -366,7 +366,7 @@ export function HomePage() {
             </div>
           )}
         </div>
-      </div> */}
+      </div>
       <LogInModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
     </Page>
   );
