@@ -27,6 +27,41 @@ function ensureAvatarNodes(json) {
   return json;
 }
 
+// const postDoofStick = async (doofStick, token) => {
+//   const response = await fetch(
+//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+//     { 
+//       method: 'POST', 
+//       headers: new Headers(
+//         {
+//           'Authorization': 'Bearer ' + token, 
+//           'Content-Type': 'application/json',
+//         }
+//       ),
+//       body: JSON.stringify({message: doofStick})
+//     }
+//   );
+//   console.log(response)
+//   // const myJson = await response.json();
+// }
+
+// const getDoofStick = async (token) => {
+//   const response = await fetch(
+//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+//     { 
+//       method: 'GET', 
+//       headers: new Headers(
+//         {
+//           'Authorization': 'Bearer ' + token, 
+//           'Content-Type': 'application/json',
+//         }
+//       )
+//     }
+//   );
+//   const myJson = await response.json();
+//   return myJson
+// }
+
 /**
  * Sets player info state, including avatar choice and display name.
  * @namespace avatar
@@ -41,6 +76,7 @@ AFRAME.registerComponent("player-info", {
   init() {
     this.displayName = null;
     this.identityName = null;
+    this.doofStick = null;
     this.isOwner = false;
     this.isRecording = false;
     this.applyProperties = this.applyProperties.bind(this);
@@ -87,9 +123,11 @@ AFRAME.registerComponent("player-info", {
   pause() {
     this.el.removeEventListener("model-loaded", this.applyProperties);
     this.el.sceneEl.removeEventListener("presence_updated", this.updateDisplayName);
+
     if (this.isLocalPlayerInfo) {
       this.el.querySelector(".model").removeEventListener("model-error", this.handleModelError);
     }
+    
     this.el.sceneEl.removeEventListener("stateadded", this.update);
     this.el.sceneEl.removeEventListener("stateremoved", this.update);
     window.APP.store.removeEventListener("statechanged", this.update);
@@ -116,6 +154,7 @@ AFRAME.registerComponent("player-info", {
   updateDisplayNameFromPresenceMeta(presenceMeta) {
     this.displayName = presenceMeta.profile.displayName;
     this.identityName = presenceMeta.profile.identityName;
+    this.doofStick = presenceMeta.profile.doofStick;
     this.isRecording = !!(presenceMeta.streaming || presenceMeta.recording);
     this.isOwner = !!(presenceMeta.roles && presenceMeta.roles.owner);
     this.applyDisplayName();
@@ -128,21 +167,61 @@ AFRAME.registerComponent("player-info", {
       this.isLocalPlayerInfo || (store.state.preferences.onlyShowNametagsInFreeze && !this.el.sceneEl.is("frozen"));
 
     const nametagEl = this.el.querySelector(".nametag");
+    const identityNameEl = this.el.querySelector(".identityName");
+    const doofStickEl = this.el.querySelector(".doofStick");
+
+    if (this.isLocalPlayerInfo) {
+      if (this.doofStick && doofStickEl && this.displayName && nametagEl) {
+        if (window.APP.store.state.credentials.token && ((doofStickEl.getAttribute("text").value !== this.doofStick) || (nametagEl.getAttribute("text").value !== this.displayName))) {
+          fetch(
+            'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
+            { 
+              method: 'POST', 
+              headers: new Headers(
+                {
+                  'Authorization': 'Bearer ' + window.APP.store.state.credentials.token, 
+                  'Content-Type': 'application/json',
+                }
+              ),
+              body: JSON.stringify({message: this.doofStick, name: this.displayName})
+            }
+          ).then( 
+            (response) => 
+            {
+              if (!response.ok) {
+                throw new Error("Not 2xx response")
+              } else {
+                console.log(response)
+              }
+            }
+          ).catch( 
+            (err) => 
+            {
+              console.log(err)
+            }
+          );
+        }
+      }
+    }
+    
 
     if (this.displayName && nametagEl) {
       nametagEl.setAttribute("text", { value: this.displayName });
       nametagEl.object3D.visible = !infoShouldBeHidden;
     }
 
-    // [caspian]: this is where we can add the d00fstick
-    const identityNameEl = this.el.querySelector(".identityName");
-
+    if (this.doofStick && doofStickEl) {
+      doofStickEl.setAttribute("text", { value: this.doofStick });
+      doofStickEl.object3D.visible = !infoShouldBeHidden;
+    }
+    
     if (identityNameEl) {
       if (this.identityName) {
         identityNameEl.setAttribute("text", { value: this.identityName });
         identityNameEl.object3D.visible = this.el.sceneEl.is("frozen");
       }
     }
+
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
     if (recordingBadgeEl) {
       recordingBadgeEl.object3D.visible = this.isRecording && !infoShouldBeHidden;

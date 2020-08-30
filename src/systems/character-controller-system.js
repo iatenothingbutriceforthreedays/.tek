@@ -49,7 +49,7 @@ export class CharacterControllerSystem {
     // this.fly = false;
     this.fly = getRoomMetadata().flyMode || false;
     this.baseSpeed = getRoomMetadata().baseSpeed || 6.2; //TODO: in what units?
-
+    this.bLogOnce = true;
     this.shouldLandWhenPossible = false;
     this.waypoints = [];
     this.waypointTravelStartTime = 0;
@@ -66,6 +66,7 @@ export class CharacterControllerSystem {
     waitForDOMContentLoaded().then(() => {
       this.avatarPOV = document.getElementById("avatar-pov-node");
       this.avatarRig = document.getElementById("avatar-rig");
+      // this.avatarEyeBallHandz = document.getElementById("eye-ball-handz");
     });
   }
   // Use this API for waypoint travel so that your matrix doesn't end up in the pool
