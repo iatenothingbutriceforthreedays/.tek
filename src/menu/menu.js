@@ -170,7 +170,7 @@ export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick,
             minHeight: "120px"
           }}
           spellCheck="false"
-          pattern={"^[A-Za-z0-9 -]{0,120}$"}
+          pattern={SCHEMA.definitions.profile.properties.doofStick.pattern}
           onFocus={e => handleTextFieldFocus(e.target)}
           onBlur={() => handleTextFieldBlur()}
         />
