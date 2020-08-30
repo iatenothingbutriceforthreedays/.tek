@@ -99,7 +99,7 @@ const HoverButton = ({ normalProps, hoverProps, style, href, ...otherProps }) =>
   );
 };
 
-export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick, onDoofstickChange }) => {
+export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick, onDoofStickChange }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -150,7 +150,13 @@ export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick,
           type="text"
           style={textStyles}
           value={name}
-          onChange={e => onNameChange(e.target.value)}
+          onValueChange={
+            function (name) { 
+              var trimmedString = name.substring(0, 32);
+              onNameChange(trimmedString)
+              window.APP.store.update({ profile: { displayName: trimmedString } }) 
+            } 
+          }
           minLength={1}
           maxLength={64}
           spellCheck="false"
@@ -162,7 +168,13 @@ export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick,
         <TextArea
           id={"menu-doofstick-input"}
           value={doofstick}
-          onChange={e => onDoofstickChange(e.target.value)}
+          onValueChange={
+            function (doofstick) { 
+              var trimmedString = doofstick.substring(0, 120);
+              onDoofStickChange(trimmedString)
+              window.APP.store.update({ profile: { doofStick: trimmedString } }) 
+            } 
+          }
           minLength={0}
           maxLength={120}
           style={{
@@ -189,7 +201,7 @@ export const Menu = ({
   onMenuToggle,
   onMuteToggle,
   onNameChange,
-  onDoofstickChange,
+  onDoofStickChange,
   onWatchToggle,
   onVolumeChange,
   onReport,
@@ -338,7 +350,7 @@ export const Menu = ({
           name={name}
           onNameChange={onNameChange}
           doofstick={doofstick}
-          onDoofstickChange={onDoofstickChange}
+          onDoofStickChange={onDoofStickChange}
         />
       )}
     </>
