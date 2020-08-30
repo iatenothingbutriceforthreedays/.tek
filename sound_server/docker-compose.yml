@@ -14,6 +14,14 @@ services:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
 
+  webhook:
+    image: dr33m/webhook
+    environment:
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - DR33M_ADMIN_ID=${DR33M_ADMIN_ID}
+      - DR33M_SECRET=${JWT_SECRET}
+
   certbot:
     image: certbot/certbot
     volumes:
