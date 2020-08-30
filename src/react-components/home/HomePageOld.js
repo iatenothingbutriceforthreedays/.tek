@@ -424,7 +424,7 @@ export function HomePage() {
         </div>
       </div> */}
       <LogInModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
-      <AboutModal isOpen={isAboutModalOpen} onRequestClose={() => setIsCreditsModalOpen(false)} />
+      <AboutModal isOpen={isAboutModalOpen} onRequestClose={() => setIsAboutModalOpen(false)} />
       <CreditsModal isOpen={isCreditsModalOpen} onRequestClose={() => setIsCreditsModalOpen(false)} />
 
 
