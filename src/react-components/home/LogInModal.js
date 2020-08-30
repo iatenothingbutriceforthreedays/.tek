@@ -294,7 +294,7 @@ const PaymentForm = ({ email, onSuccess }) => {
   }}>
     PAYMENT
   </span><div style={{
-    maxWidth: "280px",
+    maxWidth: "300px",
     textAlign: "center",
     marginBottom: "2em"
     }}>
