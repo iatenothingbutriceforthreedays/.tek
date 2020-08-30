@@ -49,7 +49,7 @@ export class CharacterControllerSystem {
     // this.fly = false;
     this.fly = getRoomMetadata().flyMode || false;
     this.baseSpeed = getRoomMetadata().baseSpeed || 6.2; //TODO: in what units?
-
+    // this.bLogOnce = true;
     this.shouldLandWhenPossible = false;
     this.waypoints = [];
     this.waypointTravelStartTime = 0;
@@ -226,6 +226,22 @@ export class CharacterControllerSystem {
 
       const userinput = AFRAME.scenes[0].systems.userinput;
       const wasFlying = this.fly;
+
+      // [sarri] TO DO FIX AVATAR ROTATION 
+      // if (this.bLogOnce) {
+      //   console.log(this.avatarRig.object3D)
+      //   this.bLogOnce = false
+      // }
+        
+      // if (userinput.get(paths.actions.toggleARUP)) {
+      //   this.el.object3D.rotation.z += 0.05
+      // } else if (userinput.get(paths.actions.toggleARDOWN)) {
+      //   this.el.object3D.rotation.z -= 0.05
+      // } else if (userinput.get(paths.actions.toggleARLEFT)) {
+      //   this.el.object3D.rotation.x += 0.05
+      // } else if (userinput.get(paths.actions.toggleARRIGHT)) {
+      //   this.el.object3D.rotation.x -= 0.05
+      // }
 
       // [darwin] disable fly-mode toggle
       // if (userinput.get(paths.actions.toggleFly)) {
