@@ -180,7 +180,7 @@ room3:
       title: "dr33m-2"
       length: "00:00:10"
 
-    - artist: "Nicha’N’Hooch"
+    - artist: "Nicha'N'Hooch"
       title: "nicha-n-hooch"
       length: "01:37:42"
 
