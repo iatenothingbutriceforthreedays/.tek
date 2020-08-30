@@ -2,7 +2,7 @@ import "three/examples/js/pmrem/PMREMGenerator";
 import "three/examples/js/pmrem/PMREMCubeUVPacker";
 
 import { Room3Shader, registerRegularShader } from "../gltf-component-mappings"
-import Skybox1 from "../shaders/Skybox1"
+//import Skybox1 from "../shaders/Skybox1"
 
 import qsTruthy from "../utils/qs_truthy";
 const isBotMode = qsTruthy("bot");
@@ -48,16 +48,18 @@ export default class Sky extends Object3D {
   constructor() {
     super();
 
-    const material = new ShaderMaterial({
+    this.shader = {
       fragmentShader: Sky.shader.fragmentShader,
       vertexShader: Sky.shader.vertexShader,
       uniforms: UniformsUtils.clone(Sky.shader.uniforms),
       side: BackSide,
       fog: true
-    });
+    }
+
+    const material = new ShaderMaterial(this.shader);
 
     this.skyScene = new Scene();
-    this.cubeCamera = new CubeCamera(1, 100000, 512);
+    this.cubeCamera = new CubeCamera(1, 10000000000, 512);
     this.skyScene.add(this.cubeCamera);
 
     this.sky = new Mesh(Sky._geometry, material);
@@ -69,6 +71,18 @@ export default class Sky extends Object3D {
     this._distance = 8000;
     this.updateSunPosition();
   }
+
+  tick() {
+    if (!this.registered) {
+      const sceneEl = AFRAME.scenes[0];
+      const effectsSystem = sceneEl && sceneEl.systems["hubs-systems"].effectsSystem;
+      if (effectsSystem && effectsSystem.ready) {
+        effectsSystem.registerShader(this.shader);
+        this.registered = true;
+      }
+    }
+  }
+
 
   get turbidity() {
     return this.sky.material.uniforms.turbidity.value;
@@ -217,6 +231,10 @@ AFRAME.registerComponent("skybox", {
     // This is likely due to the custom elements attached callback being synchronous on Chrome but not Firefox.
     // Added timeout due to additional case where texture is black in Firefox.
     requestAnimationFrame(() => setTimeout(this.updateEnvironmentMap));
+  },
+
+  tick() {
+    this.sky.tick();
   },
 
   update(oldData) {
