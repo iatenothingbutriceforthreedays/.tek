@@ -293,40 +293,6 @@ const LoginButton = ({ onLinkClicked }) => {
   );
 };
 
-const EnterButton = props => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={e => {
-        e.preventDefault();
-        const targetUrl = getRoomMetadata("lobby").url;
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }}
-    >
-      <img
-        style={{
-          maxWidth: "120px",
-          mixBlendMode: "lighten"
-        }}
-        src={isShown ? enterButtonHover : enterButton}
-      />
-    </button>
-  );
-};
 
 export function Credits() {
   const auth = useContext(AuthContext);
@@ -393,47 +359,6 @@ export function Credits() {
           }}
         >
           <MenuComponent />
-        </div>
-        {auth.isSignedIn && (
-          <div
-            style={{
-              marginLeft: "225px", // half of maxWidth above
-              mixBlendMode: "lighten"
-            }}
-          >
-            <EnterButton />
-          </div>
-        )}
-      </div>
-      <div className={styles.ctaButtons}>
-        <div
-          style={{
-            position: "absolute",
-            top: "32px",
-            right: "16px",
-            display: "flex",
-            alignItems: "flex-end",
-            flexDirection: "column"
-          }}
-        >
-          {!auth.isSignedIn && showLogin && <LoginButton onLinkClicked={auth.showSignInDialog} />}
-          {auth.isSignedIn && <LogoutButton onLinkClicked={auth.signOut} />}
-          {auth.isSignedIn && (
-            <div
-              style={{
-                color: "#667000",
-                textTransform: "lowercase",
-                maxWidth: "240px",
-                textAlign: "right",
-                marginTop: "24px",
-                marginRight: "20px"
-              }}
-            >
-              <span>
-                <FormattedMessage id="sign-in.as" /> {auth.email}
-              </span>{" "}
-            </div>
-          )}
         </div>
       </div>
     </Page>
