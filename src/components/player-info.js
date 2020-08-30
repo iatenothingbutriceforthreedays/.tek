@@ -1,6 +1,7 @@
 import { injectCustomShaderChunks } from "../utils/media-utils";
 import { AVATAR_TYPES } from "../utils/avatar-utils";
 import { registerComponentInstance, deregisterComponentInstance } from "../utils/component-utils";
+import { debounce } from "lodash";
 
 function ensureAvatarNodes(json) {
   const { nodes } = json;
@@ -27,32 +28,14 @@ function ensureAvatarNodes(json) {
   return json;
 }
 
-// const postDoofStick = async (doofStick, token) => {
-//   const response = await fetch(
-//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
-//     { 
-//       method: 'POST', 
-//       headers: new Headers(
-//         {
-//           'Authorization': 'Bearer ' + token, 
-//           'Content-Type': 'application/json',
-//         }
-//       ),
-//       body: JSON.stringify({message: doofStick})
-//     }
-//   );
-//   console.log(response)
-//   // const myJson = await response.json();
-// }
-
 // const getDoofStick = async (token) => {
 //   const response = await fetch(
-//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
-//     { 
-//       method: 'GET', 
+//     'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks',
+//     {
+//       method: 'GET',
 //       headers: new Headers(
 //         {
-//           'Authorization': 'Bearer ' + token, 
+//           'Authorization': 'Bearer ' + token,
 //           'Content-Type': 'application/json',
 //         }
 //       )
@@ -86,6 +69,9 @@ AFRAME.registerComponent("player-info", {
     this.update = this.update.bind(this);
     this.localStateAdded = this.localStateAdded.bind(this);
     this.localStateRemoved = this.localStateRemoved.bind(this);
+
+    this.persist = this.persist.bind(this);
+    this.persistBounced = debounce(this.persist, 15e3, { maxWait: 30e3, trailing: true })
 
     this.isLocalPlayerInfo = this.el.id === "avatar-rig";
     this.playerSessionId = null;
@@ -127,7 +113,7 @@ AFRAME.registerComponent("player-info", {
     if (this.isLocalPlayerInfo) {
       this.el.querySelector(".model").removeEventListener("model-error", this.handleModelError);
     }
-    
+
     this.el.sceneEl.removeEventListener("stateadded", this.update);
     this.el.sceneEl.removeEventListener("stateremoved", this.update);
     window.APP.store.removeEventListener("statechanged", this.update);
@@ -160,6 +146,27 @@ AFRAME.registerComponent("player-info", {
     this.applyDisplayName();
   },
 
+  async persist(data) {
+    fetch("https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks", {
+      method: "POST",
+      headers: new Headers({
+        Authorization: "Bearer " + window.APP.store.state.credentials.token,
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Not 2xx response");
+        } else {
+          console.log(response);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
+
   applyDisplayName() {
     const store = window.APP.store;
 
@@ -172,38 +179,15 @@ AFRAME.registerComponent("player-info", {
 
     if (this.isLocalPlayerInfo) {
       if (this.doofStick && doofStickEl && this.displayName && nametagEl) {
-        if (window.APP.store.state.credentials.token && ((doofStickEl.getAttribute("text").value !== this.doofStick) || (nametagEl.getAttribute("text").value !== this.displayName))) {
-          fetch(
-            'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
-            { 
-              method: 'POST', 
-              headers: new Headers(
-                {
-                  'Authorization': 'Bearer ' + window.APP.store.state.credentials.token, 
-                  'Content-Type': 'application/json',
-                }
-              ),
-              body: JSON.stringify({message: this.doofStick, name: this.displayName})
-            }
-          ).then( 
-            (response) => 
-            {
-              if (!response.ok) {
-                throw new Error("Not 2xx response")
-              } else {
-                console.log(response)
-              }
-            }
-          ).catch( 
-            (err) => 
-            {
-              console.log(err)
-            }
-          );
+        if (
+          window.APP.store.state.credentials.token &&
+          (doofStickEl.getAttribute("text").value !== this.doofStick ||
+            nametagEl.getAttribute("text").value !== this.displayName)
+        ) {
+          this.persistBounced({ message: this.doofStick, name: this.displayName });
         }
       }
     }
-    
 
     if (this.displayName && nametagEl) {
       nametagEl.setAttribute("text", { value: this.displayName });
@@ -214,7 +198,7 @@ AFRAME.registerComponent("player-info", {
       doofStickEl.setAttribute("text", { value: this.doofStick });
       doofStickEl.object3D.visible = !infoShouldBeHidden;
     }
-    
+
     if (identityNameEl) {
       if (this.identityName) {
         identityNameEl.setAttribute("text", { value: this.identityName });

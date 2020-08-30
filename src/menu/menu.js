@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { deburr } from "lodash";
 import { SvgHoverButton, SvgToggleButton } from "../utils/svg-helpers";
 import { TextForm, TextArea } from "./text-form";
 import { Slider } from "./slider";
 
-// import networkAsset from "../utils/network-asset"
-
-import DialogContainer from "../react-components/dialog-container";
 import Modal from "react-modal";
 import { SCHEMA } from "../storage/store";
 
@@ -170,13 +168,11 @@ export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick,
           type="text"
           style={textStyles}
           value={name}
-          onValueChange={
-            function (name) { 
-              var trimmedString = name.substring(0, 32);
-              onNameChange(trimmedString)
-              window.APP.store.update({ profile: { displayName: trimmedString } }) 
-            } 
-          }
+          onValueChange={name => {
+            const trimmedString = deburr(name.substring(0, 32));
+            onNameChange(trimmedString);
+            window.APP.store.update({ profile: { displayName: trimmedString } });
+          }}
           minLength={1}
           maxLength={64}
           spellCheck="false"
@@ -188,13 +184,11 @@ export const DoofLoadout = ({ isOpen, setInModal, name, onNameChange, doofstick,
         <TextArea
           id={"menu-doofstick-input"}
           value={doofstick}
-          onValueChange={
-            function (doofstick) { 
-              var trimmedString = doofstick.substring(0, 120);
-              onDoofStickChange(trimmedString)
-              window.APP.store.update({ profile: { doofStick: trimmedString } }) 
-            } 
-          }
+          onValueChange={doofstick => {
+            const trimmedString = deburr(doofstick.substring(0, 120));
+            onDoofStickChange(trimmedString);
+            window.APP.store.update({ profile: { doofStick: trimmedString } });
+          }}
           minLength={0}
           maxLength={120}
           style={{
@@ -233,7 +227,6 @@ export const Menu = ({
   style,
   ...otherProps
 }) => {
-  // let vw = 1920; //, vh
   const [vw, setVw] = useState(1920);
   const [inModal, setInModal] = useState(false);
 
@@ -364,8 +357,22 @@ export const Menu = ({
               if (inModal || hidden) setInModal(false);
               onMenuToggle(hidden);
             }}
-            normalProps={{ x: "1034", y: "132", width: "738", height: "734", xlinkHrefWebp: MenuClosedWebp, xlinkHref: MenuClosed }}
-            activeProps={{ x: "1044", y: "134", width: "726", height: "727", xlinkHrefWebp: MenuOpenWebp, xlinkHref: MenuOpen }}
+            normalProps={{
+              x: "1034",
+              y: "132",
+              width: "738",
+              height: "734",
+              xlinkHrefWebp: MenuClosedWebp,
+              xlinkHref: MenuClosed
+            }}
+            activeProps={{
+              x: "1044",
+              y: "134",
+              width: "726",
+              height: "727",
+              xlinkHrefWebp: MenuOpenWebp,
+              xlinkHref: MenuOpen
+            }}
           />
         </svg>
       </div>

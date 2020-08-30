@@ -8,7 +8,6 @@ export const TextArea = ({ value, onValueChange, ...otherProps }) => {
     const capturedRef = inputRef.current;
     const intercepted = ["keydown", "keyup"];
     intercepted.forEach(i => capturedRef.addEventListener(i, stopPropagation));
-
     // Capture enter events
     capturedRef.addEventListener("onkeypress", e => {
       if (e.which === 13 && !e.shiftKey) onValueChange(e.target.value);
@@ -16,7 +15,7 @@ export const TextArea = ({ value, onValueChange, ...otherProps }) => {
     });
     return () => intercepted.forEach(i => capturedRef.removeEventListener(i, stopPropagation));
   });
-  const bounced = debounce(async update => onValueChange(update), 2e3, { trailing: true, maxWait: 5e3 });
+  const bounced = debounce(async update => onValueChange(update), 1e3, { trailing: true, maxWait: 3e3 });
 
   return (
     <textarea

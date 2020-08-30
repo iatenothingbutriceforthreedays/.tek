@@ -239,51 +239,45 @@ export default class Store extends EventTarget {
 
     if (this.state.credentials.token) {
       const response = await fetch(
-        'https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks', 
-        { 
-          method: 'GET', 
-          headers: new Headers(
-            {
-              'Authorization': 'Bearer ' + this.state.credentials.token, 
-              'Content-Type': 'application/json',
-            }
-          )
-        }
-      ).then( 
-        (response) => 
+        "https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/doofsticks",
         {
+          method: "GET",
+          headers: new Headers({
+            Authorization: "Bearer " + this.state.credentials.token,
+            "Content-Type": "application/json"
+          })
+        }
+      )
+        .then(response => {
           if (!response.ok) {
-            console.log('response  not okay from get')
+            console.log("response  not okay from get");
             this.update({ profile: { doofStick: "Hello!" } });
-            throw new Error("Not 2xx response")
+            throw new Error("Not 2xx response");
           } else {
             response.json().then(data => {
               if (data.message && data.name) {
-                console.log('response 200 from get, message: ' + data.message + ' name: ' + data.name)
+                console.log("response 200 from get, message: " + data.message + " name: " + data.name);
                 this.update({ profile: { doofStick: data.message } });
                 this.update({ profile: { displayName: data.name } });
               } else if (data.name) {
-                console.log('response 200 no doofstick but name: ' + data.name)
+                console.log("response 200 no doofstick but name: " + data.name);
                 this.update({ profile: { doofStick: "" } });
                 this.update({ profile: { displayName: data.name } });
               } else if (data.message) {
-                console.log('response 200 got doofstick ' + data.message + 'but no name')
+                console.log("response 200 got doofstick " + data.message + "but no name");
                 this.update({ profile: { doofStick: data.message } });
                 this.update({ profile: { displayName: generateRandomName() } });
               } else {
-                console.log('response 200 got doofstick and no name')
+                console.log("response 200 got doofstick and no name");
                 this.update({ profile: { doofStick: "" } });
                 this.update({ profile: { displayName: generateRandomName() } });
               }
             });
           }
-        }
-      ).catch( 
-        (err) => 
-        {
-          console.log(err)
-        }
-      );
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } else {
       this.update({ profile: { doofStick: "" } });
       this.update({ profile: { displayName: generateRandomName() } });
