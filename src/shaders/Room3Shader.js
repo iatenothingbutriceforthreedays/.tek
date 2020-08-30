@@ -47,8 +47,8 @@ export const Room3Shader = {
         f+=0.500000*(0.5+0.5*noise(p)); p=m*p*2.02;
         f+=0.250000*(0.5+0.5*noise(p)); p=m*p*2.03;
         f+=0.125000*(0.5+0.5*noise(p)); p=m*p*2.01;
-        f+=0.062500*(0.5+0.5*noise(p)); p=m*p*2.04;
-        f+=0.031250*(0.5+0.5*noise(p)); p=m*p*2.01;
+        f+=0.062500*(0.5+0.5*noise(p)); p=m*p*1.03;
+        f+=0.031250*(0.5+0.5*noise(p)); p=m*p*1.01;
         f+=0.015625*(0.5+0.5*noise(p));
         return f/0.96875;
     }
@@ -71,7 +71,7 @@ export const Room3Shader = {
 
         vec2 o = fbm4_2( .8*q );
 
-        o += 0.03*cos( vec2(0.12,0.14)*time*0.002 + length(o));
+        o += 0.05*cos( vec2(0.12,0.14)*time*0.006 + length(o));
 
         vec2 n = fbm6_2( 3.0*o );
 
