@@ -14,7 +14,8 @@ AFRAME.registerComponent("portal", {
     targetRoom: { type: "string", default: null },
     targetUrl: { type: "string", default: null },
     targetPos: { type: "vec3", default: null },
-    targetObj: { type: "string", default: null }
+    targetObj: { type: "string", default: null },
+    openInNewWindow: { type: "boolean", default: false }
   },
   init() {
     this.boundingSphere = new THREE.Sphere();
@@ -28,6 +29,19 @@ AFRAME.registerComponent("portal", {
     mesh.geometry.computeBoundingSphere();
     boundingSphereWorldPositionVec.add(mesh.geometry.boundingSphere.center);
     this.boundingSphere.set(boundingSphereWorldPositionVec, mesh.geometry.boundingSphere.radius + this.data.padding);
+  },
+  openUrl(url) {
+    if (this.data.openInNewWindow) {
+      // Open new window and remove this object
+      var popup = window.open(url);
+      // i think this gets blocked by the browser but try to refocus the main window
+      popup.blur();
+      window.focus(); 
+      this.el.parentNode.removeChild(this.el);
+    } else {
+      // Redirect immediately
+      location.href = url;
+    }
   },
   tick() {
     const colliders = this.data.colliders;
@@ -48,11 +62,11 @@ AFRAME.registerComponent("portal", {
               if (!url) {
                 console.error("invalid portal targetRoom:", this.data.targetRoom);
               }
-              location.href = url;
+              this.openUrl(url);
             });
           }
         } else if (this.data.targetUrl) {
-          location.href = this.data.targetUrl;
+          this.openUrl(this.data.targetUrl);
         }
 
         let targetPos;
@@ -63,7 +77,7 @@ AFRAME.registerComponent("portal", {
           } else {
             targetPos = el.object3D.position; // TODO should probably use getWorldPosition
           }
-        } else if (this.data.targetPos) {
+        } else if (this.data.targetPos && (Object.keys(this.data.targetPos).length > 0)) {
           targetPos = this.data.targetPos;
         }
         if (targetPos) {
