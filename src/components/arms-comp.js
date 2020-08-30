@@ -47,19 +47,19 @@ AFRAME.registerComponent("arms-comp", {
   },
 
   tick: function () {
-    const userinput = AFRAME.scenes[0].systems.userinput;
+    // const userinput = AFRAME.scenes[0].systems.userinput;
     // // console.log(userinput.get(paths.actions.toggleARUP))
 
 
-    if (userinput.get(paths.actions.toggleARUP)) {
-      this.el.object3D.rotation.z += 0.05
-    } else if (userinput.get(paths.actions.toggleARDOWN)) {
-      this.el.object3D.rotation.z -= 0.05
-    } else if (userinput.get(paths.actions.toggleARLEFT)) {
-      this.el.object3D.rotation.x += 0.05
-    } else if (userinput.get(paths.actions.toggleARRIGHT)) {
-      this.el.object3D.rotation.x -= 0.05
-    }
+    // if (userinput.get(paths.actions.toggleARUP)) {
+    //   this.el.object3D.rotation.z += 0.05
+    // } else if (userinput.get(paths.actions.toggleARDOWN)) {
+    //   this.el.object3D.rotation.z -= 0.05
+    // } else if (userinput.get(paths.actions.toggleARLEFT)) {
+    //   this.el.object3D.rotation.x += 0.05
+    // } else if (userinput.get(paths.actions.toggleARRIGHT)) {
+    //   this.el.object3D.rotation.x -= 0.05
+    // }
   }
 
 });
