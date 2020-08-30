@@ -285,7 +285,7 @@ export default class Store extends EventTarget {
         }
       );
     } else {
-      this.update({ profile: { doofStick: generateRandomName() } });
+      this.update({ profile: { doofStick: "" } });
       this.update({ profile: { displayName: generateRandomName() } });
     }
   };
