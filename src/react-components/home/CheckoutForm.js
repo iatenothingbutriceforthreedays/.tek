@@ -100,41 +100,44 @@ class CheckoutForm extends React.Component {
         email: this.state.email,
       }
     })
-    .then((clientSecret) => {
-      this.props.stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardElement,
-        },
-      })
-      .then((resp) => {
-        
-        if(resp.paymentIntent) {
+      .then((clientSecret) => {
+        this.props.stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: cardElement,
+          },
+        })
+          .then((resp) => {
 
-        this.setState({
-          isSubmitting: false
-        });
+            if (resp.paymentIntent) {
 
-          this.props.onStripeSuccess();
-        } else {
+              this.setState({
+                isSubmitting: false,
+                stripeError: null
+              });
 
-        this.setState({
-          isSubmitting: false,
-          error: "There was an issue processing the payment details below. Please check your details and try again. Otherwise, please contact dr33mphaz3r@gmail.com."
-        });
+              this.props.onStripeSuccess();
+            } else {
 
-          // TODO: handle error case! (Toast error?)
-        }
+              this.setState({
+                isSubmitting: false,
+                error: "Please check your details and try again. Otherwise, please contact dr33mphaz3r@gmail.com.",
+                stripeError: resp.error ? resp.error.message : null
+              });
+
+              // TODO: handle error case! (Toast error?)
+            }
+          })
+          .catch((err) => {
+            console.error(err)
+            this.setState({
+              isSubmitting: false,
+              stripeError: null
+            });
+          });
       })
       .catch((err) => {
-        console.error(err)
-        this.setState({
-          isSubmitting: false
-        });
+        this.setState({ error: err.message });
       });
-    })
-    .catch((err) => {
-      this.setState({ error: err.message });
-    });
   };
 
   render() {
@@ -145,7 +148,7 @@ class CheckoutForm extends React.Component {
         width: "300px",
         color: 'white'
       }}>
-                { this.state.error && <span style={{
+        {this.state.error && <span style={{
           boxSizing: "border-box",
           width: "300px",
           display: "block",
@@ -155,8 +158,8 @@ class CheckoutForm extends React.Component {
           fontWeight: "300",
           color: "rgb(255, 0, 0)",
           textShadow: "4px 4px 10px rgba(255, 0, 0, 0.94)"
-        }}>{ this.state.error }</span> }
-                <span style={{
+        }}><em>{this.state.stripeError}</em>&nbsp;{this.state.error} </span>}
+        <span style={{
           boxSizing: "border-box",
           width: "300px",
           color: "white",
@@ -168,7 +171,7 @@ class CheckoutForm extends React.Component {
           color: "#FFE6C1",
           textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)"
         }}>EMAIL ADDRESS</span>
-        <input disabled placeholder="YOUR EMAIL ADDRESS" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"  style={{
+        <input disabled placeholder="YOUR EMAIL ADDRESS" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" style={{
           background: "unset",
           border: "1px solid #FFE6C1",
           boxSizing: "border-box",
@@ -186,20 +189,22 @@ class CheckoutForm extends React.Component {
           color: "#FFE6C1",
           marginBottom: "16px"
           // textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)"
-        }} type="email" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} />
-        <br/>
+        }} type="email" value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })} />
+        <br />
         <CardSection />
         <div style={{
           width: "300px",
+          height: 'auto',
           display: "flex",
           justifyContent: "center",
+          alignItems: 'center',
           marginTop: "32px"
         }}>
-        <img src={signUpButton} aria-label="Sign Up" aria-disabled={buttonDisabled} aria-role="button" onClick={(e) => {
-          if(!buttonDisabled) {
-            this.handleSubmit(e)
-          }
-        }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
+          <img src={signUpButton} aria-label="Sign Up" aria-disabled={buttonDisabled} role="button" onClick={(e) => {
+            if (!buttonDisabled) {
+              this.handleSubmit(e)
+            }
+          }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
         </div>
       </form>
     );
