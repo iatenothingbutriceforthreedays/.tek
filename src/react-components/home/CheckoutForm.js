@@ -96,14 +96,21 @@ class CheckoutForm extends React.Component {
         },
       })
       .then((resp) => {
+        
+        if(resp.paymentIntent) {
+
         this.setState({
           isSubmitting: false
         });
-        
-        if(resp.paymentIntent) {
+
           this.props.onStripeSuccess();
         } else {
-          
+
+        this.setState({
+          isSubmitting: false,
+          error: "There was an issue processing the payment details below. Please check your details and try again. Otherwise, please contact dr33mphaz3r@gmail.com."
+        });
+
           // TODO: handle error case! (Toast error?)
         }
       })
@@ -128,6 +135,17 @@ class CheckoutForm extends React.Component {
         width: "300px",
         color: 'white'
       }}>
+                { this.state.error && <span style={{
+          boxSizing: "border-box",
+          width: "300px",
+          display: "block",
+          paddingBottom: "16px",
+          fontFamily: "Perpetua Titling MT",
+          fontStyle: "normal",
+          fontWeight: "300",
+          color: "rgb(255, 0, 0)",
+          textShadow: "4px 4px 10px rgba(255, 0, 0, 0.94)"
+        }}>{ this.state.error }</span> }
                 <span style={{
           boxSizing: "border-box",
           width: "300px",
@@ -140,7 +158,7 @@ class CheckoutForm extends React.Component {
           color: "#FFE6C1",
           textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)"
         }}>EMAIL ADDRESS</span>
-        <input placeholder="YOUR EMAIL ADDRESS" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"  style={{
+        <input disabled placeholder="YOUR EMAIL ADDRESS" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"  style={{
           background: "unset",
           border: "1px solid #FFE6C1",
           boxSizing: "border-box",
@@ -167,9 +185,9 @@ class CheckoutForm extends React.Component {
           justifyContent: "center",
           marginTop: "32px"
         }}>
-        <img src={signUpButton} aria-label="Sign Up" aria-disabled={buttonDisabled} aria-role="button" onClick={() => {
+        <img src={signUpButton} aria-label="Sign Up" aria-disabled={buttonDisabled} aria-role="button" onClick={(e) => {
           if(!buttonDisabled) {
-            this.handleSubmit()
+            this.handleSubmit(e)
           }
         }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
         </div>
