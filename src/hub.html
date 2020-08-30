@@ -116,13 +116,14 @@
                                     <a-image billboard is-not-remote-hover-target class="doofcontainer" src="#doofplate" width="3" height="1" position="0 1.5 0">
                                         <a-entity
                                             class="nametag"
-                                            text="side: double; align: center; color: #ddd"
+                                            
+                                            text="font:perpetua; negate: false; opacity: 0.99; color: #F3FFE9; side: double; align: center;"
                                             position="0 0.2 0.01"
                                             scale="4 4 4"
                                         ></a-entity>
                                         <a-entity
                                             class="identityName"
-                                            text="side: double; align: center; color: #ddd"
+                                            text="font:perpetua; negate: false; opacity: 0.99; color: #F3FFE9; side: double; align: center;"
                                             visibility-while-frozen="withinDistance: 100; requireHoverOnNonMobile: false;"
                                             position="0 0.1 0.01"
                                             scale="2 2 2"
@@ -130,7 +131,7 @@
                                         <a-entity
                                             doofstick-comp
                                             class="doofStick"
-                                            text="side: double; align: center; color: #ddd"
+                                            text="font:perpetua; negate: false; opacity: 0.99; color: #F3FFE9; side: double; align: center;"
                                             position="0 -0.1 0.01"
                                             scale="2 2 2"
                                         ></a-entity>
@@ -215,6 +216,10 @@
                         <template data-name="RightHand">
                             <a-entity personal-space-invader="radius: 0.1" bone-visibility="updateWhileInvisible: true;"></a-entity>
                         </template>
+
+                        <!-- <template data-name="EyeBallHandz">
+                            <a-entity class="qwop-arms" matrix-auto-update arms-comp scale="1 1 1" rotation="0 0 0" gltf-model-plus="inflate: true; src: #eyearms;"></a-entity>
+                        </template> -->
                     </a-entity>
                 </a-entity>
             </template>
@@ -1229,7 +1234,6 @@
                 <template data-name="Head">
                     <a-entity id="avatar-head" visible="false" bone-visibility="updateWhileInvisible: true;">
                         <a-entity class="qwop-arms" matrix-auto-update></a-entity>
-                        <!-- <a-gltf-model class="qwop-arms" matrix-auto-update arms-comp scale="0.2 0.2 0.2" rotation="0 90 0" src="https://unsw-immersive-solutions-data.s3-ap-southeast-2.amazonaws.com/Sarri/FPS+arms.blend.gltf"></a-gltf-model> -->
                     </a-entity>
                 </template>
 
@@ -1240,6 +1244,10 @@
                 <template data-name="RightHand">
                     <a-entity bone-visibility="updateWhileInvisible: true;" hover-visuals="hand: right;"></a-entity>
                 </template>
+
+                <!-- <template data-name="EyeBallHandz">
+                    <a-entity class="qwop-arms" matrix-auto-update></a-entity>
+                </template> -->
 
             </a-entity>
         </a-entity>
