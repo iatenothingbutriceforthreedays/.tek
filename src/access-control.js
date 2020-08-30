@@ -7,7 +7,7 @@ export function redirectIfNotAuthorized(roomKey) {
     return false;
   } else {
     // TODO: Caspian -> put sign in ref here
-    location.href = "/";
+    location.href = `/?loginModal=true&sign_in_destination_url=${meta.url}`;
     return true;
   }
 }
