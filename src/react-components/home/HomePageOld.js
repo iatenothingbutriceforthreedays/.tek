@@ -29,7 +29,11 @@ import { getRoomURL } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 
+
 import { LogInModal } from "./LogInModal";
+import { AboutModal } from "../about/About";
+import { CreditsModal } from "../credits/Credits";
+
 
 const mainMenuBack = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/menu-back.png";
 const mainMenuBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/menu-back.webp";
@@ -124,11 +128,19 @@ const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherProps })
   )
 };
 
-const MenuComponent = ({ setIsModalOpen }) => {
+const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalOpen }) => {
   return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
     <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={mainMenuBack} />
-    <SvgHoverButton href="/about" id="About_Button" normalProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutNormal }} hoverProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutHover }} />
-    <SvgHoverButton href="/credits" id="Credits_Button" hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover }} normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal }} />
+    <SvgHoverButton  onClick={async e => {
+        e.preventDefault();
+        setIsAboutModalOpen(true);
+        return false;
+      }} id="About_Button" normalProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutNormal }} hoverProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutHover }} />
+    <SvgHoverButton  onClick={async e => {
+        e.preventDefault();
+        setIsCreditsModalOpen(true);
+        return false;
+      }} id="Credits_Button" hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover }} normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal }} />
     {/* <SvgHoverButton id="LogIn_Button" hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover }} normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal }} onClick={(e) => {
       e.preventDefault();
       setIsModalOpen(true);
@@ -315,6 +327,9 @@ export function HomePage() {
   }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
+
 
   const canCreateRooms = !configs.feature("disable_room_creation") || auth.isAdmin;
 
@@ -366,7 +381,7 @@ export function HomePage() {
             position: "relative"
           }}
         >
-          <MenuComponent setIsModalOpen={setIsModalOpen} />
+          <MenuComponent setIsModalOpen={setIsModalOpen} setIsAboutModalOpen={setIsAboutModalOpen} setIsCreditsModalOpen={setIsCreditsModalOpen} />
 
         </div>
       </div>
@@ -402,6 +417,10 @@ export function HomePage() {
         </div>
       </div>
       <LogInModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
+      <AboutModal isOpen={isAboutModalOpen} onRequestClose={() => setIsCreditsModalOpen(false)} />
+      <CreditsModal isOpen={isCreditsModalOpen} onRequestClose={() => setIsCreditsModalOpen(false)} />
+
+
     </Page>
   );
 }
