@@ -9,6 +9,9 @@ import { lang, messages } from "./utils/i18n";
 import "./assets/stylesheets/globals.scss";
 import { AuthContextProvider } from "./react-components/auth/AuthContext";
 import { StripeProvider } from "react-stripe-elements";
+import { check_webp_features } from "./utils/compat";
+
+check_webp_features();
 
 registerTelemetry("/home", "Hubs Home Page");
 

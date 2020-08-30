@@ -12,7 +12,7 @@ import { getRoomURL } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 import { SvgHoverButton } from "../../utils/svg-helpers";
-// import { check_webp_feature_support_cache } from "../../utils/compat";
+import { check_webp_feature_support_cache } from "../../utils/compat";
 
 const aboutBack = "https://str33m.dr33mphaz3r.net/static-assets/about/about-back.png";
 const limboHover = "https://str33m.dr33mphaz3r.net/static-assets/about/limbo-hover.png";
@@ -78,11 +78,9 @@ const showLogin = qsTruthy("login");
 const MenuComponent = ({ onRequestClose }) => {
   let backImage = aboutBack;
 
-  /*
   if (check_webp_feature_support_cache("lossy")) {
     backImage = aboutBackWebp;
   }
-  */
 
   return (
     <svg
@@ -184,129 +182,6 @@ const MenuComponent = ({ onRequestClose }) => {
   );
 };
 
-const LogoutButton = ({ onLinkClicked }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={onLinkClicked}
-    >
-      {isShown ? (
-        <picture>
-          <source srcSet={logoutButtonHoverWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px",
-              marginRight: "-25px"
-            }}
-            src={logoutButtonHover}
-          />
-        </picture>
-      ) : (
-        <picture>
-          <source srcSet={logoutButtonWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px",
-              marginRight: "-25px"
-            }}
-            src={logoutButton}
-          />
-        </picture>
-      )}
-    </button>
-  );
-};
-
-const LoginButton = ({ onLinkClicked }) => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <a
-      href="/signin"
-      rel="noreferrer noopener"
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-    >
-      {isShown ? (
-        <picture>
-          <source srcSet={loginButtonHoverWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px"
-            }}
-            src={loginButtonHover}
-          />
-        </picture>
-      ) : (
-        <picture>
-          <source srcSet={loginButtonWebp} type="image/webp" />
-
-          <img
-            style={{
-              maxWidth: "200px"
-            }}
-            src={loginButton}
-          />
-        </picture>
-      )}
-    </a>
-  );
-};
-
-const EnterButton = props => {
-  const [isShown, setIsShown] = useState(false);
-
-  return (
-    <button
-      onMouseEnter={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
-      style={{
-        border: "none",
-        background: "none",
-        padding: "0",
-        margin: "0",
-        cursor: "pointer"
-      }}
-      onClick={async e => {
-        e.preventDefault();
-        const targetUrl = await getRoomURL("lobby");
-        if (targetUrl) {
-          location.href = targetUrl;
-        } else {
-          console.error("invalid portal targetRoom:", this.data.targetRoom);
-        }
-      }}
-    >
-      <img
-        style={{
-          maxWidth: "120px",
-          mixBlendMode: "lighten"
-        }}
-        src={isShown ? enterButtonHover : enterButton}
-      />
-    </button>
-  );
-};
 
 export function About() {
   const auth = useContext(AuthContext);
@@ -372,47 +247,6 @@ export function About() {
           }}
         >
           <MenuComponent />
-        </div>
-        {auth.isSignedIn && (
-          <div
-            style={{
-              marginLeft: "225px", // half of maxWidth above
-              mixBlendMode: "lighten"
-            }}
-          >
-            <EnterButton />
-          </div>
-        )}
-      </div>
-      <div className={styles.ctaButtons}>
-        <div
-          style={{
-            position: "absolute",
-            top: "32px",
-            right: "16px",
-            display: "flex",
-            alignItems: "flex-end",
-            flexDirection: "column"
-          }}
-        >
-          {!auth.isSignedIn && showLogin && <LoginButton onLinkClicked={auth.showSignInDialog} />}
-          {auth.isSignedIn && <LogoutButton onLinkClicked={auth.signOut} />}
-          {auth.isSignedIn && (
-            <div
-              style={{
-                color: "#667000",
-                textTransform: "lowercase",
-                maxWidth: "240px",
-                textAlign: "right",
-                marginTop: "24px",
-                marginRight: "20px"
-              }}
-            >
-              <span>
-                <FormattedMessage id="sign-in.as" /> {auth.email}
-              </span>{" "}
-            </div>
-          )}
         </div>
       </div>
     </Page>
