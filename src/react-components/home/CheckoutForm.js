@@ -63,11 +63,24 @@ class CheckoutForm extends React.Component {
     super(props);
     this.state = {
       isSubmitting: false,
-      email: props.email
+      email: props.email,
+      hasCardError: true
     }
   }
   componentDidMount() {
+    const cardElement = this.props.elements.getElement('card');
 
+    cardElement.on('change', (event) => {
+      if (event.complete) {
+        this.setState({
+          hasCardError: false
+        })
+      } else {
+        this.setState({
+          hasCardError: true
+        })
+      }
+    });
   }
 
   handleSubmit = (e) => {
@@ -125,7 +138,7 @@ class CheckoutForm extends React.Component {
   };
 
   render() {
-    const buttonDisabled = this.state.isSubmitting || !validate(this.state.email);
+    const buttonDisabled = this.state.isSubmitting || this.state.hasCardError || !validate(this.state.email);
 
     return (
       <form onSubmit={this.handleSubmit} style={{
