@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Modal from 'react-modal';
 import configs from "../../utils/configs";
+import { validate } from 'email-validator';
 
 import IfFeature from "../if-feature";
 
@@ -21,6 +22,12 @@ import InjectedCheckoutForm from './CheckoutForm';
 import { useSignIn, SignInStep } from "../auth/SignInPage";
 
 import { MenuComponent } from "../coc/CoC";
+
+require('es6-promise').polyfill();
+
+var originalFetch = require('isomorphic-fetch');
+var fetch = require('fetch-retry')(originalFetch);
+
 
 function SubmitEmail({ onSubmitEmail, initialEmail }) {
 
@@ -75,6 +82,58 @@ function SubmitEmail({ onSubmitEmail, initialEmail }) {
   );
 }
 
+const PaymentPendingForm = ({ setLoginState, email }) => {
+
+  useEffect(() => {
+    {
+      fetch(
+
+        `https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email
+        }),
+        retries: 8,
+        retryDelay: function (attempt, error, response) {
+          return Math.pow(2, attempt) * 1000;
+        },
+        retryOn: [404, 503, 500]
+      })
+        .then(function (response) {
+
+          if (response.status === 200) {
+            setLoginState({ step: "PAYMENT_SUCCESSFUL" });
+          } else if (response.status === 404) {
+            throw response;
+          } else {
+            throw response;
+          }
+        }).catch(function (err) {
+          console.log("got error :(", err);
+        })
+    }
+  }, []);
+
+  return (<React.Fragment><span style={{
+
+    fontFamily: "Perpetua Titling MT",
+    fontStyle: "normal",
+    fontWeight: "300",
+    fontSize: "30px",
+    lineHeight: "35px",
+    textAlign: "center",
+    color: "#FFE6C1",
+    textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)",
+    marginBottom: "1.5em"
+  }}>
+    PROCESSING PAYMENT
+  </span>
+  </React.Fragment>);
+};
+
 const VerifiedForm = () => {
   return (<React.Fragment><span style={{
 
@@ -128,6 +187,7 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
 
   const [email, setEmail] = useState(initialEmail);
 
+
   const onSubmitForm = useCallback(
     e => {
       e.preventDefault();
@@ -135,6 +195,8 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
     },
     [onSubmitEmail, email]
   );
+
+  const buttonDisabled = !validate(email);
 
 
   return (<React.Fragment><span style={{
@@ -152,7 +214,7 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
     LOGIN TO
   <br />DR33MPHAZ3R
   </span>
-    <input placeholder="YOUR EMAIL ADDRESS" style={{
+    <input placeholder="YOUR EMAIL ADDRESS" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" style={{
       background: "unset",
       border: "1px solid #FFE6C1",
       boxSizing: "border-box",
@@ -172,8 +234,18 @@ const LoginForm = ({ onSubmitEmail, initialEmail, isCocModalOpen, setCocModalOpe
     }} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
     <br />
     <br />
-    <img src={logInButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px", cursor: "pointer" }} />
-    <img src={signUpButton} onClick={() => onSubmitEmail(email)} style={{ width: "180px", cursor: "pointer" }} />
+    <img src={logInButton} onClick={() => {
+      if (buttonDisabled) {
+        return;
+      }
+      onSubmitEmail(email)
+    }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
+    <img src={signUpButton} onClick={() => {
+      if (buttonDisabled) {
+        return;
+      }
+      onSubmitEmail(email)
+    }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
     <a href="/coc" onClick={(e) => {
       e.preventDefault();
       setCocModalOpen(true);
@@ -199,6 +271,18 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
   const qs = new URLSearchParams(location.search);
 
   const { step, submitEmail, cancel, email } = useSignIn();
+  const redirectUrl = qs.get("sign_in_destination_url") || "/";
+
+  useEffect(
+    () => {
+      if (step === SignInStep.complete) {
+        window.location = redirectUrl;
+      }
+    },
+    [step, redirectUrl]
+  );
+
+
   const [loginState, setLoginState] = useState({
     step: "NOT_LOGGED_IN"
   });
@@ -217,9 +301,9 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
     }}
   >
     <div style={{
-      backgroundImage: loginState.step === "PAYMENT_STARTED" ? `url(${modalLongBg})` : `url(${modalSmallBg})`,
-      minWidth: loginState.step === "PAYMENT_STARTED" ? "800px" : "600px",
-      minHeight: loginState.step === "PAYMENT_STARTED" ? "800px" : "600px",
+      backgroundImage: loginState.step === "PAYMENT_FLOW_STARTED" ? `url(${modalLongBg})` : `url(${modalSmallBg})`,
+      minWidth: loginState.step === "PAYMENT_FLOW_STARTED" ? "800px" : "600px",
+      minHeight: loginState.step === "PAYMENT_FLOW_STARTED" ? "800px" : "600px",
       backgroundPosition: "center",
       backgroundRepeat: "none",
       backgroundRepeat: "no-repeat",
@@ -230,7 +314,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
       justifyContent: "center",
       flexDirection: "column"
     }}>
-      {loginState.step !== "PAYMENT_STARTED" ?
+      {loginState.step !== "PAYMENT_FLOW_STARTED" ?
         step === SignInStep.submit ? (
           <LoginForm isCocModalOpen={isCocModalOpen} setCocModalOpen={setCocModalOpen} onSubmitEmail={(email) => {
             window
@@ -246,7 +330,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
                 if (resp.status === 200) {
                   submitEmail(email);
                 } else if (resp.status === 404) {
-                  setLoginState({ step: "PAYMENT_STARTED", email: email })
+                  setLoginState({ step: "PAYMENT_FLOW_STARTED", email: email })
                 } else {
                   throw resp;
                 }
@@ -254,9 +338,9 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
             // submitEmail(email);
           }} initialEmail={email} signInReason={qs.get("sign_in_reason")} />
         ) : (
-            <VerifiedForm />
+            loginState.step === "PAYMENT_PENDING" ? (<PaymentPendingForm setLoginState={setLoginState} email={loginState.email} />) : <VerifiedForm />
           ) : <PaymentForm email={loginState.email} onSuccess={() => {
-            setLoginState({ step: "PAYMENT_SUCCESSFUL", email: loginState.email });
+            setLoginState({ step: "PAYMENT_PENDING", email: loginState.email });
             submitEmail(loginState.email);
           }} />}
 
@@ -294,9 +378,9 @@ const PaymentForm = ({ email, onSuccess }) => {
   }}>
     PAYMENT
   </span><div style={{
-    maxWidth: "280px",
-    textAlign: "center",
-    marginBottom: "2em"
+      maxWidth: "300px",
+      textAlign: "center",
+      marginBottom: "2em"
     }}>
       <div style={{
 
@@ -319,10 +403,11 @@ const PaymentForm = ({ email, onSuccess }) => {
         color: "#FFE6C1",
         textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)",
       }}>Payment will secure you a login code, which gives you permanent and unlimited access to the website </div></div>
-    
+
     <Elements>
       <InjectedCheckoutForm email={email} onStripeSuccess={onSuccess} />
     </Elements>
 
   </React.Fragment>);
 };
+

@@ -75,6 +75,8 @@ export class EffectsSystem {
     // Setup ShaderFrog
     this.shaderFrog = new ShaderFrogRuntime();
     this.shaderFrog.registerCamera( camera );
+
+    this.ready = true;
   }
 
   onWindowResize( event ) {
@@ -90,7 +92,7 @@ export class EffectsSystem {
 
     // update shaders
     this.shaders.forEach(shader => {
-      shader.uniforms.time.value = t;  
+      shader.uniforms.time.value = t;
     })
 
     this.shaderFrog.updateShaders(t/1000.0);

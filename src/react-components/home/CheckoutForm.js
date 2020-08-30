@@ -4,6 +4,10 @@ import { validate } from 'email-validator';
 
 import { CardElement, AddressElement } from 'react-stripe-elements';
 
+const signUpButton = "https://str33m.dr33mphaz3r.net/static-assets/login/sign-up-button.png";
+const signUpButtonWebp = "https://str33m.dr33mphaz3r.net/static-assets/login/sign-up-button.webp";
+
+
 class CardSection extends React.Component {
   render() {
     return (
@@ -59,11 +63,24 @@ class CheckoutForm extends React.Component {
     super(props);
     this.state = {
       isSubmitting: false,
-      email: props.email
+      email: props.email,
+      hasCardError: true
     }
   }
   componentDidMount() {
+    const cardElement = this.props.elements.getElement('card');
 
+    cardElement.on('change', (event) => {
+      if (event.complete) {
+        this.setState({
+          hasCardError: false
+        })
+      } else {
+        this.setState({
+          hasCardError: true
+        })
+      }
+    });
   }
 
   handleSubmit = (e) => {
@@ -84,22 +101,27 @@ class CheckoutForm extends React.Component {
       }
     })
     .then((clientSecret) => {
-      console.log("got client secret", clientSecret);
-
       this.props.stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
         },
       })
       .then((resp) => {
+        
+        if(resp.paymentIntent) {
+
         this.setState({
           isSubmitting: false
         });
-        
-        if(resp.paymentIntent) {
+
           this.props.onStripeSuccess();
         } else {
-          
+
+        this.setState({
+          isSubmitting: false,
+          error: "There was an issue processing the payment details below. Please check your details and try again. Otherwise, please contact dr33mphaz3r@gmail.com."
+        });
+
           // TODO: handle error case! (Toast error?)
         }
       })
@@ -111,22 +133,46 @@ class CheckoutForm extends React.Component {
       });
     })
     .catch((err) => {
-      console.log("got error", err);
       this.setState({ error: err.message });
     });
   };
 
   render() {
+    const buttonDisabled = this.state.isSubmitting || this.state.hasCardError || !validate(this.state.email);
+
     return (
       <form onSubmit={this.handleSubmit} style={{
         width: "300px",
         color: 'white'
       }}>
-        <input placeholder="YOUR EMAIL ADDRESS" style={{
+                { this.state.error && <span style={{
+          boxSizing: "border-box",
+          width: "300px",
+          display: "block",
+          paddingBottom: "16px",
+          fontFamily: "Perpetua Titling MT",
+          fontStyle: "normal",
+          fontWeight: "300",
+          color: "rgb(255, 0, 0)",
+          textShadow: "4px 4px 10px rgba(255, 0, 0, 0.94)"
+        }}>{ this.state.error }</span> }
+                <span style={{
+          boxSizing: "border-box",
+          width: "300px",
+          color: "white",
+          display: "block",
+          paddingBottom: "16px",
+          fontFamily: "Perpetua Titling MT",
+          fontStyle: "normal",
+          fontWeight: "300",
+          color: "#FFE6C1",
+          textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)"
+        }}>EMAIL ADDRESS</span>
+        <input disabled placeholder="YOUR EMAIL ADDRESS" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"  style={{
           background: "unset",
           border: "1px solid #FFE6C1",
           boxSizing: "border-box",
-          width: "280px",
+          width: "300px",
           color: "white",
           padding: "8px",
           filter: "drop-shadow(2px 2px 10px rgba(255, 184, 0, 0.94))",
@@ -138,13 +184,23 @@ class CheckoutForm extends React.Component {
           lineHeight: "18px",
           textAlign: "center",
           color: "#FFE6C1",
+          marginBottom: "16px"
           // textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)"
         }} type="email" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} />
         <br/>
         <CardSection />
-        <button disabled={this.state.isSubmitting || !validate(this.state.email)}>
-          Confirm order
-        </button>
+        <div style={{
+          width: "300px",
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "32px"
+        }}>
+        <img src={signUpButton} aria-label="Sign Up" aria-disabled={buttonDisabled} aria-role="button" onClick={(e) => {
+          if(!buttonDisabled) {
+            this.handleSubmit(e)
+          }
+        }} style={{ width: "180px", cursor: buttonDisabled ? "disabled" : "pointer", opacity: buttonDisabled ? "0.3" : "1" }} />
+        </div>
       </form>
     );
   }

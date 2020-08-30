@@ -21,22 +21,8 @@ import styles from "../assets/stylesheets/index.scss";
 import aug20Image from "../assets/images/aug22.gif";
 import aug20ImageWebp from "../assets/images/aug22.webp";
 
-// import loginButton from "../assets/images/login-button.png";
-// import loginButtonWebp from "../assets/images/login-button.webp";
-// import loginButtonHover from "../assets/images/login-button-hover.png";
-// import loginButtonHoverWebp from "../assets/images/login-button-hover.webp";
-
 import logoImage from "../assets/images/logo.png";
 import logoImageWebp from "../assets/images/logo.webp";
-
-// import enterButton from "../assets/images/enter-button.gif";
-// import enterButtonHover from "../assets/images/enter-button-hover.gif";
-
-// import logoutButton from "../assets/images/logout-button.png";
-// import logoutButtonWebp from "../assets/images/logout-button.webp";
-
-// import logoutButtonHover from "../assets/images/logout-button-hover.png";
-// import logoutButtonHoverWebp from "../assets/images/logout-button-hover.webp";
 
 import AuthDialog from "./auth-dialog.js";
 import SignInDialog from "./sign-in-dialog.js";
