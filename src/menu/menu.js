@@ -260,6 +260,14 @@ export const Menu = ({
     );
   };
 
+  const editPosition = { x: "427", y: "1197", width: "1020", height: "908" };
+  const homePosition = { x: "1022", y: "3974", width: "353", height: "491" };
+  const lobbyPosition = { x: "518", y: "3974", width: "353", height: "491" };
+  const reportPosition = { x: "478", y: "3000", width: "938", height: "461" };
+  const room1Position = { x: "473", y: "3609", width: "281", height: "281" };
+  const room2Position = { x: "826", y: "3609", width: "281", height: "280" };
+  const room3Position = { x: "1178", y: "3605", width: "281", height: "281" };
+
   return (
     <>
       <div id="svg-container" style={{ pointerEvents: "none", position: "fixed", top: 0, right: 0, height: "100%" }}>
@@ -287,46 +295,45 @@ export const Menu = ({
               <SvgHoverButton
                 id="EditProfile"
                 onClick={() => setInModal(true)}
-                normalProps={{ x: "427", y: "1197", width: "1020", height: "908", href: ProfileButton }}
-                hoverProps={{ x: "427", y: "1197", width: "1020", height: "908", href: ProfileButtonHover }}
+                normalProps={{ ...editPosition, href: ProfileButton }}
+                hoverProps={{ ...editPosition, href: ProfileButtonHover }}
               />
 
               <SvgHoverButton
                 id="Report"
                 onClick={onReport}
-                normalProps={{ x: "478", y: "3098", width: "938", height: "461", href: Report }}
-                hoverProps={{ x: "478", y: "3098", width: "938", height: "461", href: ReportHover }}
+                normalProps={{ ...reportPosition, href: Report }}
+                hoverProps={{ ...reportPosition, href: ReportHover }}
               />
               <SvgHoverButton
                 id="HomeExit"
                 onClick={onHome}
-                normalProps={{ x: "1032", y: "3981", width: "336", height: "475", href: HomeExit }}
-                hoverProps={{ x: "1022", y: "3974", width: "353", height: "491", href: HomeExitHover }}
+                normalProps={{ ...homePosition, href: HomeExit }}
+                hoverProps={{ ...homePosition, href: HomeExitHover }}
               />
               <SvgHoverButton
                 id="LobbyExit"
                 onClick={onLobby}
-                normalProps={{ x: "460", y: "3965", width: "475", height: "475", href: LobbyExit }}
-                hoverProps={{ x: "518", y: "3974", width: "353", height: "491", href: LobbyExitHover }}
+                normalProps={{ ...lobbyPosition, href: LobbyExit }}
+                hoverProps={{ ...lobbyPosition, href: LobbyExitHover }}
               />
               <SvgHoverButton
                 id="Room1Button"
                 onClick={onRoom1}
-                hoverProps={{ x: "473", y: "3609", width: "281", height: "281", href: Room1ButtonHover }}
-                normalProps={{ x: "486", y: "3624", width: "251", height: "251", href: Room1Button }}
+                normalProps={{ ...room1Position, href: Room1Button }}
+                hoverProps={{ ...room1Position, href: Room1ButtonHover }}
               />
               <SvgHoverButton
                 id="Room2Button"
                 onClick={onRoom2}
-                hoverProps={{ x: "826", y: "3609", width: "281", height: "280", href: Room2ButtonHover }}
-                normalProps={{ x: "839", y: "3623", width: "251", height: "251", href: Room2Button }}
+                normalProps={{ ...room2Position, href: Room2Button }}
+                hoverProps={{ ...room2Position, href: Room2ButtonHover }}
               />
-
               <SvgHoverButton
                 id="Room3Button"
                 onClick={onRoom3}
-                hoverProps={{ x: "1178", y: "3605", width: "281", height: "281", href: Room3ButtonHover }}
-                normalProps={{ x: "1191", y: "3620", width: "251", height: "251", href: Room3Button }}
+                normalProps={{ ...room3Position, href: Room3Button }}
+                hoverProps={{ ...room3Position, href: Room3ButtonHover }}
               />
             </>
           )}
