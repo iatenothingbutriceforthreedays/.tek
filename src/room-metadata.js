@@ -32,7 +32,8 @@ const roomMetadata = {
     requireLogin: true,
     baseSpeed: 2.5,
     flyMode: true,
-    freeRotation: true
+    freeRotation: true,
+    portalPadding: 15.0,
   },
   lobby: {
     streamVolume: 0.5,

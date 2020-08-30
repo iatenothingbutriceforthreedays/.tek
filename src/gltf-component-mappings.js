@@ -1,5 +1,7 @@
 import "./components/gltf-model-plus";
 import { getSanitizedComponentMapping } from "./utils/component-mappings";
+import { getRoomMetadata } from "./room-metadata";
+
 import { TYPE, SHAPE, FIT } from "three-ammo/constants";
 const COLLISION_LAYERS = require("./constants").COLLISION_LAYERS;
 
@@ -108,14 +110,15 @@ AFRAME.GLTFModelPlus.registerComponent("portal", "portal", (el, componentName, c
     componentData = css2obj(componentData);
   } else {
     // old version with just the targetRoom
-    componentData = {targetRoom: componentData, padding: -1.5};
+    componentData = {targetRoom: componentData};
   }
   if (componentData.targetRoom) {
     el.object3DMap.mesh.material = registerShaderFrogShader(Liquifier, {
       "tex": imageLoader.load(roomPreviews[componentData.targetRoom])
     });
   }
-  componentData['padding'] = -0.15 // not sure why i set these all to -1.5 in the glb lol
+  const rm = getRoomMetadata();
+  componentData['padding'] = rm.portalPadding !== undefined ? rm.portalPadding : -0.15;
   el.setAttribute("portal", componentData);
 });
 
