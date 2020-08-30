@@ -308,7 +308,7 @@ const PaymentForm = ({ email, onSuccess }) => {
         color: "#FFE6C1",
         textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)",
         marginBottom: '1em'
-      }}>To commence your ~ dr33m ~ we kindly ask for a donation of $3.33 AUD to contribute to artists fees and ongoing operation costs.</div>
+      }}>To commence your ~ dr33m ~ we kindly ask for $3.33 AUD to contribute to artists fees and ongoing operation costs.</div>
       <div style={{
 
         fontFamily: "Perpetua Titling MT",
@@ -319,6 +319,7 @@ const PaymentForm = ({ email, onSuccess }) => {
         color: "#FFE6C1",
         textShadow: "4px 4px 10px rgba(255, 184, 0, 0.94)",
       }}>Payment will secure you a login code, which gives you permanent and unlimited access to the website </div></div>
+    
     <Elements>
       <InjectedCheckoutForm email={email} onStripeSuccess={onSuccess} />
     </Elements>
