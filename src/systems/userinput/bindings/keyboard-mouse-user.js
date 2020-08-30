@@ -365,24 +365,24 @@ export const keyboardMouseUserBindings = addSetsToBindings({
       dest: { value: paths.actions.mediaSearch8 },
       xform: xforms.rising
     },
-    {
-      src: {
-        value: paths.device.keyboard.key("l")
-      },
-      dest: {
-        value: paths.actions.logDebugFrame
-      },
-      xform: xforms.rising
-    },
-    {
-      src: {
-        value: paths.device.keyboard.key("k")
-      },
-      dest: {
-        value: paths.actions.logInteractionState
-      },
-      xform: xforms.rising
-    },
+    // {
+    //   src: {
+    //     value: paths.device.keyboard.key("l")
+    //   },
+    //   dest: {
+    //     value: paths.actions.logDebugFrame
+    //   },
+    //   xform: xforms.rising
+    // },
+    // {
+    //   src: {
+    //     value: paths.device.keyboard.key("k")
+    //   },
+    //   dest: {
+    //     value: paths.actions.logInteractionState
+    //   },
+    //   xform: xforms.rising
+    // },
     {
       src: {
         value: paths.device.mouse.buttonRight
