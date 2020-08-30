@@ -288,7 +288,6 @@ export default class Store extends EventTarget {
       this.update({ profile: { doofStick: generateRandomName() } });
       this.update({ profile: { displayName: generateRandomName() } });
     }
-    
   };
 
   resetToRandomDefaultAvatar = async () => {
