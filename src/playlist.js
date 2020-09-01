@@ -24,7 +24,7 @@ room1:
       title: "dr33m-1"
       length: "00:00:11"
 
-    - artist: "Vox Supreme"
+    - artist: "Vox supreme"
       title: "Vox-Supreme"
       length: "01:18:17"
 
