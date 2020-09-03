@@ -141,8 +141,8 @@ const Playing = ({ artist, hidden, ...otherProps }) =>
   !hidden &&
   artist &&
   !artist.includes("dr33m") && (
-    <marquee loop={"infinite"} direction={"right"} className={"glow"} {...otherProps}>
-      {repeat(`${artist}     ~     `, 20)}
+    <marquee style={{ whiteSpace: "pre" }}scrolldelay={15} scrollamount={3} truespeed={"1"} loop={"infinite"} direction={"right"} className={"glow"} {...otherProps}>
+      {`*✲ﾟ*｡✧ ~ ${artist} ~ *✲ﾟ*｡✧`}
     </marquee>
   );
 
