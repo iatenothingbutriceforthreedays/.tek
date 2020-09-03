@@ -1,9 +1,11 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
+
 admin.initializeApp();
 
 import Stripe from 'stripe';
+import * as SendGrid from '@sendgrid/mail';
 
 import fetch from 'node-fetch'
 
@@ -35,6 +37,8 @@ const STRIPE_WH_SECRET = env.stripe.wh_secret || 'wh_stripe'
 
 const DR33M_SECRET = env.dr33m.secret || 'super_secret'
 const DR33M_ADMIN_ID = env.dr33m.admin_id || '1234'
+
+const SENDGRID_API_KEY = env.sendgrid.api_key || '1234'
 
 const stripe = new Stripe(STRIPE_KEY, { apiVersion: '2020-08-27' });
 
@@ -136,6 +140,11 @@ const updateAccount = async (email : string, name : string) => {
   return {email, name, id}
 }
 */
+
+// using Twilio SendGrid's v3 Node.js Library
+// https://github.com/sendgrid/sendgrid-nodejs
+SendGrid.setApiKey(SENDGRID_API_KEY);
+
 
 
 // dr33mphaz3r
@@ -249,6 +258,21 @@ app.post('/payment/webhook', bodyParser.raw(), async (req: any, res) => {
       }
 
       functions.logger.log('Account Creation Success:', { createdUser })
+
+      try {
+        await retry(async () => {
+          await SendGrid.send({
+            to: user.email,
+            from: 'noreply@h8mail.dr33m.club',
+            templateId: 'd-a0b3841514194c32aa80c2ebd170ba6d'
+          })
+          functions.logger.log('Successfully notified user', { user })
+        }, { retries: 5 })
+      } catch (e) {
+        functions.logger.error("Failed to notify user:", { user, e });
+        res.status(500).send('Failed to send email to user after successful payment').end()
+        return
+      }
 
       break;
     case 'payment_intent.payment_failed':
