@@ -384,6 +384,7 @@ export default class UIRoot extends Component {
 
   onIdleDetected = () => {
     if (
+      true ||  // Caspian: disabled autoexit
       this.props.disableAutoExitOnIdle ||
       this.state.isStreaming ||
       this.props.store.state.preferences["disableIdleDetection"]
