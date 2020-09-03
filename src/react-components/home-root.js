@@ -33,16 +33,6 @@ addLocaleData([...en]);
 
 const isMobile = checkIsMobile();
 
-const queryArgs = queryString.parse(window.location.search);
-let showLogin = false;
-
-if (queryArgs["login"]) {
-  showLogin = true;
-}
-
-
-
-
 class HomeRoot extends Component {
   static propTypes = {
     intl: PropTypes.object,
@@ -318,7 +308,7 @@ class HomeRoot extends Component {
     return (
       <div className={styles.heroPanel}>
         <div className={styles.container}>
-          <audio loop autoPlay>
+          <audio volume={0.5} loop autoPlay>
             <source src={backgroundAudio} type="audio/mpeg" />
           </audio>
           <picture>
@@ -332,9 +322,9 @@ class HomeRoot extends Component {
             />
           </picture>
           {!this.state.signedIn && this.renderAug20Button()}
-          {this.state.signedIn && <div style={{
-            marginLeft: "225px" // half of maxWidth above
-          }}><EnterButton /></div>}
+          <div style={{ marginLeft: "225px" /* half of maxWidth above */ }}>
+            <EnterButton />
+          </div>
         </div>
         <div className={styles.ctaButtons}>
           <div
@@ -347,7 +337,7 @@ class HomeRoot extends Component {
               flexDirection: "column"
             }}
           >
-            {!this.state.signedIn && showLogin && this.renderSignInDialog()}
+            {!this.state.signedIn && this.renderSignInDialog()}
             {this.state.signedIn && this.renderSignOutDialog()}
             {this.state.signedIn && this.renderSignInInfo()}
           </div>

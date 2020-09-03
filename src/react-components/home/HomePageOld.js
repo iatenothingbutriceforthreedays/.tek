@@ -12,31 +12,29 @@ import { AuthContext } from "../auth/AuthContext";
 import { createAndRedirectToNewHub } from "../../utils/phoenix-utils";
 import queryString from "querystring";
 import SignInDialog from "../sign-in-dialog.js";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 
 import backgroundAudio from "../../assets/gorloj-nagrume.mp3";
 import { check_webp_feature_support_cache } from "../../utils/compat";
 
-Modal.defaultStyles.overlay.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+Modal.defaultStyles.overlay.backgroundColor = "rgba(0, 0, 0, 0.75)";
 Modal.defaultStyles.content = {
   position: "absolute",
   width: "100%",
   height: "100%",
   top: "0",
-  left: "0",
-}
+  left: "0"
+};
 
 import { getRoomURL } from "../../room-metadata";
 
 import qsTruthy from "../../utils/qs_truthy";
 import { CoCModal } from "../coc/CoC";
 
-
 import { LogInModal } from "./LogInModal";
 import { AboutModal } from "../about/About";
 import { CreditsModal } from "../credits/Credits";
 import { SvgHoverButton } from "../../utils/svg-helpers";
-
 
 const mainMenuBack = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/menu-back.png";
 const mainMenuBackWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/menu-back.webp";
@@ -64,7 +62,7 @@ const fbNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/fb-
 const scHover = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-hover.png";
 const scHoverWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-hover.webp";
 const scNormal = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.png";
-const scNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.webp"; 
+const scNormalWebp = "https://str33m.dr33mphaz3r.net/static-assets/main-menu/sc-normal.webp";
 const splashMp4 = "https://str33m.dr33mphaz3r.net/static-assets/splash2.mp4";
 const splashWebm = "https://str33m.dr33mphaz3r.net/static-assets/splash2.webm";
 
@@ -102,56 +100,121 @@ export const BackgroundVideo = () => (
   </video>
 );
 
-
 const MenuComponent = ({ setIsModalOpen, setIsAboutModalOpen, setIsCreditsModalOpen, setCoCModalOpen }) => {
   const auth = useContext(AuthContext);
-  
+
   let backImage = mainMenuBack;
 
   if (check_webp_feature_support_cache("lossy")) {
     backImage = mainMenuBackWebp;
   }
-  
-  return (<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="100vw" height="100vh" viewBox="0 0 3372 3371">
-    <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={backImage} />
-    <defs>
-      <clipPath id="cut-off-bottom">
-        <rect x="1340" y="2980" width="680" height="90" />
-      </clipPath>
-    </defs>
 
-    <SvgHoverButton  onClick={async e => {
-        e.preventDefault();
-        setIsAboutModalOpen(true);
-        return false;
-      }} id="About_Button" normalProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutNormal }} hoverProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutHover }} />
-    <SvgHoverButton  onClick={async e => {
-        e.preventDefault();
-        setIsCreditsModalOpen(true);
-        return false;
-      }} id="Credits_Button" hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover }} normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal }} />
-    { (showLogin && !auth.isSignedIn) && <SvgHoverButton id="LogIn_Button" hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover }} normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal }} onClick={(e) => {
-      e.preventDefault();
-      setIsModalOpen(true);
-      return false;
-    }} /> } 
-        { auth.isSignedIn && <text dominantBaseline="middle" textAnchor="middle" x="1680" y="3025" clipPath="url(#cut-off-bottom)" style={{ fontSize: "48px" }} fill="white">
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width="100vw"
+      height="100vh"
+      viewBox="0 0 3372 3371"
+    >
+      <image id="BACKPLATE" x="62" y="-149" width="4064" height="3251" xlinkHref={backImage} />
+      <defs>
+        <clipPath id="cut-off-bottom">
+          <rect x="1340" y="2980" width="680" height="90" />
+        </clipPath>
+      </defs>
+
+      <SvgHoverButton
+        onClick={async e => {
+          e.preventDefault();
+          setIsAboutModalOpen(true);
+          return false;
+        }}
+        id="About_Button"
+        normalProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutNormal }}
+        hoverProps={{ x: "2466", y: "1353", width: "472", height: "781", xlinkHref: aboutHover }}
+      />
+      <SvgHoverButton
+        onClick={async e => {
+          e.preventDefault();
+          setIsCreditsModalOpen(true);
+          return false;
+        }}
+        id="Credits_Button"
+        hoverProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditHover }}
+        normalProps={{ x: "445", y: "1337", width: "465", height: "768", xlinkHref: creditNormal }}
+      />
+      {!auth.isSignedIn && (
+        <SvgHoverButton
+          id="LogIn_Button"
+          hoverProps={{ x: "1528", y: "2273", width: "301", height: "76", xlinkHref: loginHover }}
+          normalProps={{ x: "1520", y: "2265", width: "317", height: "93", xlinkHref: loginNormal }}
+          onClick={e => {
+            e.preventDefault();
+            setIsModalOpen(true);
+            return false;
+          }}
+        />
+      )}
+      {auth.isSignedIn && (
+        <text
+          dominantBaseline="middle"
+          textAnchor="middle"
+          x="1680"
+          y="3025"
+          clipPath="url(#cut-off-bottom)"
+          style={{ fontSize: "48px" }}
+          fill="white"
+        >
           <animate attributeName="x" values="750;2550" dur="5s" repeatCount="indefinite" fill="freeze" />
-          welcome, { auth.email }
-  </text> }
-         
-         
-    <SvgHoverButton href="https://ultravirus.bandcamp.com/" id="BC_Button" normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal }} hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover }} />
-    <SvgHoverButton href="https://www.facebook.com/ultravirus101" id="FB_Button" hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }} normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }} />
-    <SvgHoverButton href="https://soundcloud.com/ultravirusss" id="SC_hover" hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }} normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }} />
-    { (auth.isSignedIn) && <SvgHoverButton 
-      onClick={async e => {
-        e.preventDefault();
-        setCoCModalOpen(true)
-      }} id="Enter" hoverProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButtonHover, xlinkHrefWebp: enterButtonHoverWebp}} normalProps={{ x: "1380", y: "2370", width: "600", height: "600", xlinkHref: enterButton, xlinkHrefWebp: enterButtonWebp }} /> }
-  </svg>);
+          welcome, {auth.email}
+        </text>
+      )}
 
-}
+      <SvgHoverButton
+        href="https://ultravirus.bandcamp.com/"
+        id="BC_Button"
+        normalProps={{ x: "2992", y: "2702", width: "170", height: "131", xlinkHref: bcNormal }}
+        hoverProps={{ x: "2977", y: "2687", width: "200", height: "161", xlinkHref: bcHover }}
+      />
+      <SvgHoverButton
+        href="https://www.facebook.com/ultravirus101"
+        id="FB_Button"
+        hoverProps={{ x: "2823", y: "2676", width: "183", height: "183", xlinkHref: fbHover }}
+        normalProps={{ x: "2839", y: "2692", width: "151", height: "151", xlinkHref: fbNormal }}
+      />
+      <SvgHoverButton
+        href="https://soundcloud.com/ultravirusss"
+        id="SC_hover"
+        hoverProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scHover }}
+        normalProps={{ x: "2627", y: "2688", width: "196", height: "161", xlinkHref: scNormal }}
+      />
+      <SvgHoverButton
+        id="Enter"
+        onClick={async e => {
+          e.preventDefault();
+          setCoCModalOpen(true);
+        }}
+        hoverProps={{
+          x: "1380",
+          y: "2370",
+          width: "600",
+          height: "600",
+          xlinkHref: enterButtonHover,
+          xlinkHrefWebp: enterButtonHoverWebp
+        }}
+        normalProps={{
+          x: "1380",
+          y: "2370",
+          width: "600",
+          height: "600",
+          xlinkHref: enterButton,
+          xlinkHrefWebp: enterButtonWebp
+        }}
+      />
+    </svg>
+  );
+};
 
 const LogoutButton = ({ onLinkClicked }) => {
   const [isShown, setIsShown] = useState(false);
@@ -182,18 +245,18 @@ const LogoutButton = ({ onLinkClicked }) => {
           />
         </picture>
       ) : (
-          <picture>
-            <source srcSet={logoutButtonWebp} type="image/webp" />
+        <picture>
+          <source srcSet={logoutButtonWebp} type="image/webp" />
 
-            <img
-              style={{
-                maxWidth: "200px",
-                marginRight: "-25px"
-              }}
-              src={logoutButton}
-            />
-          </picture>
-        )}
+          <img
+            style={{
+              maxWidth: "200px",
+              marginRight: "-25px"
+            }}
+            src={logoutButton}
+          />
+        </picture>
+      )}
     </button>
   );
 };
@@ -204,7 +267,7 @@ const LoginButton = ({ onLinkClicked }) => {
   return (
     <a
       href="#"
-      onClick={(e) => {
+      onClick={e => {
         e.preventDefault();
         onLinkClicked();
         return false;
@@ -232,17 +295,17 @@ const LoginButton = ({ onLinkClicked }) => {
           />
         </picture>
       ) : (
-          <picture>
-            <source srcSet={loginButtonWebp} type="image/webp" />
+        <picture>
+          <source srcSet={loginButtonWebp} type="image/webp" />
 
-            <img
-              style={{
-                maxWidth: "200px"
-              }}
-              src={loginButton}
-            />
-          </picture>
-        )}
+          <img
+            style={{
+              maxWidth: "200px"
+            }}
+            src={loginButton}
+          />
+        </picture>
+      )}
     </a>
   );
 };
@@ -321,7 +384,6 @@ export function HomePage() {
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const [isCoCModalOpen, setCoCModalOpen] = useState(false);
 
-
   const canCreateRooms = !configs.feature("disable_room_creation") || auth.isAdmin;
 
   // const pageStyle = { backgroundImage: configs.image("home_background", true) };
@@ -352,7 +414,7 @@ export function HomePage() {
           zIndex: "-100"
         }}
       >
-        <BackgroundVideo/>
+        <BackgroundVideo />
       </div>
       <div
         style={{
@@ -364,7 +426,7 @@ export function HomePage() {
           zIndex: "0"
         }}
       >
-        <audio loop autoPlay>
+        <audio volume={0.5} loop autoPlay>
           <source src={backgroundAudio} type="audio/mpeg" />
         </audio>
         <div
@@ -372,8 +434,12 @@ export function HomePage() {
             position: "relative"
           }}
         >
-          <MenuComponent setIsModalOpen={setIsModalOpen} setIsAboutModalOpen={setIsAboutModalOpen} setIsCreditsModalOpen={setIsCreditsModalOpen} setCoCModalOpen={setCoCModalOpen} />
-
+          <MenuComponent
+            setIsModalOpen={setIsModalOpen}
+            setIsAboutModalOpen={setIsAboutModalOpen}
+            setIsCreditsModalOpen={setIsCreditsModalOpen}
+            setCoCModalOpen={setCoCModalOpen}
+          />
         </div>
       </div>
       {/* <div className={styles.ctaButtons}>
@@ -407,15 +473,12 @@ export function HomePage() {
           )}
         </div>
       </div> */}
-      { isModalOpen && <LogInModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} /> }
-    { isAboutModalOpen && <AboutModal isOpen={isAboutModalOpen} onRequestClose={() => setIsAboutModalOpen(false)} /> }
-      { isCreditsModalOpen && <CreditsModal isOpen={isCreditsModalOpen} onRequestClose={() => setIsCreditsModalOpen(false)} /> }
-
-
-      { isCoCModalOpen && <CoCModal
-      isOpen={isCoCModalOpen}
-      onRequestClose={() => setCoCModalOpen(false)}
-      /> }
+      {isModalOpen && <LogInModal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />}
+      {isAboutModalOpen && <AboutModal isOpen={isAboutModalOpen} onRequestClose={() => setIsAboutModalOpen(false)} />}
+      {isCreditsModalOpen && (
+        <CreditsModal isOpen={isCreditsModalOpen} onRequestClose={() => setIsCreditsModalOpen(false)} />
+      )}
+      {isCoCModalOpen && <CoCModal isOpen={isCoCModalOpen} onRequestClose={() => setCoCModalOpen(false)} />}
     </Page>
   );
 }

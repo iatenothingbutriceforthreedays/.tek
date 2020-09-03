@@ -262,7 +262,7 @@ export function Credits() {
           zIndex: "1"
         }}
       >
-        <audio loop autoPlay>
+        <audio volume={0.5} loop autoPlay>
           <source src={backgroundAudio} type="audio/mpeg" />
         </audio>
         <div
