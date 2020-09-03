@@ -324,7 +324,7 @@ export function HomePage() {
           zIndex: "0"
         }}
       >
-        <audio loop autoPlay>
+        <audio volume={0.5} loop autoPlay>
           <source src={backgroundAudio} type="audio/mpeg" />
         </audio>
         <div
