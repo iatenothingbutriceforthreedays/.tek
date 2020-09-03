@@ -79,7 +79,6 @@ const main = async () => {
   const display = (email) => lookup(email).then((user) => console.log(`${email}: ${ user ? JSON.stringify(user) : 'not found :(' }`))
 
   await display('caspianbaska@gmail.com')
-  await display('caspianbaska@gmai.com')
 }
 
 main()
