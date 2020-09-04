@@ -702,7 +702,7 @@ function checkForAccountRequired() {
   // If the app requires an account to join a room, redirect to the sign in page.
   // if (!configs.feature("require_account_for_join")) return;
   if (store.state.credentials && store.state.credentials.token) return;
-  redirectIfNotAuthorized()
+  redirectIfNotAuthorized();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
