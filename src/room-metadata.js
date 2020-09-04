@@ -30,7 +30,7 @@ const roomMetadata = {
   room3: {
     // Henry's room
     requireLogin: true,
-    baseSpeed: 2.5,
+    baseSpeed: 3.0,
     flyMode: true,
     freeRotation: true,
     portalPadding: 15.0,
