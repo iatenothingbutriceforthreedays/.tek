@@ -74,7 +74,7 @@ export const SvgHoverButton = ({ normalProps, hoverProps, style, href, ...otherP
   }
 
   if (href) {
-    return (<a href={href}>
+    return (<a target="_blank" rel="noopener noreferrer" href={href}>
       <image
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
