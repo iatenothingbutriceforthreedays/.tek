@@ -55,7 +55,8 @@ AFRAME.registerSystem("exit-on-blur", {
   },
 
   onTimeout() {
-    if (window.APP.store.state.preferences["disableIdleDetection"]) return;
+    // caspian: avoid autoexit
+    if (true || window.APP.store.state.preferences["disableIdleDetection"]) return;
     this.el.dispatchEvent(new CustomEvent("exit"));
   },
 

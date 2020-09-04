@@ -680,9 +680,11 @@ export default class UIRoot extends Component {
   };
 
   checkForAutoExit = () => {
+    /*
     if (this.state.secondsRemainingBeforeAutoExit !== 0) return;
     this.endAutoExitTimer();
     this.exit();
+    */
   };
 
   exit = reason => {
