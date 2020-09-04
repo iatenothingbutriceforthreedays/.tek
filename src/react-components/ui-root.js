@@ -1598,11 +1598,10 @@ export default class UIRoot extends Component {
   };
 
   renderAudioPlayer = () => {
-    const streamVolume = this.state.volume;
     const playingNow = currentlyPlaying();
 
     if (!playingNow) {
-      console.warn('Could not fetch current track from server for this room')
+      console.warn("Could not fetch current track from server for this room");
       return null;
     }
 
