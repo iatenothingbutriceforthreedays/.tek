@@ -330,7 +330,11 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
                 if (resp.status === 200) {
                   submitEmail(email);
                 } else if (resp.status === 404) {
-                  setLoginState({ step: "PAYMENT_FLOW_STARTED", email: email })
+                  if(window.freeMode) {
+                    submitEmail(email);
+                  } else {
+                    setLoginState({ step: "PAYMENT_FLOW_STARTED", email: email })
+                  }
                 } else {
                   throw resp;
                 }
