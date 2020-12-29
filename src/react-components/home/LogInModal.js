@@ -317,6 +317,9 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
       {loginState.step !== "PAYMENT_FLOW_STARTED" ?
         step === SignInStep.submit ? (
           <LoginForm isCocModalOpen={isCocModalOpen} setCocModalOpen={setCocModalOpen} onSubmitEmail={(email) => {
+            if(window.freeMode) {
+                submitEmail(email);
+            } else {
             window
               .fetch(`https://us-central1-dr33mphaz3r-functions.cloudfunctions.net/dr33mphaz3r/search`, {
                 method: 'POST',
@@ -330,15 +333,12 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
                 if (resp.status === 200) {
                   submitEmail(email);
                 } else if (resp.status === 404) {
-                  if(window.freeMode) {
-                    submitEmail(email);
-                  } else {
                     setLoginState({ step: "PAYMENT_FLOW_STARTED", email: email })
-                  }
                 } else {
                   throw resp;
                 }
               });
+                }
             // submitEmail(email);
           }} initialEmail={email} signInReason={qs.get("sign_in_reason")} />
         ) : (
