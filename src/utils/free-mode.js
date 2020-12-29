@@ -1,1 +1,3 @@
-export default freeMode = true
+const freeMode = true
+
+export default freeMode
