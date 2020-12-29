@@ -10,6 +10,7 @@ import "./assets/stylesheets/globals.scss";
 import { AuthContextProvider } from "./react-components/auth/AuthContext";
 import { StripeProvider } from "react-stripe-elements";
 import { check_webp_features } from "./utils/compat";
+import qsTruthy from "./utils/qs_truthy";
 
 check_webp_features();
 
