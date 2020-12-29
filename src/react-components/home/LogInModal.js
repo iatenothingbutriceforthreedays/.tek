@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Modal from "react-modal";
 import configs from "../../utils/configs";
+import freeMode from "../../utils/free-mode"
 import { validate } from "email-validator";
 
 import IfFeature from "../if-feature";
@@ -348,7 +349,7 @@ export const LogInModal = ({ isOpen, onRequestClose }) => {
               isCocModalOpen={isCocModalOpen}
               setCocModalOpen={setCocModalOpen}
               onSubmitEmail={email => {
-                if (window.freeMode) {
+                if (freeMode) {
                   submitEmail(email);
                 } else {
                   window
